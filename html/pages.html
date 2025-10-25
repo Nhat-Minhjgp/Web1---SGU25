@@ -28,7 +28,7 @@
 <div class="flex items-center space-x-4">
   <a href="./login.html" 
    class="flex items-center text-[#8B0000] hover:text-red-900 transition space-x-2">
-  <img src="./iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain" />
+  <img src="./icon/iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain" />
   
 </a>
 
@@ -40,14 +40,86 @@
 
   </header>
 
-  <!-- HERO SECTION -->
-  <section class="relative bg-[url('')] bg-cover bg-center h-[500px] flex items-center justify-center">
-    <div class="bg-black bg-opacity-50 p-8 rounded-xl text-center text-white max-w-xl">
-      <h2 class="text-3xl md:text-4xl font-bold mb-4">Hương Vị Trung Thu Truyền Thống</h2>
-      <p class="text-sm md:text-base mb-6">MASH mang đến cho bạn những chiếc bánh trung thu đậm đà, tinh tế và ấm áp hương vị đoàn viên.</p>
-      <button class="bg-[#8B0000] px-5 py-2 rounded-full hover:bg-red-900 transition">Khám phá ngay</button>
+    <!-- BANNER -->
+    <section class="relative w-full h-[500px] overflow-hidden">
+      <img
+        src="./img/banner1.jpg"
+        alt="Banner MASH"
+        class="w-full h-full object-cover"
+      />  
+    </section>
+
+ <section class="flex flex-col md:flex-row items-center justify-between px-8 md:px-20 py-16 bg-white">
+  <!-- Nội dung bên trái -->
+  <div class="md:w-1/2 text-gray-700">
+    <h3 class="text-4xl italic text-[#8B0000] mb-4 font-serif">Câu chuyện</h3>
+    <h2 class="text-3xl md:text-4xl font-extrabold text-[#8B0000] mb-6 uppercase">MASH VIETNAM</h2>
+    <p class="mb-3">
+      Trải nghiệm ẩm thực bánh trung thu tuyệt vời cùng MASH Vietnam!
+    </p>
+    <p class="mb-3">
+      Hành trình 13 năm hoàn thiện và phát triển — mang đến những giá trị ngọt ngào, tinh tế và đậm đà hương vị Việt.
+    </p>
+    <p class="mb-3 italic text-[#8B0000]">
+      “Chúng tôi tự tin dẫn đầu với uy tín và chất lượng.<br>
+      Chúng tôi am hiểu ẩm thực bánh và khẩu vị người Việt,<br>
+      Chúng tôi không ngừng đổi mới và sáng tạo.”
+    </p>
+    <p>
+      Trải nghiệm hương vị trung thu truyền thống kết hợp hiện đại cùng thương hiệu MASH – 
+      nơi hội tụ tinh hoa bánh ngọt Việt Nam!
+    </p>
+  </div>
+
+  <!-- Ảnh bên phải -->
+  <div class="md:w-1/2 mt-10 md:mt-0 flex justify-center">
+    <img src="./img/cauchuyen.jpg" alt="Câu chuyện MASH" 
+         class="w-[400px] h-[400px] object-cover rounded-2xl shadow-lg border-4 border-[#8B0000]/20">
+  </div>
+</section>
+
+
+
+<!--DANH MỤC SẢN PHẨM-->
+<section class="relative bg-[url('./img/bg-bread.jpg')] bg-cover bg-center py-16">
+  <div class="bg-black/60 absolute inset-0"></div>
+
+  <div class="relative z-10 text-center text-white">
+    <h2 class="text-3xl font-bold mb-10 uppercase tracking-widest">DANH MỤC SẢN PHẨM</h2>
+
+    <div class="flex flex-wrap justify-center gap-10 px-4">
+      <!-- Sản phẩm 1 -->
+      <div class="flex flex-col items-center">
+        <img src="" alt="Sản phẩm 1" class="w-40 h-40 object-contain mb-4 transition-transform hover:scale-105" />
+        <h3 class="text-lg font-semibold uppercase">Tên sản phẩm 1</h3>
+      </div>
+
+      <!-- Sản phẩm 2 -->
+      <div class="flex flex-col items-center">
+        <img src="" alt="Sản phẩm 2" class="w-40 h-40 object-contain mb-4 transition-transform hover:scale-105" />
+        <h3 class="text-lg font-semibold uppercase">Tên sản phẩm 2</h3>
+      </div>
+
+      <!-- Sản phẩm 3 -->
+      <div class="flex flex-col items-center">
+        <img src="" alt="Sản phẩm 3" class="w-40 h-40 object-contain mb-4 transition-transform hover:scale-105" />
+        <h3 class="text-lg font-semibold uppercase">Tên sản phẩm 3</h3>
+      </div>
+
+      <!-- Sản phẩm 4 -->
+      <div class="flex flex-col items-center">
+        <img src="" alt="Sản phẩm 4" class="w-40 h-40 object-contain mb-4 transition-transform hover:scale-105" />
+        <h3 class="text-lg font-semibold uppercase">Tên sản phẩm 4</h3>
+      </div>
+
+      <!-- Sản phẩm 5 -->
+      <div class="flex flex-col items-center">
+        <img src="" alt="Sản phẩm 5" class="w-40 h-40 object-contain mb-4 transition-transform hover:scale-105" />
+        <h3 class="text-lg font-semibold uppercase">Tên sản phẩm 5</h3>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- SẢN PHẨM NỔI BẬT -->
   <section class="py-16 max-w-7xl mx-auto px-6">
