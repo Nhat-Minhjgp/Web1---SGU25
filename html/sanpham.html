@@ -30,7 +30,7 @@
     <!-- ĐĂNG NHẬP -->
     <div class="flex items-center space-x-4">
       <a href="./login.html" class="flex items-center text-[#8B0000] hover:text-red-900 transition space-x-2">
-        <img src="/icon/iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain" />
+        <img src="./icon/iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain" />
 
       </a>
 
@@ -46,8 +46,7 @@
     <div class="flex justify-center py-5 mb-6">
       <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..."
         class="w-full max-w-md px-4 py-2 border border-[#8B0000] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B0000]"
-        onkeyup="filterProducts()"
-        />
+        onkeyup="filterProducts()" />
     </div>
 
     <h1 class=" mt-10 text-6xl font-bold text-center text-[#8B0000] mb-10">Danh Mục Sản Phẩm</h1>
@@ -241,6 +240,18 @@
   </footer>
 
 
+  <!-- Nút lăn lên -->
+  <a href="#" aria-label="Cuộn lên đầu trang"
+    class="fixed bottom-6 right-6 bg-white bold text-[#8B0000] p-3 rounded-full shadow-lg border hover:border-[#8B0000] hover:text-white transition-opacity opacity-0 invisible"
+    id="scrollToTopBtn">
+    
+    <img src ="./icon/Up.png" alt="up" class="flex w-4 h-4 ">
+   
+
+  </a>
+
+
+
   <!-- script -->
 
   <script>
@@ -276,6 +287,28 @@
       });
     }
   </script>
+
+<!-- script lăn lên cho nút -->
+
+<script>
+  const scrollBtn = document.getElementById('scrollToTopBtn');
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      scrollBtn.classList.remove('opacity-0', 'invisible');
+      scrollBtn.classList.add('opacity-100', 'visible');
+    } else {
+      scrollBtn.classList.remove('opacity-100', 'visible');
+      scrollBtn.classList.add('opacity-0', 'invisible');
+    }
+  });
+
+  scrollBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
 
 
 
