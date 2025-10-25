@@ -41,8 +41,15 @@
     </div>
 
   </header>
-  <section class=" py-64 max-w-7xl mx-auto px-6 mb-10 mt-10">
-    <h1 class=" text-4xl font-bold text-center text-[#8B0000] mb-10">Danh Mục Sản Phẩm</h1>
+  <section class=" py-40 max-w-7xl mx-auto px-6 mb-10 mt-10">
+
+    <div class="flex justify-center py-5 mb-6">
+      <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..."
+        class="w-full max-w-md px-4 py-2 border-2 border-[#8B0000] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B0000]"
+        onkeyup="filterProducts()"
+        />
+    </div>
+    <h1 class=" mt-10 text-6xl font-bold text-center text-[#8B0000] mb-10">Danh Mục Sản Phẩm</h1>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
 
@@ -233,30 +240,45 @@
   </footer>
 
 
+  <!-- script -->
 
+  <script>
+    const itemsPerPage = 8;
+    const items = document.querySelectorAll('.sp');
+    let currentPage = 1;
 
-<script>
-  const itemsPerPage = 8;
-  const items = document.querySelectorAll('.sp');
-  let currentPage = 1;
+    function changePage(page) {
+      currentPage = page;
+      const start = (page - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
 
-  function changePage(page) {
-    currentPage = page;
-    const start = (page - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
+      items.forEach((item, index) => {
+        item.style.display = (index >= start && index < end) ? 'block' : 'none';
+      });
+    }
 
-    items.forEach((item, index) => {
-      item.style.display = (index >= start && index < end) ? 'block' : 'none';
-    });
-  }
+    // Khởi tạo trang đầu tiên
+    changePage(1);
+  </script>
 
-  // Khởi tạo trang đầu tiên
-  changePage(1);
-</script>
+  <script>
+    function filterProducts() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const items = document.querySelectorAll('.sp');
+      items.forEach(item => {
+        const title = item.querySelector('h4').innerText.toLowerCase();
+        if (title.includes(input)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
 
 
 </body>
 
 
 </html>
-
