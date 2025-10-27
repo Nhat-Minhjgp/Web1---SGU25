@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,185 +9,204 @@
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <link href="./output.css" rel="stylesheet">
 </head>
+
 <body class="font-sans text-gray-800 bg-white">
 
-   <!-- HEADER -->
-   <!-- HEADER -->
-<header class="flex justify-between items-center px-8 py-4 shadow-md bg-white sticky top-0 z-50">
-  <!-- LOGO -->
-  <h2 class="text-2xl font-bold text-[#8B0000]">
-    <a href="./pages.html" class="hover:text-[#8B0000]">MASH</a>
-  </h2>
 
-  <!-- NAVIGATION -->
-  <nav class="hidden md:flex space-x-6 text-sm font-medium absolute left-1/2 transform -translate-x-1/2">
-    <a href="./pages.html" class="hover:text-[#8B0000]">Trang chủ</a>
-    <a href="sanpham.html" class="hover:text-[#8B0000]">Sản phẩm</a>
-    <a href="gioithieu.html" class="hover:text-[#8B0000]">Giới thiệu</a>
-    <a href="lienhe.html" class="hover:text-[#8B0000]">Liên hệ</a>
-  </nav>
-  
+  <!-- HEADER -->
+  <header class="flex justify-between items-center px-8 py-4 shadow-md bg-white sticky top-0 z-50">
+    <!-- LOGO -->
+    <h2 class="text-2xl font-bold text-[#8B0000]">
+      <a href="./pages.html" class="hover:text-[#8B0000]">MASH</a>
+    </h2>
+
+    <!-- NAVIGATION -->
+    <nav class="hidden md:flex space-x-6 text-sm font-medium absolute left-1/2 transform -translate-x-1/2">
+      <a href="./pages.html" class="hover:text-[#8B0000]">Trang chủ</a>
+      <a href="sanpham.html" class="hover:text-[#8B0000]">Sản phẩm</a>
+      <a href="gioithieu.html" class="hover:text-[#8B0000]">Giới thiệu</a>
+      <a href="lienhe.html" class="hover:text-[#8B0000]">Liên hệ</a>
+    </nav>
+
+    <!-- USER ACTIONS -->
     <div class="flex items-center space-x-4">
-        <a id="loginIcon" href="./login.html"
-            class="flex items-center text-[#8B0000] hover:text-red-900 transition space-x-2">
-            <img src="./iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain rounded-full" />
+      <!-- Đăng nhập + Giỏ hàng khi chưa đăng nhập -->
+      <div id="loginSection" class="flex items-center space-x-2">
+        <a href="./login.html" class="flex items-center text-[#8B0000] hover:text-red-900 transition">
+          <img src="./iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain rounded-full" />
         </a>
+        <a href="./giohang.html">
+          <img src="/icon/giohang.png" alt="Giỏ hàng" class="w-5 h-5 hover:scale-110 transition" />
+        </a>
+      </div>
 
-        <div id="userProfile" class="hidden flex items-center space-x-2">
-            <img src="./avatar.jpg" alt="User" class="w-7 h-7 rounded-full object-cover border border-gray-300" />
-            <span id="userName" class="text-sm font-medium text-[#8B0000]"></span>
-            <button id="logoutBtn" class="text-xs text-gray-500 hover:text-red-700 ml-2">(Đăng xuất)</button>
-        </div>
+      <!-- Profile + Giỏ hàng khi đã đăng nhập -->
+      <div id="userProfile" class="hidden flex items-center space-x-2">
+        <img src="/icon/iconlogin.jpg" alt="User" class="w-7 h-7 rounded-full object-cover border border-gray-300" />
+        <span id="userName" class="text-sm font-medium text-[#8B0000]"></span>
 
-        <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full hover:bg-red-900 transition text-sm">
-            <a href="#">Đặt Hàng Ngay</a>
+        <!-- Nút đăng xuất -->
+        <button id="logoutBtn" class="text-xs text-gray-500 hover:text-red-700 ml-2">(Đăng xuất)</button>
+
+        <!-- Nút giỏ hàng -->
+        <a href="./giohang.html">
+          <img src="/icon/giohang.png" alt="Giỏ hàng" class="w-5 h-5 hover:scale-110 transition" />
+        </a>
+      </div>
+
+
+
+  </header>
+
+
+
+  <section class=" py-40 max-w-7xl mx-auto px-6 mb-10 mt-10">
+
+    <div class="flex justify-center py-5 mb-6">
+      <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..."
+        class="w-full max-w-md px-4 py-2 border border-[#8B0000] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B0000]"
+        onkeyup="filterProducts()" />
+    </div>
+
+    <h1 class=" mt-10 text-6xl font-bold text-center text-[#8B0000] mb-10">Danh Mục Sản Phẩm</h1>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+
+      <!-- Thập Cẩm -->
+      <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+        <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu Thập Cẩm">
+        <h4 class="font-semibold mb-2">Trung Thu Thập Cẩm</h4>
+        <p class="text-sm text-gray-600 mb-3">Vị truyền thống hòa quyện hạt sen, lạp xưởng, hạt dưa...</p>
+        <a href="thapcam.html"> <button
+            class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi
+            tiết</button>
+          </a>
+
+      </div>
+
+      <!-- Đậu Xanh -->
+      <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+        <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu Đậu Xanh">
+        <h4 class="font-semibold mb-2">Trung Thu Đậu Xanh</h4>
+        <p class="text-sm text-gray-600 mb-3">Nhân đậu xanh mịn màng, ngọt thanh, mang hương vị thuần Việt.</p>
+        <a href="dauxanh.html"> <button
+            class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi
+            tiết
+
+          </button></a>
+
+      </div>
+
+      <!-- Khoai Môn -->
+      <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+        <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu Khoai Môn">
+        <h4 class="font-semibold mb-2">Trung Thu Khoai Môn</h4>
+        <p class="text-sm text-gray-600 mb-3">Khoai môn dẻo thơm, vị bùi nhẹ, kết hợp lớp vỏ mềm mịn.</p>
+        <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi
+          tiết</button>
+      </div>
+
+      <!-- Sữa Dừa -->
+      <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+        <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu Sữa Dừa">
+        <h4 class="font-semibold mb-2">Trung Thu Sữa Dừa</h4>
+        <p class="text-sm text-gray-600 mb-3">Thơm béo vị sữa, quyện cùng dừa nạo mềm mại, ngọt dịu.</p>
+        <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi
+          tiết</button>
+      </div>
+
+      <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+        <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu ...">
+        <H4 class="font-semibold mb-2">Trung Thu ....</H4>
+        <p class="text-sm text-gray-600 mb-3">Văn đa cấp đi Minh @@</p>
+        <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết
+          <a href="#"></a>
+
         </button>
+
+      </div>
+
+      <div class="  sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+        <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu ...">
+        <H4 class="font-semibold mb-2">Trung Thu ....</H4>
+        <p class="text-sm text-gray-600 mb-3">Văn đa cấp đi Minh @@</p>
+        <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết
+          <a href="#"></a>
+
+        </button>
+
+      </div>
+      <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+        <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu ...">
+        <H4 class="font-semibold mb-2">Trung Thu ....</H4>
+        <p class="text-sm text-gray-600 mb-3">Văn đa cấp đi Minh @@</p>
+        <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết
+          <a href="#"></a>
+
+        </button>
+
+      </div>
+      <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+        <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu ...">
+        <H4 class="font-semibold mb-2">Trung Thu ....</H4>
+        <p class="text-sm text-gray-600 mb-3">Văn đa cấp đi Minh @@</p>
+        <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết
+          <a href="#"></a>
+
+        </button>
+
+      </div>
+
+      <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+        <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu ...">
+        <H4 class="font-semibold mb-2">Trung Thu ....</H4>
+        <p class="text-sm text-gray-600 mb-3">Văn đa cấp đi Minh @@</p>
+        <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết
+          <a href="#"></a>
+
+        </button>
+
+      </div>
+      <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+        <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu ...">
+        <H4 class="font-semibold mb-2">Trung Thu ....</H4>
+        <p class="text-sm text-gray-600 mb-3">Văn đa cấp đi Minh @@</p>
+        <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết
+          <a href="#"></a>
+
+        </button>
+
+      </div>
+      <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+        <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu ...">
+        <H4 class="font-semibold mb-2">Trung Thu ....</H4>
+        <p class="text-sm text-gray-600 mb-3">Văn đa cấp đi Minh @@</p>
+        <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết
+          <a href="#"></a>
+
+        </button>
+
+      </div>
+      <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+        <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu ...">
+        <H4 class="font-semibold mb-2">Trung Thu ....</H4>
+        <p class="text-sm text-gray-600 mb-3">Văn đa cấp đi Minh @@</p>
+        <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết
+          <a href="#"></a>
+
+        </button>
+
+      </div>
+    </div>
+    <div class="flex justify-center mt-10 space-x-2">
+      <button onclick="changePage(1)"
+        class="px-4 py-2 border border-[#8B0000] bg-white text-[#8B0000] rounded hover:bg-red-900 hover:text-white">1</button>
+      <button onclick="changePage(2)"
+        class="px-4 py-2 bg-white border-[#8B0000] border text-[#8B0000] rounded hover:bg-[#880000] hover:text-white">2</button>
     </div>
 
 
-    
-</header>
-<section class=" py-40 max-w-7xl mx-auto px-6 mb-10 mt-10">
-
-  <div class="flex justify-center py-5 mb-6">
-    <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..."
-      class="w-full max-w-md px-4 py-2 border border-[#8B0000] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B0000]"
-      onkeyup="filterProducts()"
-      />
-  </div>
-
-  <h1 class=" mt-10 text-6xl font-bold text-center text-[#8B0000] mb-10">Danh Mục Sản Phẩm</h1>
-
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-
-    <!-- Thập Cẩm -->
-    <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
-      <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu Thập Cẩm">
-      <h4 class="font-semibold mb-2">Trung Thu Thập Cẩm</h4>
-      <p class="text-sm text-gray-600 mb-3">Vị truyền thống hòa quyện hạt sen, lạp xưởng, hạt dưa...</p>
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi
-        tiết</button>
-    </div>
-
-    <!-- Đậu Xanh -->
-    <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
-      <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu Đậu Xanh">
-      <h4 class="font-semibold mb-2">Trung Thu Đậu Xanh</h4>
-      <p class="text-sm text-gray-600 mb-3">Nhân đậu xanh mịn màng, ngọt thanh, mang hương vị thuần Việt.</p>
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi
-        tiết</button>
-    </div>
-
-    <!-- Khoai Môn -->
-    <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
-      <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu Khoai Môn">
-      <h4 class="font-semibold mb-2">Trung Thu Khoai Môn</h4>
-      <p class="text-sm text-gray-600 mb-3">Khoai môn dẻo thơm, vị bùi nhẹ, kết hợp lớp vỏ mềm mịn.</p>
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi
-        tiết</button>
-    </div>
-
-    <!-- Sữa Dừa -->
-    <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
-      <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu Sữa Dừa">
-      <h4 class="font-semibold mb-2">Trung Thu Sữa Dừa</h4>
-      <p class="text-sm text-gray-600 mb-3">Thơm béo vị sữa, quyện cùng dừa nạo mềm mại, ngọt dịu.</p>
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi
-        tiết</button>
-    </div>
-
-    <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
-      <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu ...">
-      <H4 class="font-semibold mb-2">Trung Thu ....</H4>
-      <p class="text-sm text-gray-600 mb-3">Văn đa cấp đi Minh @@</p>
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết
-        <a href="#"></a>
-
-      </button>
-
-    </div>
-
-    <div class="  sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
-      <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu ...">
-      <H4 class="font-semibold mb-2">Trung Thu ....</H4>
-      <p class="text-sm text-gray-600 mb-3">Văn đa cấp đi Minh @@</p>
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết
-        <a href="#"></a>
-
-      </button>
-
-    </div>
-    <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
-      <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu ...">
-      <H4 class="font-semibold mb-2">Trung Thu ....</H4>
-      <p class="text-sm text-gray-600 mb-3">Văn đa cấp đi Minh @@</p>
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết
-        <a href="#"></a>
-
-      </button>
-
-    </div>
-    <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
-      <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu ...">
-      <H4 class="font-semibold mb-2">Trung Thu ....</H4>
-      <p class="text-sm text-gray-600 mb-3">Văn đa cấp đi Minh @@</p>
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết
-        <a href="#"></a>
-
-      </button>
-
-    </div>
-
-    <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
-      <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu ...">
-      <H4 class="font-semibold mb-2">Trung Thu ....</H4>
-      <p class="text-sm text-gray-600 mb-3">Văn đa cấp đi Minh @@</p>
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết
-        <a href="#"></a>
-
-      </button>
-
-    </div>
-    <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
-      <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu ...">
-      <H4 class="font-semibold mb-2">Trung Thu ....</H4>
-      <p class="text-sm text-gray-600 mb-3">Văn đa cấp đi Minh @@</p>
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết
-        <a href="#"></a>
-
-      </button>
-
-    </div>
-    <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
-      <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu ...">
-      <H4 class="font-semibold mb-2">Trung Thu ....</H4>
-      <p class="text-sm text-gray-600 mb-3">Văn đa cấp đi Minh @@</p>
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết
-        <a href="#"></a>
-
-      </button>
-
-    </div>
-    <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
-      <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu ...">
-      <H4 class="font-semibold mb-2">Trung Thu ....</H4>
-      <p class="text-sm text-gray-600 mb-3">Văn đa cấp đi Minh @@</p>
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết
-        <a href="#"></a>
-
-      </button>
-
-    </div>
-  </div>
-  <div class="flex justify-center mt-10 space-x-2">
-    <button onclick="changePage(1)"
-      class="px-4 py-2 border border-[#8B0000] bg-white text-[#8B0000] rounded hover:bg-red-900 hover:text-white">1</button>
-    <button onclick="changePage(2)"
-      class="px-4 py-2 bg-white border-[#8B0000] border text-[#8B0000] rounded hover:bg-[#880000] hover:text-white">2</button>
-  </div>
-
-
-</section>
+  </section>
 
   <footer class=" bg-white text-gray-800 border-t border-gray-200">
     <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
@@ -245,7 +265,7 @@
     </div>
   </footer>
 
-   <!-- Nút lăn lên -->
+  <!-- Nút lăn lên -->
   <a href="#" aria-label="Cuộn lên đầu trang"
     class="fixed bottom-6 right-6 bg-white bold text-[#8B0000] p-3 rounded-full shadow-lg border hover:border-[#8B0000] hover:text-white transition-opacity opacity-0 invisible"
     id="scrollToTopBtn">
@@ -278,61 +298,62 @@
 
 
 
-<script>
-  const itemsPerPage = 8;
-  const items = document.querySelectorAll('.sp');
-  let currentPage = 1;
+  <script>
+    const itemsPerPage = 8;
+    const items = document.querySelectorAll('.sp');
+    let currentPage = 1;
 
-  function changePage(page) {
-    currentPage = page;
-    const start = (page - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
+    function changePage(page) {
+      currentPage = page;
+      const start = (page - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
 
-    items.forEach((item, index) => {
-      item.style.display = (index >= start && index < end) ? 'block' : 'none';
-    });
-  }
+      items.forEach((item, index) => {
+        item.style.display = (index >= start && index < end) ? 'block' : 'none';
+      });
+    }
 
-  // Khởi tạo trang đầu tiên
-  changePage(1);
-</script>
+    // Khởi tạo trang đầu tiên
+    changePage(1);
+  </script>
 
-<script>
-  
-  document.addEventListener("DOMContentLoaded", () => {
-      // Lấy các phần tử HTML đã định nghĩa
-      const loginIcon = document.getElementById("loginIcon");
-      const userProfile = document.getElementById("userProfile");
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Lấy các phần tử HTML
+      const loginSection = document.getElementById("loginSection"); // Khối đăng nhập + giỏ hàng
+      const userProfile = document.getElementById("userProfile");   // Khối profile + giỏ hàng + đăng xuất
       const userName = document.getElementById("userName");
-      const logoutBtn = document.getElementById("logoutBtn"); // Nút Đăng xuất trong userProfile
+      const logoutBtn = document.getElementById("logoutBtn");
 
+      // Kiểm tra người dùng hiện tại từ localStorage
       const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
       if (currentUser) {
-          // 1. Nếu đã đăng nhập: Ẩn Icon đăng nhập, hiện Profile
-          loginIcon.classList.add("hidden");
-          userProfile.classList.remove("hidden");
-          userProfile.classList.add("flex"); // Thêm flex để profile hiển thị đúng
+        // Đã đăng nhập
+        loginSection.classList.add("hidden");
+        userProfile.classList.remove("hidden");
+        userProfile.classList.add("flex");
 
-          // 2. Hiển thị tên người dùng (Lưu ý: Bạn có thể cần fullName hoặc name tùy theo cách bạn lưu ở trang Đăng ký)
-          userName.textContent = currentUser.fullName || currentUser.name || currentUser.email;
+        // Hiển thị tên người dùng
+        userName.textContent = currentUser.fullName || currentUser.name || currentUser.email;
 
-          // 3. Xử lý Đăng xuất
-          logoutBtn.addEventListener("click", () => {
-              localStorage.removeItem("currentUser");
-              window.location.reload();
-          });
-
+        // Xử lý nút đăng xuất
+        logoutBtn.addEventListener("click", () => {
+          localStorage.removeItem("currentUser");
+          window.location.reload();
+        });
       } else {
-          // Nếu chưa đăng nhập: Đảm bảo ẩn Profile, hiện Icon đăng nhập
-          loginIcon.classList.remove("hidden");
-          userProfile.classList.add("hidden");
-          userProfile.classList.remove("flex");
+        // Chưa đăng nhập
+        loginSection.classList.remove("hidden");
+        userProfile.classList.add("hidden");
+        userProfile.classList.remove("flex");
       }
-  });
-</script>
+    });
+  </script>
+
+
+
 </body>
 
 
 </html>
-

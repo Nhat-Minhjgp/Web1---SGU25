@@ -11,38 +11,48 @@
 <body class="font-sans text-gray-800 bg-white">
 
    <!-- HEADER -->
-   <!-- HEADER -->
-<header class="flex justify-between items-center px-8 py-4 shadow-md bg-white sticky top-0 z-50">
-  <!-- LOGO -->
-  <h2 class="text-2xl font-bold text-[#8B0000]">
-    <a href="./pages.html" class="hover:text-[#8B0000]">MASH</a>
-  </h2>
+  <header class="flex justify-between items-center px-8 py-4 shadow-md bg-white sticky top-0 z-50">
+    <!-- LOGO -->
+    <h2 class="text-2xl font-bold text-[#8B0000]">
+      <a href="./pages.html" class="hover:text-[#8B0000]">MASH</a>
+    </h2>
 
-  <!-- NAVIGATION -->
-  <nav class="hidden md:flex space-x-6 text-sm font-medium">
-    <a href="./pages.html" class="hover:text-[#8B0000]">Trang chủ</a>
-    <a href="sanpham.html" class="hover:text-[#8B0000]">Sản phẩm</a>
-    <a href="gioithieu.html" class="hover:text-[#8B0000]">Giới thiệu</a>
-    <a href="lienhe.html" class="hover:text-[#8B0000]">Liên hệ</a>
-  </nav>
-  
+    <!-- NAVIGATION -->
+    <nav class="hidden md:flex space-x-6 text-sm font-medium absolute left-1/2 transform -translate-x-1/2">
+      <a href="./pages.html" class="hover:text-[#8B0000]">Trang chủ</a>
+      <a href="sanpham.html" class="hover:text-[#8B0000]">Sản phẩm</a>
+      <a href="gioithieu.html" class="hover:text-[#8B0000]">Giới thiệu</a>
+      <a href="lienhe.html" class="hover:text-[#8B0000]">Liên hệ</a>
+    </nav>
+   <!-- USER ACTIONS -->
     <div class="flex items-center space-x-4">
-        <a id="loginIcon" href="./login.html"
-            class="flex items-center text-[#8B0000] hover:text-red-900 transition space-x-2">
-            <img src="./iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain rounded-full" />
+      <!-- Đăng nhập + Giỏ hàng khi chưa đăng nhập -->
+      <div id="loginSection" class="flex items-center space-x-2">
+        <a href="./login.html" class="flex items-center text-[#8B0000] hover:text-red-900 transition">
+          <img src="./iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain rounded-full" />
         </a>
+        <a href="./giohang.html">
+          <img src="/icon/giohang.png" alt="Giỏ hàng" class="w-5 h-5 hover:scale-110 transition" />
+        </a>
+      </div>
 
-        <div id="userProfile" class="hidden flex items-center space-x-2">
-            <img src="./avatar.jpg" alt="User" class="w-7 h-7 rounded-full object-cover border border-gray-300" />
-            <span id="userName" class="text-sm font-medium text-[#8B0000]"></span>
-            <button id="logoutBtn" class="text-xs text-gray-500 hover:text-red-700 ml-2">(Đăng xuất)</button>
-        </div>
+      <!-- Profile + Giỏ hàng khi đã đăng nhập -->
+      <div id="userProfile" class="hidden flex items-center space-x-2">
+        <img src="/icon/iconlogin.jpg" alt="User" class="w-7 h-7 rounded-full object-cover border border-gray-300" />
+        <span id="userName" class="text-sm font-medium text-[#8B0000]"></span>
 
-        <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full hover:bg-red-900 transition text-sm">
-            <a href="#">Đặt Hàng Ngay</a>
-        </button>
-    </div>
+        <!-- Nút đăng xuất -->
+        <button id="logoutBtn" class="text-xs text-gray-500 hover:text-red-700 ml-2">(Đăng xuất)</button>
 
+        <!-- Nút giỏ hàng -->
+        <a href="./giohang.html">
+          <img src="/icon/giohang.png" alt="Giỏ hàng" class="w-5 h-5 hover:scale-110 transition" />
+        </a>
+      </div>
+
+
+
+  </header>
 
     
 </header>
@@ -147,5 +157,64 @@
     });
 </script>
 
+
+
+
+
+ <!-- script nút lăn lên -->
+  <script>
+    const scrollBtn = document.getElementById('scrollToTopBtn');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        scrollBtn.classList.remove('opacity-0', 'invisible');
+        scrollBtn.classList.add('opacity-100', 'visible');
+      } else {
+        scrollBtn.classList.remove('opacity-100', 'visible');
+        scrollBtn.classList.add('opacity-0', 'invisible');
+      }
+    });
+
+    scrollBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Lấy các phần tử HTML
+      const loginSection = document.getElementById("loginSection"); // Khối đăng nhập + giỏ hàng
+      const userProfile = document.getElementById("userProfile");   // Khối profile + giỏ hàng + đăng xuất
+      const userName = document.getElementById("userName");
+      const logoutBtn = document.getElementById("logoutBtn");
+
+      // Kiểm tra người dùng hiện tại từ localStorage
+      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+      if (currentUser) {
+        // Đã đăng nhập
+        loginSection.classList.add("hidden");
+        userProfile.classList.remove("hidden");
+        userProfile.classList.add("flex");
+
+        // Hiển thị tên người dùng
+        userName.textContent = currentUser.fullName || currentUser.name || currentUser.email;
+
+        // Xử lý nút đăng xuất
+        logoutBtn.addEventListener("click", () => {
+          localStorage.removeItem("currentUser");
+          window.location.reload();
+        });
+      } else {
+        // Chưa đăng nhập
+        loginSection.classList.remove("hidden");
+        userProfile.classList.add("hidden");
+        userProfile.classList.remove("flex");
+      }
+    });
+  </script>
 </body>
 </html>

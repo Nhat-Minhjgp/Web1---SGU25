@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,7 +9,9 @@
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <link href="./output.css" rel="stylesheet">
 </head>
+
 <body class="font-sans text-gray-800 bg-white">
+
 
   <!-- HEADER -->
   <header class="flex justify-between items-center px-8 py-4 shadow-md bg-white sticky top-0 z-50">
@@ -25,7 +28,7 @@
       <a href="lienhe.html" class="hover:text-[#8B0000]">Liên hệ</a>
     </nav>
 
-       <!-- USER ACTIONS -->
+    <!-- USER ACTIONS -->
     <div class="flex items-center space-x-4">
       <!-- Đăng nhập + Giỏ hàng khi chưa đăng nhập -->
       <div id="loginSection" class="flex items-center space-x-2">
@@ -45,29 +48,28 @@
         <!-- Nút đăng xuất -->
         <button id="logoutBtn" class="text-xs text-gray-500 hover:text-red-700 ml-2">(Đăng xuất)</button>
 
-        <!-- Nút giỏ hàng -->
-        <a href="./giohang.html">
-          <img src="/icon/giohang.png" alt="Giỏ hàng" class="w-5 h-5 hover:scale-110 transition" />
-        </a>
-      </div>
-
 
 
   </header>
 
-    
-</header>
+
+  <div id="cartContainer" class="mt-20 p-6 max-w-3xl mx-auto text-center">
+    <h2 class="text-2xl font-bold text-[#8B0000] mb-6">Giỏ hàng của bạn</h2>
+
+    <form id="cartForm">
+      <div id="cartItems" class="space-y-4 mb-6 text-left"></div>
+
+      <button type="submit" class="bg-[#8B0000] text-white px-6 py-2 rounded-full hover:bg-red-900 transition hidden" id="orderBtn">
+        Đặt hàng
+      </button>
+    </form>
+  </div>
 
 
 
 
-
-
-
-
-
-  <!-- FOOTER -->
-  <footer class="bg-white text-gray-800 border-t border-gray-200">
+   <!-- FOOTER -->
+  <footer class="mt-20 bg-white text-gray-800 border-t border-gray-200">
     <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
 
       <!-- Logo -->
@@ -120,11 +122,70 @@
       © 2025 MASH. All rights reserved. Thiết kế web bởi <span class="text-[#8B0000] font-medium">HD Agency</span>.
     </div>
   </footer>
+</body>
+
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+      if (!currentUser) {
+        alert("Bạn cần đăng nhập để xem giỏ hàng.");
+        window.location.href = "./login.html";
+        return;
+      }
+
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const cartItems = document.getElementById("cartItems");
+      const orderBtn = document.getElementById("orderBtn");
+
+      if (cart.length === 0) {
+        cartItems.innerHTML = "<p class='text-gray-600 text-center'>Giỏ hàng của bạn đang trống.</p>";
+        return;
+      }
+
+      cart.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "flex items-center justify-between border-b pb-2";
+
+        div.innerHTML = `
+          <div class="flex items-center space-x-4">
+            <input type="checkbox" name="selectedItems" value="${index}" class="form-checkbox w-5 h-5 text-[#8B0000]" />
+            <img src="${item.image || './images/default.jpg'}" alt="${item.name}" class="w-16 h-16 object-cover rounded" />
+            <span class="text-sm font-medium">${item.name}</span>
+          </div>
+          <span class="text-sm text-gray-500">Số lượng: ${item.quantity}</span>
+        `;
+
+        cartItems.appendChild(div);
+      });
+
+      orderBtn.classList.remove("hidden");
+
+      document.getElementById("cartForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const selected = Array.from(document.querySelectorAll('input[name="selectedItems"]:checked'))
+          .map(input => parseInt(input.value));
+
+        if (selected.length === 0) {
+          alert("Vui lòng chọn ít nhất một sản phẩm để đặt hàng.");
+          return;
+        }
+
+        const selectedItems = selected.map(i => cart[i]);
+        alert("Bạn đã đặt hàng các sản phẩm sau:\n" + selectedItems.map(item => `- ${item.name} (${item.quantity})`).join("\n"));
+
+        // Xóa các sản phẩm đã đặt khỏi giỏ
+        const remainingItems = cart.filter((_, i) => !selected.includes(i));
+        localStorage.setItem("cart", JSON.stringify(remainingItems));
+        window.location.reload();
+      });
+    });
+  </script>
 
 
 
 
- 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       // Lấy các phần tử HTML
@@ -158,5 +219,4 @@
       }
     });
   </script>
-</body>
-</html>
+  </html>
