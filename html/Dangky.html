@@ -29,7 +29,7 @@
       <a href="./pages.html" class="hover:text-[#8B0000]">MASH</a>
     </h2>
     <nav class="hidden md:flex space-x-6 text-sm font-medium absolute left-1/2 transform -translate-x-1/2">
-      <a href="#" class="hover:text-[#8B0000]">Trang chủ</a>
+      <a href="./pages.html" class="hover:text-[#8B0000]">Trang chủ</a>
       <a href="./sanpham.html" class="hover:text-[#8B0000]">Sản phẩm</a>
       <a href="./gioithieu.html" class="hover:text-[#8B0000]">Giới thiệu</a>
       <a href="./lienhe.html" class="hover:text-[#8B0000]">Liên hệ</a>
@@ -173,19 +173,21 @@
       messageDiv.classList.remove('hidden');
       messageDiv.className = `text-center p-3 rounded-md mb-4 text-white ${isError ? 'bg-red-500' : 'bg-green-500'}`;
     }
-
+  
     function validateForm(event) {
       event.preventDefault();
+  
       const fullName = document.getElementById('full-name').value.trim();
       const username = document.getElementById('username').value.trim();
       const email = document.getElementById('email').value.trim();
       const phone = document.getElementById('phone').value.trim();
       const password = document.getElementById('password').value;
       const confirmPassword = document.getElementById('confirm-password').value;
-
+  
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       const phoneRegex = /^\d{10}$/;
-
+  
+      // Kiểm tra hợp lệ
       if (!fullName || !username || !email || !phone || !password || !confirmPassword)
         return showMessage('Vui lòng điền đầy đủ thông tin.');
       if (!emailRegex.test(email))
@@ -196,10 +198,34 @@
         return showMessage('Mật khẩu phải có ít nhất 6 ký tự.');
       if (password !== confirmPassword)
         return showMessage('Mật khẩu và xác nhận mật khẩu không khớp.');
-
-      showMessage('Đăng ký thành công!', false);
-      console.log({ fullName, username, email, phone, password });
+  
+      // Lấy danh sách user đã lưu (nếu có)
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+  
+      // Kiểm tra email trùng
+      const existed = users.some(u => u.email === email);
+      if (existed) {
+        return showMessage('Email này đã được sử dụng, vui lòng chọn email khác.');
+      }
+  
+      // Tạo user mới
+      const newUser = { fullName, username, email, phone, password };
+  
+      // Lưu vào danh sách user
+      users.push(newUser);
+      localStorage.setItem('users', JSON.stringify(users));
+  
+      // Lưu người dùng đang đăng nhập
+      localStorage.setItem('currentUser', JSON.stringify(newUser));
+  
+      // Hiển thị thông báo và chuyển hướng
+      showMessage('Đăng ký thành công! Đang chuyển hướng...', false);
+  
+      setTimeout(() => {
+        window.location.href = 'pages.html';
+      }, 1500);
     }
   </script>
+  
 </body>
 </html>

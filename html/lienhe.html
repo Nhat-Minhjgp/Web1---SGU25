@@ -11,34 +11,41 @@
 <body class="font-sans text-gray-800 bg-white">
 
    <!-- HEADER -->
-   <header class="relative flex justify-between items-center px-8 py-4 shadow-md bg-white sticky top-0 z-50">
-    <h2 class="text-2xl font-bold text-[#8B0000]">
-      <a href="./pages.html" class="hover:text-[#8B0000]">MASH</a>
+   <!-- HEADER -->
+<header class="flex justify-between items-center px-8 py-4 shadow-md bg-white sticky top-0 z-50">
+  <!-- LOGO -->
+  <h2 class="text-2xl font-bold text-[#8B0000]">
+    <a href="./pages.html" class="hover:text-[#8B0000]">MASH</a>
+  </h2>
 
-    </h2>
-    <nav class="hidden md:flex space-x-6 text-sm font-medium absolute left-1/2 transform -translate-x-1/2">
-      <a href="#" class="hover:text-[#8B0000]">Trang chủ</a>
-      <a href="./sanpham.html" class="hover:text-[#8B0000]">Sản phẩm</a>
-      <a href="./gioithieu.html" class="hover:text-[#8B0000]">Giới thiệu</a>
-      <a href="./lienhe.html" class="hover:text-[#8B0000]">Liên hệ</a>
-    </nav>
-       
+  <!-- NAVIGATION -->
+  <nav class="hidden md:flex space-x-6 text-sm font-medium">
+    <a href="./pages.html" class="hover:text-[#8B0000]">Trang chủ</a>
+    <a href="sanpham.html" class="hover:text-[#8B0000]">Sản phẩm</a>
+    <a href="gioithieu.html" class="hover:text-[#8B0000]">Giới thiệu</a>
+    <a href="lienhe.html" class="hover:text-[#8B0000]">Liên hệ</a>
+  </nav>
   
-       <!-- ĐĂNG NHẬP -->
-<div class="flex items-center space-x-4">
-  <a href="./login.html" 
-   class="flex items-center text-[#8B0000] hover:text-red-900 transition space-x-2">
-  <img src="./iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain" />
-  
-</a>
+    <div class="flex items-center space-x-4">
+        <a id="loginIcon" href="./login.html"
+            class="flex items-center text-[#8B0000] hover:text-red-900 transition space-x-2">
+            <img src="./iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain rounded-full" />
+        </a>
 
-  <!-- NÚT ĐẶT HÀNG -->
-  <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full hover:bg-red-900 transition text-sm">
-    <a href="#">Đặt Hàng Ngay</a>
-  </button>
-</div>
+        <div id="userProfile" class="hidden flex items-center space-x-2">
+            <img src="./avatar.jpg" alt="User" class="w-7 h-7 rounded-full object-cover border border-gray-300" />
+            <span id="userName" class="text-sm font-medium text-[#8B0000]"></span>
+            <button id="logoutBtn" class="text-xs text-gray-500 hover:text-red-700 ml-2">(Đăng xuất)</button>
+        </div>
 
-  </header>
+        <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full hover:bg-red-900 transition text-sm">
+            <a href="#">Đặt Hàng Ngay</a>
+        </button>
+    </div>
+
+
+    
+</header>
 
 
 
@@ -103,5 +110,42 @@
     </div>
   </footer>
 
+
+
+
+  <script>
+  
+    document.addEventListener("DOMContentLoaded", () => {
+        // Lấy các phần tử HTML đã định nghĩa
+        const loginIcon = document.getElementById("loginIcon");
+        const userProfile = document.getElementById("userProfile");
+        const userName = document.getElementById("userName");
+        const logoutBtn = document.getElementById("logoutBtn"); // Nút Đăng xuất trong userProfile
+
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+        if (currentUser) {
+            // 1. Nếu đã đăng nhập: Ẩn Icon đăng nhập, hiện Profile
+            loginIcon.classList.add("hidden");
+            userProfile.classList.remove("hidden");
+            userProfile.classList.add("flex"); // Thêm flex để profile hiển thị đúng
+
+            // 2. Hiển thị tên người dùng (Lưu ý: Bạn có thể cần fullName hoặc name tùy theo cách bạn lưu ở trang Đăng ký)
+            userName.textContent = currentUser.fullName || currentUser.name || currentUser.email;
+
+            // 3. Xử lý Đăng xuất
+            logoutBtn.addEventListener("click", () => {
+                localStorage.removeItem("currentUser");
+                window.location.reload();
+            });
+
+        } else {
+            // Nếu chưa đăng nhập: Đảm bảo ẩn Profile, hiện Icon đăng nhập
+            loginIcon.classList.remove("hidden");
+            userProfile.classList.add("hidden");
+            userProfile.classList.remove("flex");
+        }
+    });
+</script>
 </body>
 </html>
