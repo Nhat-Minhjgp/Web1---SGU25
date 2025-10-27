@@ -234,6 +234,42 @@
       © 2025 MASH. All rights reserved. Thiết kế web bởi <span class="text-[#8B0000] font-medium">HD Agency</span>.
     </div>
   </footer>
+
+
+
+   <!-- Nút lăn lên -->
+  <a href="#" aria-label="Cuộn lên đầu trang"
+    class="fixed bottom-6 right-6 bg-white bold text-[#8B0000] p-3 rounded-full shadow-lg border hover:border-[#8B0000] hover:text-white transition-opacity opacity-0 invisible"
+    id="scrollToTopBtn">
+
+    <img src="./icon/Up.png" alt="up" class="flex w-4 h-4 ">
+
+
+  </a>
+
+
+  <!-- script nút lăn lên -->
+  <script>
+    const scrollBtn = document.getElementById('scrollToTopBtn');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        scrollBtn.classList.remove('opacity-0', 'invisible');
+        scrollBtn.classList.add('opacity-100', 'visible');
+      } else {
+        scrollBtn.classList.remove('opacity-100', 'visible');
+        scrollBtn.classList.add('opacity-0', 'invisible');
+      }
+    });
+
+    scrollBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+
+
+
   <script>
   
     document.addEventListener("DOMContentLoaded", () => {
