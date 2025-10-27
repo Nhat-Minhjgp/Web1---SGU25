@@ -27,10 +27,15 @@
   </nav>
   
     <div class="flex items-center space-x-4">
+<<<<<<< HEAD
         <a id="loginIcon" href="./login.html"
             class="flex items-center text-[#8B0000] hover:text-red-900 transition space-x-2">
             <img src="./iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain rounded-full" />
         </a>
+=======
+      <a href="./login.html" class="flex items-center text-[#8B0000] hover:text-red-900 transition space-x-2">
+        <img src="./icon/iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain" />
+>>>>>>> 4103bc4d7b27654267ca888d2b468042f5a0ff95
 
         <div id="userProfile" class="hidden flex items-center space-x-2">
             <img src="./avatar.jpg" alt="User" class="w-7 h-7 rounded-full object-cover border border-gray-300" />
@@ -43,11 +48,24 @@
         </button>
     </div>
 
+<<<<<<< HEAD
 
     
 </header>
   <section class=" py-64 max-w-7xl mx-auto px-6 mb-10 mt-10">
     <h1 class=" text-4xl font-bold text-center text-[#8B0000] mb-10">Danh Mục Sản Phẩm</h1>
+=======
+  </header>
+  <section class=" py-40 max-w-7xl mx-auto px-6 mb-10 mt-10">
+
+    <div class="flex justify-center py-5 mb-6">
+      <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..."
+        class="w-full max-w-md px-4 py-2 border border-[#8B0000] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B0000]"
+        onkeyup="filterProducts()" />
+    </div>
+
+    <h1 class=" mt-10 text-6xl font-bold text-center text-[#8B0000] mb-10">Danh Mục Sản Phẩm</h1>
+>>>>>>> 4103bc4d7b27654267ca888d2b468042f5a0ff95
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
 
@@ -98,7 +116,7 @@
 
       </div>
 
-      <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+      <div class="  sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
         <img src="" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu ...">
         <H4 class="font-semibold mb-2">Trung Thu ....</H4>
         <p class="text-sm text-gray-600 mb-3">Văn đa cấp đi Minh @@</p>
@@ -172,9 +190,9 @@
     </div>
     <div class="flex justify-center mt-10 space-x-2">
       <button onclick="changePage(1)"
-        class="px-4 py-2 border-2 border-[#8B0000] bg-white text-[#8B0000] rounded hover:bg-red-900 hover:text-white">1</button>
+        class="px-4 py-2 border border-[#8B0000] bg-white text-[#8B0000] rounded hover:bg-red-900 hover:text-white">1</button>
       <button onclick="changePage(2)"
-        class="px-4 py-2 bg-white border-[#8B0000] border-2 text-[#8B0000] rounded hover:bg-[#880000] hover:text-white">2</button>
+        class="px-4 py-2 bg-white border-[#8B0000] border text-[#8B0000] rounded hover:bg-[#880000] hover:text-white">2</button>
     </div>
 
 
@@ -238,25 +256,73 @@
   </footer>
 
 
+  <!-- Nút lăn lên -->
+  <a href="#" aria-label="Cuộn lên đầu trang"
+    class="fixed bottom-6 right-6 bg-white bold text-[#8B0000] p-3 rounded-full shadow-lg border hover:border-[#8B0000] hover:text-white transition-opacity opacity-0 invisible"
+    id="scrollToTopBtn">
+    
+    <img src ="./icon/Up.png" alt="up" class="flex w-4 h-4 ">
+   
 
+  </a>
+
+
+
+  <!-- script -->
+
+  <script>
+    const itemsPerPage = 8;
+    const items = document.querySelectorAll('.sp');
+    let currentPage = 1;
+
+    function changePage(page) {
+      currentPage = page;
+      const start = (page - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+
+      items.forEach((item, index) => {
+        item.style.display = (index >= start && index < end) ? 'block' : 'none';
+      });
+    }
+
+    // Khởi tạo trang đầu tiên
+    changePage(1);
+  </script>
+
+  <script>
+    function filterProducts() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const items = document.querySelectorAll('.sp');
+      items.forEach(item => {
+        const title = item.querySelector('h4').innerText.toLowerCase();
+        if (title.includes(input)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+<!-- script lăn lên cho nút -->
 
 <script>
-  const itemsPerPage = 8;
-  const items = document.querySelectorAll('.sp');
-  let currentPage = 1;
+  const scrollBtn = document.getElementById('scrollToTopBtn');
 
-  function changePage(page) {
-    currentPage = page;
-    const start = (page - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      scrollBtn.classList.remove('opacity-0', 'invisible');
+      scrollBtn.classList.add('opacity-100', 'visible');
+    } else {
+      scrollBtn.classList.remove('opacity-100', 'visible');
+      scrollBtn.classList.add('opacity-0', 'invisible');
+    }
+  });
 
-    items.forEach((item, index) => {
-      item.style.display = (index >= start && index < end) ? 'block' : 'none';
-    });
-  }
-
-  // Khởi tạo trang đầu tiên
-  changePage(1);
+  scrollBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 </script>
 
 <script>
@@ -268,6 +334,7 @@
       const userName = document.getElementById("userName");
       const logoutBtn = document.getElementById("logoutBtn"); // Nút Đăng xuất trong userProfile
 
+<<<<<<< HEAD
       const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
       if (currentUser) {
@@ -293,8 +360,11 @@
       }
   });
 </script>
+=======
+
+
+>>>>>>> 4103bc4d7b27654267ca888d2b468042f5a0ff95
 </body>
 
 
 </html>
-
