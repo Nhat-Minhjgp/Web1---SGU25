@@ -10,43 +10,50 @@
 </head>
 <body class="font-sans text-gray-800 bg-white">
 
-   <!-- HEADER -->
-   <!-- HEADER -->
-<header class="flex justify-between items-center px-8 py-4 shadow-md bg-white sticky top-0 z-50">
-  <!-- LOGO -->
-  <h2 class="text-2xl font-bold text-[#8B0000]">
-    <a href="./pages.html" class="hover:text-[#8B0000]">MASH</a>
-  </h2>
+<!-- HEADER -->
+  <header class="flex justify-between items-center px-8 py-4 shadow-md bg-white sticky top-0 z-50">
+    <!-- LOGO -->
+    <h2 class="text-2xl font-bold text-[#8B0000]">
+      <a href="./pages.html" class="hover:text-[#8B0000]">MASH</a>
+    </h2>
 
-  <!-- NAVIGATION -->
-  <nav class="hidden md:flex space-x-6 text-sm font-medium absolute left-1/2 transform -translate-x-1/2">
-    <a href="./pages.html" class="hover:text-[#8B0000]">Trang chủ</a>
-    <a href="sanpham.html" class="hover:text-[#8B0000]">Sản phẩm</a>
-    <a href="gioithieu.html" class="hover:text-[#8B0000]">Giới thiệu</a>
-    <a href="lienhe.html" class="hover:text-[#8B0000]">Liên hệ</a>
-  </nav>
-  
+    <!-- NAVIGATION -->
+    <nav class="hidden md:flex space-x-6 text-sm font-medium absolute left-1/2 transform -translate-x-1/2">
+      <a href="./pages.html" class="hover:text-[#8B0000]">Trang chủ</a>
+      <a href="sanpham.html" class="hover:text-[#8B0000]">Sản phẩm</a>
+      <a href="gioithieu.html" class="hover:text-[#8B0000]">Giới thiệu</a>
+      <a href="lienhe.html" class="hover:te xt-[#8B0000]">Liên hệ</a>
+    </nav>
+
+    <!-- USER ACTIONS -->
     <div class="flex items-center space-x-4">
-        <a id="loginIcon" href="./login.html"
-            class="flex items-center text-[#8B0000] hover:text-red-900 transition space-x-2">
-            <img src="/icon/iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain rounded-full" />
+      <!-- Đăng nhập + Giỏ hàng khi chưa đăng nhập -->
+      <div id="loginSection" class="flex items-center space-x-2">
+        <a href="./login.html" class="flex items-center text-[#8B0000] hover:text-red-900 transition">
+          <img src="/icon/iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain rounded-full" />
         </a>
+        <a href="./giohang.html">
+          <img src="/icon/giohang.png" alt="Giỏ hàng" class="w-5 h-5 hover:scale-110 transition" />
+        </a>
+      </div>
 
-        <div id="userProfile" class="hidden flex items-center space-x-2">
-            <img src="/icon/iconlogin.jpg" alt="User" class="w-7 h-7 rounded-full object-cover border border-gray-300" />
-            <span id="userName" class="text-sm font-medium text-[#8B0000]"></span>
-            <button id="logoutBtn" class="text-xs text-gray-500 hover:text-red-700 ml-2">(Đăng xuất)</button>
-        </div>
+      <!-- Profile + Giỏ hàng khi đã đăng nhập -->
+      <div id="userProfile" class="hidden flex items-center space-x-2">
+        <img src="/icon/iconlogin.jpg" alt="User" class="w-7 h-7 rounded-full object-cover border border-gray-300" />
+        <span id="userName" class="text-sm font-medium text-[#8B0000]"></span>
 
-        <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full hover:bg-red-900 transition text-sm">
-            <a href="./giohang.html">Đặt Hàng Ngay</a>
-        </button>
-    </div>
+        <!-- Nút đăng xuất -->
+        <button id="logoutBtn" class="text-xs text-gray-500 hover:text-red-700 ml-2">(Đăng xuất)</button>
+
+        <!-- Nút giỏ hàng -->
+        <a href="./giohang.html">
+          <img src="/icon/giohang.png" alt="Giỏ hàng" class="w-5 h-5 hover:scale-110 transition" />
+        </a>
+      </div>
 
 
-    
-</header>
 
+  </header>
   
  
 
@@ -181,59 +188,58 @@
 
 
   <!-- FOOTER -->
-  <footer class="bg-white text-gray-800 border-t border-gray-200">
-    <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+<footer class="bg-[#811621] text-[#FFECDC] border-t-4 border-white">
+  <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
 
-      <!-- Logo -->
-      <div>
-        <h2 class="text-3xl font-bold text-[#8B0000]">MASH</h2>
-        <p class="mt-2 text-sm">Tinh Hoa Bánh Việt - Gửi Trọn Hương Vị Đoàn Viên</p>
-        <div class="flex space-x-4 mt-4 text-[#8B0000] text-xl">
-          <a href="#" class="hover:text-red-900"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="hover:text-red-900"><i class="fab fa-youtube"></i></a>
-          <a href="#" class="hover:text-red-900"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="hover:text-red-900"><i class="fab fa-tiktok"></i></a>
-        </div>
-      </div>
-
-      <!-- Form -->
-      <div>
-        <h3 class="text-lg font-semibold text-[#8B0000] mb-4">ĐĂNG KÝ NHẬN TIN</h3>
-        <form class="flex mb-4">
-          <input type="email" placeholder="Email của bạn..."
-            class="flex-1 px-4 py-2 border border-gray-300 rounded-l-full focus:outline-none focus:ring-1 focus:ring-[#8B0000]" />
-          <button type="submit"
-            class="bg-[#8B0000] text-white px-5 rounded-r-full hover:bg-red-900 transition">Đăng ký</button>
-        </form>
-        <p><strong>HOTLINE 1:</strong> 0772 244 868</p>
-        <p><strong>HOTLINE 2:</strong> 0706 259 473</p>
-      </div>
-
-      <!-- Liên hệ -->
-      <div>
-        <h3 class="text-lg font-semibold text-[#8B0000] mb-4">THÔNG TIN LIÊN HỆ</h3>
-        <p>Địa chỉ: 273 An Dương Vương, Phường Chợ Quán, Hồ Chí Minh</p>
-        <p>SĐT: 0283 7751727 (08h–17h); 0283 5358936 (07h–22h)</p>
-        <p>Email: info@mashvietnam.com</p>
-        <p>Thời gian: 08h00 – 22h00</p>
-      </div>
-
-      <!-- Chính sách -->
-      <div>
-        <h3 class="text-lg font-semibold text-[#8B0000] mb-4">CHÍNH SÁCH</h3>
-        <ul class="space-y-2">
-          <li><a href="#" class="hover:text-[#8B0000]">Chính sách đặt hàng online</a></li>
-          <li><a href="#" class="hover:text-[#8B0000]">Điều khoản chung</a></li>
-          <li><a href="#" class="hover:text-[#8B0000]">Chính sách bảo mật</a></li>
-          <li><a href="#" class="hover:text-[#8B0000]">Câu hỏi thường gặp</a></li>
-        </ul>
-      </div>
+    <!-- Logo -->
+    <div class="text-center ">
+      <h2 class="text-3xl font-bold text-white">MASH</h2>
+      <p class="mt-1 text-sm">Gửi Trọn Hương Vị Đoàn Viên</p>
     </div>
 
-    <div class="border-t border-gray-200 text-center py-4 text-sm text-gray-500">
-      © 2025 MASH. All rights reserved. Thiết kế web bởi <span class="text-[#8B0000] font-medium">HD Agency</span>.
+    <!-- Form -->
+   <div class="text-center">
+  <h3 class="text-lg font-semibold text-white mb-4">ĐĂNG KÝ NHẬN TIN</h3>
+
+  <form class="flex justify-center mb-4 w-full max-w-lg mx-auto">
+    <input type="email" placeholder="Email của bạn..."
+      class="flex-1 px-4 py-2.5 rounded-l-full text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#FFD7C2]" />
+    <button type="submit"
+      class="bg-[#FFD7C2] text-[#8B0000] font-semibold px-3 text-sm rounded-r-full hover:bg-[#FFECDC] transition whitespace-nowrap">
+      Đăng ký
+    </button>
+  </form>
+      <p><strong>HOTLINE 1:</strong> 0902 218 636</p>
+      <p><strong>HOTLINE 2:</strong> 0333 863 032</p>
     </div>
-  </footer>
+
+    <!-- Liên hệ -->
+    <div class="text-center">
+      <h3 class="text-lg font-semibold text-white mb-4">THÔNG TIN LIÊN HỆ</h3>
+      <p>Địa chỉ: 273 An Dương Vương, Phường Chợ Quán, Hồ Chí Minh</p>
+      <p>SĐT: 0283 7751727 (08h–17h); 0283 5358936 (07h–22h)</p>
+      <p>Email: info@mashvietnam.com</p>
+      <p>Thời gian: 08h00 – 22h00</p>
+    </div>
+
+    <!-- Chính sách -->
+    <div>
+      <h3 class="text-lg font-semibold text-white mb-4">CHÍNH SÁCH</h3>
+      <ul class="space-y-2">
+        <li><a href="#" class="hover:text-black transition">Chính sách đặt hàng online</a></li>
+        <li><a href="#" class="hover:text-black transition">Điều khoản chung</a></li>
+        <li><a href="#" class="hover:text-black transition">Chính sách bảo mật</a></li>
+        <li><a href="#" class="hover:text-black transition">Câu hỏi thường gặp</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-white text-center py-4 text-sm text-[#FFD7C2]">
+    © 2025 MASH. All rights reserved. Thiết kế web bởi
+    <span class="text-white font-medium hover:text-black transition">MT SHAM</span>.
+  </div>
+</footer>
+
 
 
 
@@ -270,39 +276,39 @@
 
 
 
-  <script>
-  
+<script>
     document.addEventListener("DOMContentLoaded", () => {
-        // Lấy các phần tử HTML đã định nghĩa
-        const loginIcon = document.getElementById("loginIcon");
-        const userProfile = document.getElementById("userProfile");
-        const userName = document.getElementById("userName");
-        const logoutBtn = document.getElementById("logoutBtn"); // Nút Đăng xuất trong userProfile
+      // Lấy các phần tử HTML
+      const loginSection = document.getElementById("loginSection"); // Khối đăng nhập + giỏ hàng
+      const userProfile = document.getElementById("userProfile");   // Khối profile + giỏ hàng + đăng xuất
+      const userName = document.getElementById("userName");
+      const logoutBtn = document.getElementById("logoutBtn");
 
-        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+      // Kiểm tra người dùng hiện tại từ localStorage
+      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
-        if (currentUser) {
-            // 1. Nếu đã đăng nhập: Ẩn Icon đăng nhập, hiện Profile
-            loginIcon.classList.add("hidden");
-            userProfile.classList.remove("hidden");
-            userProfile.classList.add("flex"); // Thêm flex để profile hiển thị đúng
+      if (currentUser) {
+        // Đã đăng nhập
+        loginSection.classList.add("hidden");
+        userProfile.classList.remove("hidden");
+        userProfile.classList.add("flex");
 
-            // 2. Hiển thị tên người dùng (Lưu ý: Bạn có thể cần fullName hoặc name tùy theo cách bạn lưu ở trang Đăng ký)
-            userName.textContent = currentUser.fullName || currentUser.name || currentUser.email;
+        // Hiển thị tên người dùng
+        userName.textContent = currentUser.fullName || currentUser.name || currentUser.email;
 
-            // 3. Xử lý Đăng xuất
-            logoutBtn.addEventListener("click", () => {
-                localStorage.removeItem("currentUser");
-                window.location.reload();
-            });
-
-        } else {
-            // Nếu chưa đăng nhập: Đảm bảo ẩn Profile, hiện Icon đăng nhập
-            loginIcon.classList.remove("hidden");
-            userProfile.classList.add("hidden");
-            userProfile.classList.remove("flex");
-        }
+        // Xử lý nút đăng xuất
+        logoutBtn.addEventListener("click", () => {
+          localStorage.removeItem("currentUser");
+          window.location.reload();
+        });
+      } else {
+        // Chưa đăng nhập
+        loginSection.classList.remove("hidden");
+        userProfile.classList.add("hidden");
+        userProfile.classList.remove("flex");
+      }
     });
+  </script>
 </script>
 </body>
 </html>
