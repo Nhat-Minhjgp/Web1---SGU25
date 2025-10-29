@@ -2,239 +2,242 @@
 <html lang="vi">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MASH Bakery</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <link href="./output.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MASH Bakery</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <link href="./output.css" rel="stylesheet">
 </head>
 
 <body class="font-sans text-gray-800 bg-white">
 
 
-    <!-- HEADER -->
-    <header class="flex justify-between items-center px-8 py-4 shadow-md bg-white sticky top-0 z-50">
-        <!-- LOGO -->
-        <h2 class="text-2xl font-bold text-[#8B0000]">
-            <a href="./pages.html" class="hover:text-[#8B0000]">MASH</a>
-        </h2>
+  <!-- HEADER -->
+  <header class="flex justify-between items-center px-8 py-4 shadow-md bg-white sticky top-0 z-50">
+    <!-- LOGO -->
+    <h2 class="text-2xl font-bold text-[#8B0000]">
+      <a href="./pages.html" class="hover:text-[#8B0000]">MASH</a>
+    </h2>
 
-        <!-- NAVIGATION -->
-        <nav class="hidden md:flex space-x-6 text-sm font-medium absolute left-1/2 transform -translate-x-1/2">
-            <a href="./pages.html" class="hover:text-[#8B0000]">Trang chủ</a>
-            <a href="sanpham.html" class="hover:text-[#8B0000]">Sản phẩm</a>
-            <a href="gioithieu.html" class="hover:text-[#8B0000]">Giới thiệu</a>
-            <a href="lienhe.html" class="hover:text-[#8B0000]">Liên hệ</a>
-        </nav>
+    <!-- NAVIGATION -->
+    <nav class="hidden md:flex space-x-6 text-sm font-medium absolute left-1/2 transform -translate-x-1/2">
+      <a href="./pages.html" class="hover:text-[#8B0000]">Trang chủ</a>
+      <a href="sanpham.html" class="hover:text-[#8B0000]">Sản phẩm</a>
+      <a href="gioithieu.html" class="hover:text-[#8B0000]">Giới thiệu</a>
+      <a href="lienhe.html" class="hover:text-[#8B0000]">Liên hệ</a>
+    </nav>
 
-        <!-- USER ACTIONS -->
-        <div class="flex items-center space-x-4">
-            <!-- Đăng nhập + Giỏ hàng khi chưa đăng nhập -->
-            <div id="loginSection" class="flex items-center space-x-2">
-                <a href="./login.html" class="flex items-center text-[#8B0000] hover:text-red-900 transition">
-                    <img src="/icon/iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain rounded-full" />
-                </a>
-                <a href="./giohang.html">
-                    <img src="/icon/giohang.png" alt="Giỏ hàng" class="w-5 h-5 hover:scale-110 transition" />
-                </a>
-            </div>
+    <!-- USER ACTIONS -->
+    <div class="flex items-center space-x-4">
+      <!-- Đăng nhập + Giỏ hàng khi chưa đăng nhập -->
+      <div id="loginSection" class="flex items-center space-x-2">
+        <a href="./login.html" class="flex items-center text-[#8B0000] hover:text-red-900 transition">
+          <img src="/icon/iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain rounded-full" />
+        </a>
+        <a href="./giohang.html">
+          <img src="/icon/giohang.png" alt="Giỏ hàng" class="w-5 h-5 hover:scale-110 transition" />
+        </a>
+      </div>
 
-            <!-- Profile + Giỏ hàng khi đã đăng nhập -->
-<div id="userProfile" class="hidden flex items-center space-x-2">
-    <a href="./thongtinKH.html" title="Trang tài khoản">
-      <img src="/icon/iconlogin.jpg" alt="User" 
-           class="w-7 h-7 rounded-full object-cover border border-gray-300 hover:scale-110 transition" />
-    </a>
-  
-    <span id="userName" class="text-sm font-medium text-[#8B0000]"></span>
-  
-    <!-- Nút đăng xuất -->
-    <button id="logoutBtn" class="text-xs text-gray-500 hover:text-red-700 ml-2">(Đăng xuất)</button>
-  
-    <!-- Nút giỏ hàng -->
-    <a href="./giohang.html">
-      <img src="/icon/giohang.png" alt="Giỏ hàng" class="w-5 h-5 hover:scale-110 transition" />
-    </a>
-  </div>
-  
+      <!-- Profile + Giỏ hàng khi đã đăng nhập -->
+      <div id="userProfile" class="hidden flex items-center space-x-2">
+        <a href="./thongtinKH.html" title="Trang tài khoản">
+          <img src="/icon/iconlogin.jpg" alt="User"
+            class="w-7 h-7 rounded-full object-cover border border-gray-300 hover:scale-110 transition" />
+        </a>
 
+        <span id="userName" class="text-sm font-medium text-[#8B0000]"></span>
+
+        <!-- Nút đăng xuất -->
+        <button id="logoutBtn" class="text-xs text-gray-500 hover:text-red-700 ml-2">(Đăng xuất)</button>
+
+        <!-- Nút giỏ hàng -->
+        <a href="./giohang.html">
+          <img src="/icon/giohang.png" alt="Giỏ hàng" class="w-5 h-5 hover:scale-110 transition" />
+        </a>
+      </div>
 
 
-    </header>
 
 
-    <section class="max-w-5xl mx-auto px-6 py-10">
-        <h1 class="text-3xl font-bold text-[#8B0000] mb-6">Bánh Trung Thu Đậu Xanh</h1>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Section duyệt ảnh -->
-            <div class="space-y-4">
-                <!-- Ảnh chính -->
-                <div class="w-full h-64 overflow-hidden rounded-lg shadow">
-                    <img id="mainImage" src="./images/dauxanh1.jpg" alt="Bánh Đậu Xanh"
-                        class="w-full h-full object-cover transition duration-300 ease-in-out" />
-                </div>
-
-                <!-- Thumbnail chọn ảnh -->
-                <div class="flex space-x-2" id="thumbnailContainer">
-                    <img src="./images/dauxanh1.jpg" alt="#" onclick="changeImage(this)"
-                        class="thumbnail w-16 h-16 object-cover rounded cursor-pointer border-2 border-[#8B0000]" />
-                    <img src="./images/dauxanh2.jpg" alt="#" onclick="changeImage(this)"
-                        class="thumbnail w-16 h-16 object-cover rounded cursor-pointer border-2 border-transparent hover:border-[#8B0000]" />
-                    <img src="./images/dauxanh3.jpg" alt="#" onclick="changeImage(this)"
-                        class="thumbnail w-16 h-16 object-cover rounded cursor-pointer border-2 border-transparent hover:border-[#8B0000]" />
-                </div>
-            </div>
+  </header>
 
 
-            <!-- Section thông tin sản phẩm -->
-            <div>
-                <p class="mt-5 text-gray-700 mb-4">Nhân đậu xanh mịn màng, ngọt thanh, mang hương vị thuần Việt.</p>
+  <section class="max-w-5xl mx-auto px-6 py-10">
+    <h1 class="text-3xl font-bold text-[#8B0000] mb-6">Bánh Trung Thu Đậu Xanh</h1>
 
-                <label for="quantity" class="mt-20 block mb-2 font-medium">Chọn số lượng:</label>
-                <input type="number" id="quantity" min="1" value="1"
-                    class="w-24 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#8B0000] mb-4" />
-
-                <button onclick="addToCart('Bánh Trung Thu Đậu Xanh')"
-                    class="bg-[#8B0000] text-white px-6 py-2 rounded hover:bg-red-900 transition">
-                    Thêm vào giỏ hàng
-                </button>
-
-                <p id="cartMessage" class="mt-4 text-sm text-green-600 hidden">Đã thêm vào giỏ hàng!</p>
-            </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Section duyệt ảnh -->
+      <div class="space-y-4">
+        <!-- Ảnh chính -->
+        <div class="w-full h-64 overflow-hidden rounded-lg shadow">
+          <img id="mainImage" src="./images/dauxanh1.jpg" alt="Bánh Đậu Xanh"
+            class="w-full h-full object-cover transition duration-300 ease-in-out" />
         </div>
-    </section>
+
+        <!-- Thumbnail chọn ảnh -->
+        <div class="flex space-x-2" id="thumbnailContainer">
+          <img src="./images/dauxanh1.jpg" alt="#" onclick="changeImage(this)"
+            class="thumbnail w-16 h-16 object-cover rounded cursor-pointer border-2 border-[#8B0000]" />
+          <img src="./images/dauxanh2.jpg" alt="#" onclick="changeImage(this)"
+            class="thumbnail w-16 h-16 object-cover rounded cursor-pointer border-2 border-transparent hover:border-[#8B0000]" />
+          <img src="./images/dauxanh3.jpg" alt="#" onclick="changeImage(this)"
+            class="thumbnail w-16 h-16 object-cover rounded cursor-pointer border-2 border-transparent hover:border-[#8B0000]" />
+        </div>
+      </div>
+
+
+      <!-- Section thông tin sản phẩm -->
+      <div>
+        <p class="mt-5 text-gray-700 mb-4">Nhân đậu xanh mịn màng, ngọt thanh, mang hương vị thuần Việt.</p>
+        <p class="text-lg font-semibold text-[#8B0000] mb-4">Giá: 55.000₫</p>
+
+        <label for="quantity" class="mt-20 block mb-2 font-medium">Chọn số lượng:</label>
+        <input type="number" id="quantity" min="1" value="1"
+          class="w-24 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#8B0000] mb-4" />
+
+        <button onclick="addToCart('Bánh Trung Thu Đậu Xanh',55000)"
+          class="bg-[#8B0000] text-white px-6 py-2 rounded hover:bg-red-900 transition">
+          Thêm vào giỏ hàng
+        </button>
+
+        <p id="cartMessage" class="mt-4 text-sm text-green-600 hidden">Đã thêm vào giỏ hàng!</p>
+      </div>
+    </div>
+  </section>
 
 
 
 
 
-   <!-- FOOTER -->
-<footer class="bg-[#811621] text-[#FFECDC] border-t-4 border-white">
-  <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+  <!-- FOOTER -->
+  <footer class="bg-[#811621] text-[#FFECDC] border-t-4 border-white">
+    <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
 
-    <!-- Logo -->
-    <div class="text-center ">
-      <h2 class="text-3xl font-bold text-white">MASH</h2>
-      <p class="mt-1 text-sm">Gửi Trọn Hương Vị Đoàn Viên</p>
+      <!-- Logo -->
+      <div class="text-center ">
+        <h2 class="text-3xl font-bold text-white">MASH</h2>
+        <p class="mt-1 text-sm">Gửi Trọn Hương Vị Đoàn Viên</p>
+      </div>
+
+      <!-- Form -->
+      <div class="text-center">
+        <h3 class="text-lg font-semibold text-white mb-4">ĐĂNG KÝ NHẬN TIN</h3>
+
+        <form class="flex justify-center mb-4 w-full max-w-lg mx-auto">
+          <input type="email" placeholder="Email của bạn..."
+            class="flex-1 px-4 py-2.5 rounded-l-full text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#FFD7C2]" />
+          <button type="submit"
+            class="bg-[#FFD7C2] text-[#8B0000] font-semibold px-3 text-sm rounded-r-full hover:bg-[#FFECDC] transition whitespace-nowrap">
+            Đăng ký
+          </button>
+        </form>
+        <p><strong>HOTLINE 1:</strong> 0902 218 636</p>
+        <p><strong>HOTLINE 2:</strong> 0333 863 032</p>
+      </div>
+
+      <!-- Liên hệ -->
+      <div class="text-center">
+        <h3 class="text-lg font-semibold text-white mb-4">THÔNG TIN LIÊN HỆ</h3>
+        <p>Địa chỉ: 273 An Dương Vương, Phường Chợ Quán, Hồ Chí Minh</p>
+        <p>SĐT: 0283 7751727 (08h–17h); 0283 5358936 (07h–22h)</p>
+        <p>Email: info@mashvietnam.com</p>
+        <p>Thời gian: 08h00 – 22h00</p>
+      </div>
+
+      <!-- Chính sách -->
+      <div>
+        <h3 class="text-lg font-semibold text-white mb-4">CHÍNH SÁCH</h3>
+        <ul class="space-y-2">
+          <li><a href="#" class="hover:text-black transition">Chính sách đặt hàng online</a></li>
+          <li><a href="#" class="hover:text-black transition">Điều khoản chung</a></li>
+          <li><a href="#" class="hover:text-black transition">Chính sách bảo mật</a></li>
+          <li><a href="#" class="hover:text-black transition">Câu hỏi thường gặp</a></li>
+        </ul>
+      </div>
     </div>
 
-    <!-- Form -->
-   <div class="text-center">
-  <h3 class="text-lg font-semibold text-white mb-4">ĐĂNG KÝ NHẬN TIN</h3>
-
-  <form class="flex justify-center mb-4 w-full max-w-lg mx-auto">
-    <input type="email" placeholder="Email của bạn..."
-      class="flex-1 px-4 py-2.5 rounded-l-full text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#FFD7C2]" />
-    <button type="submit"
-      class="bg-[#FFD7C2] text-[#8B0000] font-semibold px-3 text-sm rounded-r-full hover:bg-[#FFECDC] transition whitespace-nowrap">
-      Đăng ký
-    </button>
-  </form>
-      <p><strong>HOTLINE 1:</strong> 0902 218 636</p>
-      <p><strong>HOTLINE 2:</strong> 0333 863 032</p>
+    <div class="border-t border-white text-center py-4 text-sm text-[#FFD7C2]">
+      © 2025 MASH. All rights reserved. Thiết kế web bởi
+      <span class="text-white font-medium hover:text-black transition">MT SHAM</span>.
     </div>
-
-    <!-- Liên hệ -->
-    <div class="text-center">
-      <h3 class="text-lg font-semibold text-white mb-4">THÔNG TIN LIÊN HỆ</h3>
-      <p>Địa chỉ: 273 An Dương Vương, Phường Chợ Quán, Hồ Chí Minh</p>
-      <p>SĐT: 0283 7751727 (08h–17h); 0283 5358936 (07h–22h)</p>
-      <p>Email: info@mashvietnam.com</p>
-      <p>Thời gian: 08h00 – 22h00</p>
-    </div>
-
-    <!-- Chính sách -->
-    <div>
-      <h3 class="text-lg font-semibold text-white mb-4">CHÍNH SÁCH</h3>
-      <ul class="space-y-2">
-        <li><a href="#" class="hover:text-black transition">Chính sách đặt hàng online</a></li>
-        <li><a href="#" class="hover:text-black transition">Điều khoản chung</a></li>
-        <li><a href="#" class="hover:text-black transition">Chính sách bảo mật</a></li>
-        <li><a href="#" class="hover:text-black transition">Câu hỏi thường gặp</a></li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="border-t border-white text-center py-4 text-sm text-[#FFD7C2]">
-    © 2025 MASH. All rights reserved. Thiết kế web bởi
-    <span class="text-white font-medium hover:text-black transition">MT SHAM</span>.
-  </div>
-</footer>
+  </footer>
 
 
 </body>
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        // Lấy các phần tử HTML
-        const loginSection = document.getElementById("loginSection"); // Khối đăng nhập + giỏ hàng
-        const userProfile = document.getElementById("userProfile");   // Khối profile + giỏ hàng + đăng xuất
-        const userName = document.getElementById("userName");
-        const logoutBtn = document.getElementById("logoutBtn");
+  document.addEventListener("DOMContentLoaded", () => {
+    // Lấy các phần tử HTML
+    const loginSection = document.getElementById("loginSection"); // Khối đăng nhập + giỏ hàng
+    const userProfile = document.getElementById("userProfile");   // Khối profile + giỏ hàng + đăng xuất
+    const userName = document.getElementById("userName");
+    const logoutBtn = document.getElementById("logoutBtn");
 
-        // Kiểm tra người dùng hiện tại từ localStorage
-        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    // Kiểm tra người dùng hiện tại từ localStorage
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
-        if (currentUser) {
-            // Đã đăng nhập
-            loginSection.classList.add("hidden");
-            userProfile.classList.remove("hidden");
-            userProfile.classList.add("flex");
+    if (currentUser) {
+      // Đã đăng nhập
+      loginSection.classList.add("hidden");
+      userProfile.classList.remove("hidden");
+      userProfile.classList.add("flex");
 
-            // Hiển thị tên người dùng
-            userName.textContent = currentUser.fullName || currentUser.name || currentUser.email;
+      // Hiển thị tên người dùng
+      userName.textContent = currentUser.fullName || currentUser.name || currentUser.email;
 
-            // Xử lý nút đăng xuất
-            logoutBtn.addEventListener("click", () => {
-                localStorage.removeItem("currentUser");
-                window.location.reload();
-            });
-        } else {
-            // Chưa đăng nhập
-            loginSection.classList.remove("hidden");
-            userProfile.classList.add("hidden");
-            userProfile.classList.remove("flex");
-        }
-    });
+      // Xử lý nút đăng xuất
+      logoutBtn.addEventListener("click", () => {
+        localStorage.removeItem("currentUser");
+        window.location.reload();
+      });
+    } else {
+      // Chưa đăng nhập
+      loginSection.classList.remove("hidden");
+      userProfile.classList.add("hidden");
+      userProfile.classList.remove("flex");
+    }
+  });
 </script>
 
 
 <script>
-    function changeImage(src) {
-        document.getElementById("mainImage").src = src;
-    }
+  function changeImage(src) {
+    document.getElementById("mainImage").src = src;
+  }
 
-    function addToCart(productName) {
-        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-        const quantity = parseInt(document.getElementById("quantity").value);
-        const cartMessage = document.getElementById("cartMessage");
+ function addToCart(productName, price) {
+  const quantity = parseInt(document.getElementById("quantity").value);
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const cartMessage = document.getElementById("cartMessage");
 
-        if (!currentUser) {
-            alert("Bạn cần đăng nhập để đặt hàng.");
-            window.location.href = "./login.html";
-            return;
-        }
+  if (!currentUser) {
+    alert("Bạn cần đăng nhập để đặt hàng.");
+    window.location.href = "./login.html";
+    return;
+  }
 
-        if (quantity < 1 || isNaN(quantity)) {
-            alert("Vui lòng chọn số lượng hợp lệ.");
-            return;
-        }
+  if (quantity < 1 || isNaN(quantity)) {
+    alert("Vui lòng chọn số lượng hợp lệ.");
+    return;
+  }
 
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-        const existingItem = cart.find(item => item.name === productName);
-        if (existingItem) {
-            existingItem.quantity += quantity;
-        } else {
-            cart.push({ name: productName, quantity });
-        }
+  // Kiểm tra nếu sản phẩm đã có thì cộng thêm số lượng
+  const existingItem = cart.find(item => item.name === productName);
+  if (existingItem) {
+    existingItem.quantity += quantity;
+  } else {
+    cart.push({ name: productName, quantity, price });
+  }
 
-        localStorage.setItem("cart", JSON.stringify(cart));
-        cartMessage.classList.remove("hidden");
-    }
+  localStorage.setItem("cart", JSON.stringify(cart));
+  cartMessage.classList.remove("hidden");
+}
+
 </script>
 
 <script>

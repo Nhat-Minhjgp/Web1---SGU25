@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thanh toán - MASH Bakery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="font-sans text-gray-800 bg-white">
+
+    <!-- HEADER -->
+    <header class="flex justify-between items-center px-8 py-4 shadow-md bg-white sticky top-0 z-50">
+        <!-- LOGO -->
+        <h2 class="text-2xl font-bold text-[#8B0000]">
+            <a href="./pages.html" class="hover:text-[#8B0000]">MASH</a>
+        </h2>
+
+        <!-- NAVIGATION -->
+        <nav class="hidden md:flex space-x-6 text-sm font-medium absolute left-1/2 transform -translate-x-1/2">
+            <a href="./pages.html" class="hover:text-[#8B0000]">Trang chủ</a>
+            <a href="sanpham.html" class="hover:text-[#8B0000]">Sản phẩm</a>
+            <a href="gioithieu.html" class="hover:text-[#8B0000]">Giới thiệu</a>
+            <a href="lienhe.html" class="hover:text-[#8B0000]">Liên hệ</a>
+        </nav>
+
+        <!-- USER ACTIONS -->
+        <div class="flex items-center space-x-4">
+            <!-- Đăng nhập + Giỏ hàng khi chưa đăng nhập -->
+            <div id="loginSection" class="flex items-center space-x-2">
+                <a href="./login.html" class="flex items-center text-[#8B0000] hover:text-red-900 transition">
+                    <img src="/icon/iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain rounded-full" />
+                </a>
+                <a href="./giohang.html">
+                    <img src="/icon/giohang.png" alt="Giỏ hàng" class="w-5 h-5 hover:scale-110 transition" />
+                </a>
+            </div>
+
+            <!-- Profile + Giỏ hàng khi đã đăng nhập -->
+            <div id="userProfile" class="hidden flex items-center space-x-2">
+                <a href="./thongtinKH.html" title="Trang tài khoản">
+                    <img src="/icon/iconlogin.jpg" alt="User"
+                        class="w-7 h-7 rounded-full object-cover border border-gray-300 hover:scale-110 transition" />
+                </a>
+
+                <span id="userName" class="text-sm font-medium text-[#8B0000]"></span>
+
+                <!-- Nút đăng xuất -->
+                <button id="logoutBtn" class="text-xs text-gray-500 hover:text-red-700 ml-2">(Đăng xuất)</button>
+
+                <!-- Nút giỏ hàng -->
+                <a href="./giohang.html">
+                    <img src="/icon/giohang.png" alt="Giỏ hàng" class="w-5 h-5 hover:scale-110 transition" />
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- NỘI DUNG CHÍNH -->
+    <div class="max-w-5xl mx-auto px-6 py-10">
+        <h1 class="text-2xl font-bold text-[#8B0000] mb-6 text-center">Thông tin thanh toán</h1>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Chi tiết đơn hàng -->
+            <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
+                <h2 class="text-xl font-semibold text-[#8B0000] mb-4 border-b pb-2">Chi tiết đơn hàng</h2>
+                
+                <div id="orderItems" class="space-y-4 mb-6">
+                    <!-- Các sản phẩm sẽ được hiển thị ở đây -->
+                </div>
+                
+                <div class="border-t pt-4">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-gray-600">Tạm tính:</span>
+                        <span id="subtotal" class="font-medium">0₫</span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span class="text-gray-600">Phí vận chuyển:</span>
+                        <span id="shipping" class="font-medium">30,000₫</span>
+                    </div>
+                    <div class="flex justify-between text-lg font-semibold border-t pt-2">
+                        <span>Tổng cộng:</span>
+                        <span id="totalAmount" class="text-[#8B0000]">0₫</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Thông tin thanh toán -->
+            <div>
+                <form id="checkoutForm" class="space-y-6">
+                    <!-- Thông tin người nhận -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h2 class="text-xl font-semibold text-[#8B0000] mb-4">Thông tin nhận hàng</h2>
+                        
+                        <div class="mb-4">
+                            <label for="fullName" class="block font-medium mb-2">Họ và tên:</label>
+                            <input type="text" id="fullName" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#8B0000]" />
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="phone" class="block font-medium mb-2">Số điện thoại:</label>
+                            <input type="tel" id="phone" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#8B0000]" />
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="address" class="block font-medium mb-2">Địa chỉ nhận hàng:</label>
+                            <textarea id="address" required rows="3"
+                                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#8B0000]"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label for="note" class="block font-medium mb-2">Ghi chú (tùy chọn):</label>
+                            <textarea id="note" rows="2"
+                                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#8B0000]"
+                                placeholder="Ví dụ: Giao hàng giờ hành chính..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Phương thức thanh toán -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h2 class="text-xl font-semibold text-[#8B0000] mb-4">Phương thức thanh toán</h2>
+                        
+                        <div class="space-y-3">
+                            <label class="flex items-start space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="radio" name="payment" value="cod" required class="form-radio text-[#8B0000] mt-1" />
+                                <div>
+                                    <span class="font-medium">Thanh toán khi nhận hàng (COD)</span>
+                                    <p class="text-sm text-gray-600 mt-1">Bạn chỉ thanh toán khi đã nhận được hàng</p>
+                                </div>
+                            </label>
+                            
+                            <label class="flex items-start space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="radio" name="payment" value="momo" class="form-radio text-[#8B0000] mt-1" />
+                                <div>
+                                    <span class="font-medium">Ví MoMo</span>
+                                    <p class="text-sm text-gray-600 mt-1">Thanh toán nhanh chóng qua ứng dụng MoMo</p>
+                                </div>
+                            </label>
+                            
+                            <label class="flex items-start space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="radio" name="payment" value="visa" class="form-radio text-[#8B0000] mt-1" />
+                                <div>
+                                    <span class="font-medium">Thẻ Visa / Mastercard</span>
+                                    <p class="text-sm text-gray-600 mt-1">Thanh toán an toàn qua cổng VNPay</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Nút xác nhận -->
+                    <button type="submit"
+                        class="bg-[#8B0000] text-white px-6 py-3 rounded-lg hover:bg-red-900 transition w-full font-semibold text-lg">
+                        Xác nhận đặt hàng
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#811621] text-[#FFECDC] border-t-4 border-white">
+        <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+
+            <!-- Logo -->
+            <div class="text-center ">
+                <h2 class="text-3xl font-bold text-white">MASH</h2>
+                <p class="mt-1 text-sm">Gửi Trọn Hương Vị Đoàn Viên</p>
+            </div>
+
+            <!-- Form -->
+            <div class="text-center">
+                <h3 class="text-lg font-semibold text-white mb-4">ĐĂNG KÝ NHẬN TIN</h3>
+
+                <form class="flex justify-center mb-4 w-full max-w-lg mx-auto">
+                    <input type="email" placeholder="Email của bạn..."
+                        class="flex-1 px-4 py-2.5 rounded-l-full text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#FFD7C2]" />
+                    <button type="submit"
+                        class="bg-[#FFD7C2] text-[#8B0000] font-semibold px-3 text-sm rounded-r-full hover:bg-[#FFECDC] transition whitespace-nowrap">
+                        Đăng ký
+                    </button>
+                </form>
+                <p><strong>HOTLINE 1:</strong> 0902 218 636</p>
+                <p><strong>HOTLINE 2:</strong> 0333 863 032</p>
+            </div>
+
+            <!-- Liên hệ -->
+            <div class="text-center">
+                <h3 class="text-lg font-semibold text-white mb-4">THÔNG TIN LIÊN HỆ</h3>
+                <p>Địa chỉ: 273 An Dương Vương, Phường Chợ Quán, Hồ Chí Minh</p>
+                <p>SĐT: 0283 7751727 (08h–17h); 0283 5358936 (07h–22h)</p>
+                <p>Email: info@mashvietnam.com</p>
+                <p>Thời gian: 08h00 – 22h00</p>
+            </div>
+
+            <!-- Chính sách -->
+            <div>
+                <h3 class="text-lg font-semibold text-white mb-4">CHÍNH SÁCH</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="hover:text-black transition">Chính sách đặt hàng online</a></li>
+                    <li><a href="#" class="hover:text-black transition">Điều khoản chung</a></li>
+                    <li><a href="#" class="hover:text-black transition">Chính sách bảo mật</a></li>
+                    <li><a href="#" class="hover:text-black transition">Câu hỏi thường gặp</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-t border-white text-center py-4 text-sm text-[#FFD7C2]">
+            © 2025 MASH. All rights reserved. Thiết kế web bởi
+            <span class="text-white font-medium hover:text-black transition">MT SHAM</span>.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Kiểm tra đăng nhập
+            const loginSection = document.getElementById("loginSection");
+            const userProfile = document.getElementById("userProfile");
+            const userName = document.getElementById("userName");
+            const logoutBtn = document.getElementById("logoutBtn");
+            const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+            if (currentUser) {
+                loginSection.classList.add("hidden");
+                userProfile.classList.remove("hidden");
+                userProfile.classList.add("flex");
+                userName.textContent = currentUser.fullName || currentUser.name || currentUser.email;
+                
+                // Điền thông tin người dùng vào form
+                if (currentUser.fullName) {
+                    document.getElementById("fullName").value = currentUser.fullName;
+                }
+                if (currentUser.phone) {
+                    document.getElementById("phone").value = currentUser.phone;
+                }
+                if (currentUser.address) {
+                    document.getElementById("address").value = currentUser.address;
+                }
+                
+                logoutBtn.addEventListener("click", () => {
+                    localStorage.removeItem("currentUser");
+                    window.location.reload();
+                });
+            } else {
+                loginSection.classList.remove("hidden");
+                userProfile.classList.add("hidden");
+                userProfile.classList.remove("flex");
+                alert("Bạn cần đăng nhập để thanh toán.");
+                window.location.href = "./login.html";
+                return;
+            }
+
+            // Hiển thị chi tiết đơn hàng
+            const items = JSON.parse(localStorage.getItem("checkoutItems")) || [];
+            const orderItems = document.getElementById("orderItems");
+            const subtotalEl = document.getElementById("subtotal");
+            const totalAmountEl = document.getElementById("totalAmount");
+            
+            let subtotal = 0;
+            const shippingFee = 30000;
+
+            if (items.length === 0) {
+                orderItems.innerHTML = `
+                    <div class="text-center py-4">
+                        <p class="text-gray-600">Không có sản phẩm nào để thanh toán.</p>
+                        <a href="./sanpham.html" class="text-[#8B0000] hover:underline mt-2 inline-block">
+                            Quay lại mua sắm
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            items.forEach(item => {
+                const itemPrice = item.price || 0;
+                const itemTotal = itemPrice * item.quantity;
+                subtotal += itemTotal;
+                
+                const div = document.createElement("div");
+                div.className = "flex justify-between items-center border-b pb-3";
+                div.innerHTML = `
+                    <div class="flex-1">
+                        <p class="font-medium">${item.name}</p>
+                        <p class="text-sm text-gray-600">${item.price.toLocaleString("vi-VN")}₫ × ${item.quantity}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-semibold text-[#8B0000]">${itemTotal.toLocaleString("vi-VN")}₫</p>
+                    </div>
+                `;
+                orderItems.appendChild(div);
+            });
+
+            // Cập nhật tổng tiền
+            const total = subtotal + shippingFee;
+            subtotalEl.textContent = `${subtotal.toLocaleString("vi-VN")}₫`;
+            totalAmountEl.textContent = `${total.toLocaleString("vi-VN")}₫`;
+
+            // Xử lý form thanh toán
+            document.getElementById("checkoutForm").addEventListener("submit", function (e) {
+                e.preventDefault();
+                
+                const fullName = document.getElementById("fullName").value;
+                const phone = document.getElementById("phone").value;
+                const address = document.getElementById("address").value;
+                const note = document.getElementById("note").value;
+                const payment = document.querySelector('input[name="payment"]:checked').value;
+                
+                if (!fullName || !phone || !address) {
+                    alert("Vui lòng điền đầy đủ thông tin nhận hàng.");
+                    return;
+                }
+
+                // Tạo đơn hàng
+                const order = {
+                    id: Date.now(),
+                    date: new Date().toISOString(),
+                    customer: {
+                        name: fullName,
+                        phone: phone,
+                        address: address,
+                        note: note
+                    },
+                    items: items,
+                    payment: payment,
+                    subtotal: subtotal,
+                    shipping: shippingFee,
+                    total: total,
+                    status: "pending"
+                };
+
+                // Lưu đơn hàng vào localStorage
+                const orders = JSON.parse(localStorage.getItem("orders")) || [];
+                orders.push(order);
+                localStorage.setItem("orders", JSON.stringify(orders));
+                
+                // Xóa sản phẩm đã thanh toán khỏi giỏ hàng
+                const cart = JSON.parse(localStorage.getItem("cart")) || [];
+                const updatedCart = cart.filter(cartItem => 
+                    !items.some(orderItem => 
+                        orderItem.name === cartItem.name && orderItem.price === cartItem.price
+                    )
+                );
+                localStorage.setItem("cart", JSON.stringify(updatedCart));
+                
+                // Xóa checkoutItems
+                localStorage.removeItem("checkoutItems");
+
+                // Hiển thị thông báo và chuyển hướng
+                alert(`Đơn hàng #${order.id} đã được xác nhận!\n\nTổng tiền: ${total.toLocaleString("vi-VN")}₫\nPhương thức: ${getPaymentMethodName(payment)}\n\nCảm ơn bạn đã mua hàng tại MASH Bakery!`);
+                window.location.href = "./pages.html";
+            });
+            
+            function getPaymentMethodName(value) {
+                switch(value) {
+                    case 'cod': return 'Thanh toán khi nhận hàng (COD)';
+                    case 'momo': return 'Ví MoMo';
+                    case 'visa': return 'Thẻ Visa/Mastercard';
+                    default: return value;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
