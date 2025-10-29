@@ -63,6 +63,11 @@
             <label class="block text-gray-600 text-sm mb-1">Số điện thoại</label>
             <input id="phone" type="text" class="w-full border rounded-md px-3 py-2 focus:ring-[#8B0000]" disabled>
           </div>
+          <div class="col-span-2">
+            <label class="block text-gray-600 text-sm mb-1">Địa chỉ</label>
+            <input id="address" type="text" class="w-full border rounded-md px-3 py-2 focus:ring-[#8B0000]" disabled>
+          </div>
+          
         </div>
 
         <div class="flex justify-end space-x-3 pt-4">
@@ -105,7 +110,7 @@
     document.getElementById('username').value = currentUser.username || '';
     document.getElementById('email').value = currentUser.email || '';
     document.getElementById('phone').value = currentUser.phone || '';
-
+    document.getElementById('address').value = currentUser.address || '';
     // Nút chỉnh sửa
     const editBtn = document.getElementById('editBtn');
     const saveBtn = document.getElementById('saveBtn');
@@ -121,9 +126,10 @@
       const username = document.getElementById('username').value.trim();
       const email = document.getElementById('email').value.trim();
       const phone = document.getElementById('phone').value.trim();
+      const address = document.getElementById('address').value.trim();
 
       // Cập nhật currentUser
-      const updatedUser = { ...currentUser, fullName, username, email, phone };
+      const updatedUser = { ...currentUser, fullName, username, email, phone, address };
       localStorage.setItem('currentUser', JSON.stringify(updatedUser));
 
       // Cập nhật trong danh sách users
