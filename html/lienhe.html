@@ -61,6 +61,78 @@
   </header>
 
 
+
+
+
+  <!-- CONTACT SECTION -->
+<section class="bg-white py-12 px-10 md:px-20 grid md:grid-cols-2 gap-10 items-start">
+
+  <!-- Form liên hệ -->
+  <div>
+    <h2 class="text-2xl font-bold text-[#8B0000] mb-6">Liên hệ với chúng tôi</h2>
+
+    <form id="contactForm" class="space-y-4">
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-gray-600 text-sm mb-1">Họ và tên</label>
+          <input type="text" id="name" required class="w-full border px-3 py-2 rounded-md focus:ring-[#8B0000]" />
+        </div>
+        <div>
+          <label class="block text-gray-600 text-sm mb-1">Email</label>
+          <input type="email" id="email" required class="w-full border px-3 py-2 rounded-md focus:ring-[#8B0000]" />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-gray-600 text-sm mb-1">Nội dung</label>
+        <textarea id="message" rows="5" required class="w-full border px-3 py-2 rounded-md focus:ring-[#8B0000]"></textarea>
+      </div>
+
+      <button type="submit" class="bg-orange-500 text-white px-6 py-2 rounded-full hover:bg-orange-600 transition">
+        Gửi tin nhắn
+      </button>
+    </form>
+  </div>
+
+  <!-- Thông tin công ty -->
+  <div>
+    <h2 class="text-xl font-bold mb-4">HOTLINE ĐẶT HÀNG - CSKH: 
+      <span class="text-[#8B0000]">0772 244 868</span>
+    </h2>
+
+    <h3 class="font-semibold text-lg mb-2">CÔNG TY CỔ PHẦN BÌNH MINH TOÀN CẦU</h3>
+    <ul class="space-y-2 text-gray-700">
+      <li class="flex items-start">
+        <i class="fas fa-map-marker-alt mt-1 w-5 text-[#8B0000]"></i>
+        <span>Địa chỉ: 273 An Dương Vương, Phường Chợ Quán, Hồ Chí Minh</span>
+      </li>
+      <li class="flex items-start">
+        <i class="fas fa-envelope mt-1 w-5 text-[#8B0000]"></i>
+        <span>info@breadtalkvietnam.com</span>
+      </li>
+      <li class="flex items-start">
+        <i class="fas fa-phone mt-1 w-5 text-[#8B0000]"></i>
+        <span>
+          0283 7751727 (08h00 – 17h00);<br>
+          0283 5358936 (07h00 – 22h00)
+        </span>
+      </li>
+    </ul>
+
+    <div class="mt-6">
+      <h4 class="font-semibold mb-2">Theo dõi chúng tôi</h4>
+      <div class="flex space-x-4 text-2xl text-gray-600">
+        <a href="#" class="hover:text-[#8B0000]"><i class="fab fa-facebook"></i></a>
+        <a href="#" class="hover:text-[#8B0000]"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="hover:text-[#8B0000]"><i class="fab fa-youtube"></i></a>
+        <a href="#" class="hover:text-[#8B0000]"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
   
  <!-- FOOTER -->
 <footer class="bg-[#811621] text-[#FFECDC] border-t-4 border-white">
@@ -150,6 +222,14 @@
         userProfile.classList.add("hidden");
         userProfile.classList.remove("flex");
       }
+    });
+  </script>
+  <script>
+    // Xử lý gửi form
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Cảm ơn bạn đã gửi tin nhắn! Chúng tôi sẽ phản hồi sớm nhất có thể.');
+      this.reset();
     });
   </script>
 </body>
