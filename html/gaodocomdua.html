@@ -81,7 +81,7 @@
         </div>
 
         <!-- Thumbnail chọn ảnh -->
-        <div class="flex space-x-2" id="thumbnailContainer">
+        <div class="flex ml-3 space-x-2" id="thumbnailContainer">
           <img src="/img/gaodocomdua.jpg" alt="#" onclick="changeImage(this)"
             class="thumbnail w-16 h-16 object-cover rounded cursor-pointer border-2 border-[#8B0000]" />
           <img src="/img/select2.jpg" alt="#" onclick="changeImage(this)"
@@ -91,19 +91,19 @@
 
       <!-- Section thông tin sản phẩm -->
       <div>
-        <p class="mt-5 text- mb-4 text-2xl w-[400px] text-justify italic">Bánh trung thu handmade mang hương vị truyền thống kết hợp sự tinh tế trong từng công đoạn. Vỏ bánh được nướng vàng nhẹ, nhân thơm dẻo hòa quyện giữa hạt sen, đậu xanh và trứng muối. Mỗi chiếc bánh là tấm lòng gửi trao, tượng trưng cho đoàn viên và sự ấm áp trong mùa trăng rằm.</p>
+        <p class="text- mb-4 text-2xl w-[400px] text-justify italic">Bánh trung thu handmade mang hương vị truyền thống kết hợp sự tinh tế trong từng công đoạn. Vỏ bánh được nướng vàng nhẹ, nhân thơm dẻo hòa quyện giữa hạt sen, đậu xanh và trứng muối. Mỗi chiếc bánh là tấm lòng gửi trao, tượng trưng cho đoàn viên và sự ấm áp trong mùa trăng rằm.</p>
         <p class="text-2xl font-semibold text-[#8B0000] mb-4">Giá: 55.000₫</p>
 
         <label for="quantity" class="mt-20 block mb-2 font-medium">Chọn số lượng:</label>
         <input type="number" id="quantity" min="1" value="1"
           class="w-24 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#8B0000] mb-4" />
 
-        <button onclick="addToCart('Bánh Trung Thu Thập Cẩm',55000)"
-          class="bg-[#8B0000] text-white px-6 py-2 rounded hover:bg-red-900 transition">
+        <button onclick="addToCart('Bánh Trung Thu Gạo Đỏ Cơm Dừa',55000)"
+          class="bg-[#8B0000] text-white px-6 py-2 rounded font-semibold hover:bg-red-900 transition">
           Thêm vào giỏ hàng
         </button>
 
-        <p id="cartMessage" class="mt-4 text-sm text-green-600 hidden">Đã thêm vào giỏ hàng!</p>
+        <p id="cartMessage" class="mt-4 text-sm text-green-600  hidden">Đã thêm vào giỏ hàng!</p>
       </div>
     </div>
   </section>
