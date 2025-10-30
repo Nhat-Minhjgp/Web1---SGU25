@@ -3,49 +3,183 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quản lý khách hàng</title>
+    <title>Quản lý tài khoản</title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body class="bg-gray-900 text-white min-h-screen p-6">
-    <h1 class="text-3xl font-bold text-cyan-400 mb-6">👤 Quản lý khách hàng</h1>
+    <h1 class="text-3xl font-bold text-cyan-400 mb-6">🔐 Quản lý tài khoản</h1>
 
     <button
       onclick="goBack()"
       class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded mb-4"
     >
-      ⬅️ Quay lại trang đăng ký
+      ⬅️ Quay lại
     </button>
+
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="🔍 Tìm theo tên..."
+      class="bg-gray-700 text-white px-3 py-2 rounded w-full mb-4"
+    />
 
     <table
       class="w-full table-auto bg-gray-800 rounded-lg overflow-hidden shadow-lg"
     >
       <thead class="bg-gray-700 text-cyan-300">
         <tr>
-          <th class="px-4 py-2 text-left">Tên</th>
+          <th class="px-4 py-2 text-left">Họ tên</th>
           <th class="px-4 py-2 text-left">Email</th>
           <th class="px-4 py-2 text-left">SĐT</th>
+          <th class="px-4 py-2 text-left">Tên đăng nhập</th>
+          <th class="px-4 py-2 text-left">Thao tác</th>
         </tr>
       </thead>
-      <tbody id="customerTable" class="text-gray-200"></tbody>
+      <tbody id="accountTable" class="text-gray-200"></tbody>
     </table>
+
+    <!-- Modal sửa -->
+    <div
+      id="editModal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden"
+    >
+      <div class="bg-gray-800 p-6 rounded-lg w-full max-w-md">
+        <h2 class="text-xl font-bold text-cyan-400 mb-4">📝 Sửa tài khoản</h2>
+        <form id="editForm" class="space-y-4">
+          <input
+            type="text"
+            id="editName"
+            class="bg-gray-700 text-white px-3 py-2 rounded w-full"
+            placeholder="Họ tên"
+            required
+          />
+          <input
+            type="email"
+            id="editEmail"
+            class="bg-gray-700 text-white px-3 py-2 rounded w-full"
+            placeholder="Email"
+            required
+          />
+          <input
+            type="text"
+            id="editPhone"
+            class="bg-gray-700 text-white px-3 py-2 rounded w-full"
+            placeholder="SĐT"
+            required
+          />
+          <input
+            type="text"
+            id="editUsername"
+            class="bg-gray-700 text-white px-3 py-2 rounded w-full"
+            placeholder="Tên đăng nhập"
+            required
+          />
+          <div class="flex justify-end space-x-2">
+            <button
+              type="button"
+              onclick="closeModal()"
+              class="bg-gray-600 px-4 py-2 rounded hover:bg-gray-500"
+            >
+              Hủy
+            </button>
+            <button
+              type="submit"
+              class="bg-cyan-500 text-gray-900 font-semibold px-4 py-2 rounded hover:bg-cyan-600"
+            >
+              Lưu
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <script>
       function goBack() {
-        window.location.href = "dangky.html";
+        window.location.href = "daodienad.html";
       }
 
-      const customers = JSON.parse(localStorage.getItem("customers")) || [];
-      const table = document.getElementById("customerTable");
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      let editIndex = null;
 
-      customers.forEach((c) => {
-        table.innerHTML += `
+      function renderUsers(filter = "") {
+        const table = document.getElementById("accountTable");
+        table.innerHTML = "";
+
+        users
+          .filter(
+            (u) =>
+              u.fullName &&
+              u.fullName.toLowerCase().includes(filter.toLowerCase())
+          )
+          .forEach((u, i) => {
+            table.innerHTML += `
         <tr class="border-b border-gray-700">
-          <td class="px-4 py-2">${c.name}</td>
-          <td class="px-4 py-2">${c.email}</td>
-          <td class="px-4 py-2">${c.phone}</td>
+          <td class="px-4 py-2">${u.fullName}</td>
+          <td class="px-4 py-2">${u.email}</td>
+          <td class="px-4 py-2">${u.phone}</td>
+          <td class="px-4 py-2">${u.username}</td>
+          <td class="px-4 py-2 space-x-2">
+            <button onclick="editUser(${i})" class="bg-yellow-500 text-gray-900 px-3 py-1 rounded hover:bg-yellow-600 text-sm">Sửa</button>
+            <button onclick="deleteUser(${i})" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm">Xóa</button>
+          </td>
         </tr>
       `;
-      });
+          });
+      }
+
+      function saveUsers() {
+        localStorage.setItem("users", JSON.stringify(users));
+        renderUsers(document.getElementById("searchInput").value);
+      }
+
+      function deleteUser(index) {
+        if (confirm("Bạn có chắc chắn muốn xóa tài khoản này?")) {
+          users.splice(index, 1);
+          saveUsers();
+        }
+      }
+
+      function editUser(index) {
+        editIndex = index;
+        const u = users[index];
+        document.getElementById("editName").value = u.fullName;
+        document.getElementById("editEmail").value = u.email;
+        document.getElementById("editPhone").value = u.phone;
+        document.getElementById("editUsername").value = u.username;
+        document.getElementById("editModal").classList.remove("hidden");
+      }
+
+      function closeModal() {
+        document.getElementById("editModal").classList.add("hidden");
+      }
+
+      document
+        .getElementById("editForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          users[editIndex].fullName = document
+            .getElementById("editName")
+            .value.trim();
+          users[editIndex].email = document
+            .getElementById("editEmail")
+            .value.trim();
+          users[editIndex].phone = document
+            .getElementById("editPhone")
+            .value.trim();
+          users[editIndex].username = document
+            .getElementById("editUsername")
+            .value.trim();
+          saveUsers();
+          closeModal();
+        });
+
+      document
+        .getElementById("searchInput")
+        .addEventListener("input", function () {
+          renderUsers(this.value);
+        });
+
+      renderUsers();
     </script>
   </body>
 </html>
