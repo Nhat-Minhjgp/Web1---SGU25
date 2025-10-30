@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Giao diện tối</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-900 text-white min-h-screen overflow-hidden">
+    <!-- HEADER -->
+    <header
+      class="flex justify-between items-center px-6 py-4 bg-gray-800 shadow-md sticky top-0 z-50"
+    >
+      <h1 class="text-2xl font-bold text-cyan-400">Admin Panel</h1>
+      <button
+        onclick="logout()"
+        class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-full text-sm transition"
+      >
+        Đăng xuất
+      </button>
+    </header>
+
+    <div class="flex h-[calc(100vh-64px)]">
+      <!-- SIDEBAR -->
+      <aside class="w-64 bg-gray-800 p-6 space-y-4 overflow-y-auto">
+        <nav class="space-y-2">
+          <button
+            onclick="loadPage('dashboard')"
+            class="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-700 transition"
+          >
+            📊 Thống kê
+          </button>
+          <button
+            onclick="loadPage('users')"
+            class="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-700 transition"
+          >
+            👥 Tài khoản
+          </button>
+          <button
+            onclick="loadPage('categories')"
+            class="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-700 transition"
+          >
+            📁 Loại sản phẩm
+          </button>
+          <button
+            onclick="loadPage('products')"
+            class="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-700 transition"
+          >
+            📦 Sản phẩm
+          </button>
+          <button
+            onclick="loadPage('invoices')"
+            class="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-700 transition"
+          >
+            🧾 Hóa đơn
+          </button>
+          <button
+            onclick="loadPage('pricing')"
+            class="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-700 transition"
+          >
+            💰 Giá bán
+          </button>
+          <button
+            onclick="loadPage('promotions')"
+            class="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-700 transition"
+          >
+            🎁 Khuyến mãi
+          </button>
+          <button
+            onclick="loadPage('inventory')"
+            class="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-700 transition"
+          >
+            📌 Tồn kho
+          </button>
+        </nav>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="flex-1 p-8 overflow-y-auto">
+        <section id="content" class="bg-gray-800 p-6 rounded-xl shadow-lg">
+          <h2 class="text-2xl font-bold text-cyan-400 mb-2">
+            Chào mừng đến với hệ thống quản lý
+          </h2>
+          <p class="text-gray-300">
+            Chọn chức năng từ menu bên trái để bắt đầu quản lý.
+          </p>
+        </section>
+      </main>
+    </div>
+
+    <!-- SCRIPT -->
+    <script>
+      function loadPage(page) {
+        const content = document.getElementById("content");
+        let title = "";
+        let description = "";
+
+        switch (page) {
+          case "dashboard":
+            title = "Thống kê doanh thu";
+            description =
+              "Xem báo cáo doanh thu theo cửa hàng, sản phẩm, thời gian.";
+            break;
+          case "users":
+            title = "Quản lý tài khoản";
+            description = "Thêm, sửa, khóa/mở khóa tài khoản người dùng.";
+            break;
+          case "categories":
+            title = "Loại sản phẩm";
+            description = "Thêm, sửa, xóa hoặc ẩn loại sản phẩm.";
+            break;
+          case "products":
+            title = "Sản phẩm";
+            description =
+              "Quản lý thông tin sản phẩm, hình ảnh, mô tả, trạng thái.";
+            break;
+          case "invoices":
+            title = "Hóa đơn";
+            description = "Xem, in, sửa phiếu nhập/xuất/chuyển hàng.";
+            break;
+          case "pricing":
+            title = "Giá bán";
+            description = "Hiển thị và điều chỉnh giá thành, tỉ lệ phần trăm.";
+            break;
+          case "promotions":
+            title = "Khuyến mãi";
+            description = "Thêm mã khuyến mãi theo thời gian và giá trị.";
+            break;
+          case "inventory":
+            title = "Tồn kho";
+            description = "Xem và chỉnh sửa số lượng tồn theo cửa hàng.";
+            break;
+          default:
+            title = "Trang chủ";
+            description = "Chọn chức năng từ menu bên trái để bắt đầu quản lý.";
+        }
+
+        content.innerHTML = `
+        <h2 class="text-2xl font-bold text-cyan-400 mb-2">${title}</h2>
+        <p class="text-gray-300">${description}</p>
+      `;
+      }
+
+      function logout() {
+        if (confirm("Bạn có chắc chắn muốn đăng xuất?")) {
+          alert("Đã đăng xuất!");
+          // window.location.href = "login.html";
+        }
+      }
+    </script>
+  </body>
+</html>
