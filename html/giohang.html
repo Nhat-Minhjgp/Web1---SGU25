@@ -221,20 +221,50 @@
       orderBtn.classList.remove("hidden");
 
       // Xử lý đặt hàng
-      document.getElementById("cartForm").addEventListener("submit", (e) => {
-        e.preventDefault();
-        const selected = Array.from(document.querySelectorAll('input[name="selectedItems"]:checked'))
-          .map(input => parseInt(input.value));
+    // ... (đoạn mã hiện tại của bạn) ...
 
-        if (selected.length === 0) {
-          alert("Vui lòng chọn ít nhất một sản phẩm để đặt hàng.");
-          return;
-        }
+// Xử lý đặt hàng
+document.getElementById("cartForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const cart = JSON.parse(localStorage.getItem("cart")) || []; // Lấy lại giỏ hàng
+    const selected = Array.from(document.querySelectorAll('input[name="selectedItems"]:checked'))
+        .map(input => parseInt(input.value));
 
-        const selectedItems = selected.map(i => cart[i]);
-        localStorage.setItem("checkoutItems", JSON.stringify(selectedItems));
-        window.location.href = "./thanhtoan.html";
-      });
+    if (selected.length === 0) {
+        alert("Vui lòng chọn ít nhất một sản phẩm để đặt hàng.");
+        return;
+    }
+
+    const selectedItems = selected.map(i => cart[i]);
+    
+    // --- BƯỚC MỚI: TẠO VÀ LƯU ĐƠN HÀNG ---
+    
+    const totalAmount = selectedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    
+    // 1. Tạo đối tượng đơn hàng
+    const newOrder = {
+        orderId: `#DH${Date.now().toString().slice(-6)}`, // ID đơn hàng đơn giản dựa trên thời gian
+        date: new Date().toLocaleDateString("vi-VN"),
+        total: totalAmount,
+        status: "Đang xử lý", // Trạng thái mặc định
+        items: selectedItems
+    };
+    
+    // 2. Lấy lịch sử cũ và thêm đơn hàng mới
+    let history = JSON.parse(localStorage.getItem("orderHistory")) || [];
+    history.unshift(newOrder); // Thêm đơn hàng mới vào đầu danh sách
+    localStorage.setItem("orderHistory", JSON.stringify(history));
+
+    // 3. Cập nhật Giỏ hàng (Xóa các món đã đặt)
+    const remainingCart = cart.filter((_, index) => !selected.includes(index));
+    localStorage.setItem("cart", JSON.stringify(remainingCart));
+    
+    // 4. Chuyển hướng đến trang lịch sử mua hàng
+    alert("Đặt hàng thành công! Đơn hàng của bạn đang được xử lý.");
+    window.location.href = "LSmuahang.html"; 
+});
+
+
     });
 
     // Hàm xóa sản phẩm khỏi giỏ hàng
