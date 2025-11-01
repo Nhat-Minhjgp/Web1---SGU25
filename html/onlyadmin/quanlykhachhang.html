@@ -74,6 +74,27 @@
             placeholder="Tên đăng nhập"
             required
           />
+          <input
+            type="text"
+            id="editAddress"
+            class="bg-gray-700 text-white px-3 py-2 rounded w-full"
+            placeholder="Địa chỉ"
+          />
+          <div class="border-t border-gray-700 pt-4">
+            <h3 class="text-lg font-semibold text-cyan-300 mb-2">Đổi mật khẩu</h3>
+            <input
+              type="password"
+              id="editPassword"
+              class="bg-gray-700 text-white px-3 py-2 rounded w-full mb-2"
+              placeholder="Mật khẩu mới (để trống nếu không đổi)"
+            />
+            <input
+              type="password"
+              id="editConfirmPassword"
+              class="bg-gray-700 text-white px-3 py-2 rounded w-full"
+              placeholder="Xác nhận mật khẩu mới"
+            />
+          </div>
           <div class="flex justify-end space-x-2">
             <button
               type="button"
@@ -142,10 +163,13 @@
       function editUser(index) {
         editIndex = index;
         const u = users[index];
-        document.getElementById("editName").value = u.fullName;
-        document.getElementById("editEmail").value = u.email;
-        document.getElementById("editPhone").value = u.phone;
-        document.getElementById("editUsername").value = u.username;
+        document.getElementById("editName").value = u.fullName || '';
+        document.getElementById("editEmail").value = u.email || '';
+        document.getElementById("editPhone").value = u.phone || '';
+        document.getElementById("editUsername").value = u.username || '';
+        document.getElementById("editAddress").value = u.address || '';
+        document.getElementById("editPassword").value = '';
+        document.getElementById("editConfirmPassword").value = '';
         document.getElementById("editModal").classList.remove("hidden");
       }
 
@@ -157,6 +181,17 @@
         .getElementById("editForm")
         .addEventListener("submit", function (e) {
           e.preventDefault();
+          
+          const newPassword = document.getElementById("editPassword").value.trim();
+          const confirmPassword = document.getElementById("editConfirmPassword").value.trim();
+          
+          // Kiểm tra mật khẩu nếu có nhập
+          if (newPassword && newPassword !== confirmPassword) {
+            alert("Mật khẩu mới không khớp!");
+            return;
+          }
+          
+          // Cập nhật thông tin người dùng
           users[editIndex].fullName = document
             .getElementById("editName")
             .value.trim();
@@ -169,6 +204,15 @@
           users[editIndex].username = document
             .getElementById("editUsername")
             .value.trim();
+          users[editIndex].address = document
+            .getElementById("editAddress")
+            .value.trim();
+          
+          // Cập nhật mật khẩu nếu có
+          if (newPassword) {
+            users[editIndex].password = newPassword;
+          }
+          
           saveUsers();
           closeModal();
         });
