@@ -36,37 +36,37 @@
 >
              Quản lý khách hàng
           <button
-            onclick="window.location.href='quanlysanpham.html'"
+            onclick="window.location.href='quanlyloaisanpham.html'"
             class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
           >
              Loại sản phẩm
           </button>
           <button
-            onclick="loadPage('products')"
+          onclick="window.location.href='danhmucsanpham.html'"
             class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
           >
              Danh mục sản phẩm
           </button>
           <button
-          onclick="window.location.href='danhmucsanpham.html'"
+          onclick="window.location.href='hoadon.html'"
             class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
           >
              Hóa đơn
           </button>
           <button
-            onclick="loadPage('pricing')"
+          onclick="window.location.href='giaban.html'"
             class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
           >
              Giá bán
           </button>
           <button
-            onclick="loadPage('promotions')"
+          onclick="window.location.href='khuyenmai.html'"
             class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
           >
              Khuyến mãi
           </button>
           <button
-            onclick="loadPage('inventory')"
+          onclick="window.location.href='hangtonkho.html'"
             class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
           >
              Tồn kho
@@ -100,35 +100,7 @@
             description =
               "Xem báo cáo doanh thu theo cửa hàng, sản phẩm, thời gian.";
             break;
-          case "users":
-            title = "Quản lý tài khoản";
-            description = "Thêm, sửa, khóa/mở khóa tài khoản người dùng.";
-            break;
-          case "categories":
-            title = "Loại sản phẩm";
-            description = "Thêm, sửa, xóa hoặc ẩn loại sản phẩm.";
-            break;
-          case "products":
-            title = "Sản phẩm";
-            description =
-              "Quản lý thông tin sản phẩm, hình ảnh, mô tả, trạng thái.";
-            break;
-          case "invoices":
-            title = "Hóa đơn";
-            description = "Xem, in, sửa phiếu nhập/xuất/chuyển hàng.";
-            break;
-          case "pricing":
-            title = "Giá bán";
-            description = "Hiển thị và điều chỉnh giá thành, tỉ lệ phần trăm.";
-            break;
-          case "promotions":
-            title = "Khuyến mãi";
-            description = "Thêm mã khuyến mãi theo thời gian và giá trị.";
-            break;
-          case "inventory":
-            title = "Tồn kho";
-            description = "Xem và chỉnh sửa số lượng tồn theo cửa hàng.";
-            break;
+          
           default:
             title = "Trang chủ";
             description = "Chọn chức năng từ menu bên trái để bắt đầu quản lý.";
