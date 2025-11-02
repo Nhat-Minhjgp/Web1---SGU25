@@ -126,26 +126,41 @@
         const table = document.getElementById("accountTable");
         table.innerHTML = "";
 
-        users
-          .filter(
-            (u) =>
-              u.fullName &&
-              u.fullName.toLowerCase().includes(filter.toLowerCase())
-          )
-          .forEach((u, i) => {
-            table.innerHTML += `
-        <tr class="border-b border-gray-700">
-          <td class="px-4 py-2">${u.fullName}</td>
-          <td class="px-4 py-2">${u.email}</td>
-          <td class="px-4 py-2">${u.phone}</td>
-          <td class="px-4 py-2">${u.username}</td>
-          <td class="px-4 py-2 space-x-2">
-            <button onclick="editUser(${i})" class="bg-yellow-500 text-gray-900 px-3 py-1 rounded hover:bg-yellow-600 text-sm">Sửa</button>
-            <button onclick="deleteUser(${i})" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm">Xóa</button>
-          </td>
-        </tr>
-      `;
-          });
+        const filteredUsers = users.filter(
+          (u) =>
+            u.fullName &&
+            u.fullName.toLowerCase().includes(filter.toLowerCase())
+        );
+
+        if (filteredUsers.length === 0) {
+          table.innerHTML = `
+            <tr>
+              <td colspan="5" class="px-4 py-4 text-center text-gray-400">
+                Không tìm thấy tài khoản nào
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        filteredUsers.forEach((u, i) => {
+          // Tìm index thực tế trong mảng users gốc
+          const originalIndex = users.findIndex(user => user.email === u.email);
+          
+          const row = document.createElement("tr");
+          row.className = "border-b border-gray-700";
+          row.innerHTML = `
+            <td class="px-4 py-2">${u.fullName || 'Chưa cập nhật'}</td>
+            <td class="px-4 py-2">${u.email || 'Chưa cập nhật'}</td>
+            <td class="px-4 py-2">${u.phone || 'Chưa cập nhật'}</td>
+            <td class="px-4 py-2">${u.username || 'Chưa cập nhật'}</td>
+            <td class="px-4 py-2 space-x-2">
+              <button onclick="editUser(${originalIndex})" class="bg-yellow-500 text-gray-900 px-3 py-1 rounded hover:bg-yellow-600 text-sm">Sửa</button>
+              <button onclick="deleteUser(${originalIndex})" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm">Xóa</button>
+            </td>
+          `;
+          table.appendChild(row);
+        });
       }
 
       function saveUsers() {
@@ -154,13 +169,25 @@
       }
 
       function deleteUser(index) {
-        if (confirm("Bạn có chắc chắn muốn xóa tài khoản này?")) {
+        if (index < 0 || index >= users.length) {
+          alert("Không tìm thấy tài khoản để xóa!");
+          return;
+        }
+
+        const userToDelete = users[index];
+        if (confirm(`Bạn có chắc chắn muốn xóa tài khoản "${userToDelete.fullName || userToDelete.email}"?`)) {
           users.splice(index, 1);
           saveUsers();
+          alert("Đã xóa tài khoản thành công!");
         }
       }
 
       function editUser(index) {
+        if (index < 0 || index >= users.length) {
+          alert("Không tìm thấy tài khoản để chỉnh sửa!");
+          return;
+        }
+
         editIndex = index;
         const u = users[index];
         document.getElementById("editName").value = u.fullName || '';
@@ -215,6 +242,7 @@
           
           saveUsers();
           closeModal();
+          alert("Cập nhật thông tin thành công!");
         });
 
       document
@@ -223,6 +251,7 @@
           renderUsers(this.value);
         });
 
+      // Khởi tạo trang
       renderUsers();
     </script>
   </body>
