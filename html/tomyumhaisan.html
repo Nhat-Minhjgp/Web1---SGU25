@@ -12,7 +12,6 @@
 
 <body class="font-sans text-gray-800 bg-white">
 
-
   <!-- HEADER -->
   <header class="flex justify-between items-center px-8 py-4 shadow-md bg-white sticky top-0 z-50">
     <!-- LOGO -->
@@ -60,53 +59,57 @@
 
 
 
+
   </header>
 
-<div class="bg-[#f5f5f5] py-10">
-  <section class="max-w-5xl mx-auto px-6 py-10 bg-white rounded-xl shadow-lg">
-    <h1 class="text-3xl font-bold text-[#8B0000] mb-6">Trung Thu ...</h1>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <!-- Section duyệt ảnh -->
-      <div class="space-y-4">
-        <!-- Ảnh chính -->
-        <div class="w-full h-64 overflow-hidden rounded-lg shadow">
-          <img id="mainImage" src="./images/dauxanh1.jpg" alt="Bánh Đậu Xanh"
-            class="w-full h-full object-cover transition duration-300 ease-in-out" />
+  <!-- Khung nền xám bao quanh -->
+  <div class="bg-[#f5f5f5] py-10">
+    <section class="max-w-5xl mx-auto px-6 py-10 bg-white rounded-xl shadow-lg">
+
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Section duyệt ảnh -->
+        <div class="space-y-4">
+          <!-- Ảnh chính -->
+          <div class="w-full max-w-[450px] mx-auto overflow-hidden rounded-xl shadow">
+            <img id="mainImage" src="/img/tomyumhaisan.jpg" alt="Bánh Trung Thu Tomyum Hải Sản"
+              class="w-full h-auto object-contain transition duration-300 ease-in-out" />
+          </div>
+
+          <!-- Thumbnail chọn ảnh -->
+          <div class="flex ml-3 space-x-2" id="thumbnailContainer">
+            <img src="/img/tomyumhaisan.jpg" alt="#" onclick="changeImage(this)"
+              class="thumbnail w-16 h-16 object-cover rounded cursor-pointer border-2 border-[#8B0000]" />
+            <img src="/img/tomyumhaisan2.jpg" alt="#" onclick="changeImage(this)"
+              class="thumbnail w-16 h-16 object-cover rounded cursor-pointer border-2 border-transparent hover:border-[#8B0000]" />
+          </div>
         </div>
 
-        <!-- Thumbnail chọn ảnh -->
-        <div class="flex space-x-2" id="thumbnailContainer">
-          <img src="./images/dauxanh1.jpg" alt="" #  onclick="changeImage(this)"
-            class="thumbnail w-16 h-16 object-cover rounded cursor-pointer border-2 border-[#8B0000]" />
-          <img src="./images/dauxanh2.jpg" alt="#" onclick="changeImage(this)"
-            class="thumbnail w-16 h-16 object-cover rounded cursor-pointer border-2 border-transparent hover:border-[#8B0000]" />
-          <img src="./images/dauxanh3.jpg" alt="#" onclick="changeImage(this)"
-            class="thumbnail w-16 h-16 object-cover rounded cursor-pointer border-2 border-transparent hover:border-[#8B0000]" />
+        <!-- Section thông tin sản phẩm -->
+        <div>
+          <h1 class="text-3xl font-bold text-[#8B0000] mb-4 ">Bánh Trung Thu Tomyum Hải Sản</h1>
+          <hr class="mb-3 w-[117px]">
+          <p class="text-3xl font-semibold text-[#8B0000] mb-4">55.000 ₫</p>
+          <!-- <label for="quantity" class="mt-10 block mb-2 text-3xl">Chọn số lượng:</label> -->
+          <input type="number" id="quantity" min="1" value="1"
+            class="w-32 px-3 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#8B0000] mb-4" />
+
+          <button onclick="addToCart('Bánh Trung Thu Gạo Đỏ Cơm Dừa',55000)"
+            class="bg-[#8B0000] text-white px-6 py-3 rounded font-semibold hover:bg-red-900 transition">
+            THÊM VÀO GIỎ HÀNG
+          </button>
+          <div class="flex items-center gap-2">
+            <span class="font-semibold text-gray-700">Danh mục:</span>
+            <span class="text-[#8B0000]">Bánh Trung Thu</span>
+          </div>
+
+          <p id="cartMessage" class="mt-2 text-green-600  hidden">Đã thêm vào giỏ hàng!</p>
         </div>
       </div>
-
-
-      <!-- Section thông tin sản phẩm -->
-      <div>
-        <p class="text- mb-4 text-2xl w-[400px] text-justify italic">Văn đa cấp đi Minh @@</p>
-        <p class="text-2xl font-semibold text-[#8B0000] mb-4">Giá: 55.000₫</p>
-
-
-        <label for="quantity" class="mt-8 block mb-2 font-medium">Chọn số lượng:</label>
-        <input type="number" id="quantity" min="1" value="1"
-          class="w-24 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#8B0000] mb-4" />
-
-        <button onclick="addToCart('Trung Thu ...',55000)"
-          class="bg-[#8B0000] text-white px-6 py-2 rounded font-semibold hover:bg-red-900 transition">
-          Thêm vào giỏ hàng
-        </button>
-
-        <p id="cartMessage" class="mt-4 text-sm text-green-600 hidden">Đã thêm vào giỏ hàng!</p>
-      </div>
-    </div>
-  </section>
+    </section>
   </div>
+
 
 
 
@@ -210,34 +213,34 @@
   }
 
   function addToCart(productName, price) {
-  const quantity = parseInt(document.getElementById("quantity").value);
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-  const cartMessage = document.getElementById("cartMessage");
+    const quantity = parseInt(document.getElementById("quantity").value);
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    const cartMessage = document.getElementById("cartMessage");
 
-  if (!currentUser) {
-    alert("Bạn cần đăng nhập để đặt hàng.");
-    window.location.href = "./login.html";
-    return;
+    if (!currentUser) {
+      alert("Bạn cần đăng nhập để đặt hàng.");
+      window.location.href = "./login.html";
+      return;
+    }
+
+    if (quantity < 1 || isNaN(quantity)) {
+      alert("Vui lòng chọn số lượng hợp lệ.");
+      return;
+    }
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // Kiểm tra nếu sản phẩm đã có thì cộng thêm số lượng
+    const existingItem = cart.find(item => item.name === productName);
+    if (existingItem) {
+      existingItem.quantity += quantity;
+    } else {
+      cart.push({ name: productName, quantity, price });
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    cartMessage.classList.remove("hidden");
   }
-
-  if (quantity < 1 || isNaN(quantity)) {
-    alert("Vui lòng chọn số lượng hợp lệ.");
-    return;
-  }
-
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-  // Kiểm tra nếu sản phẩm đã có thì cộng thêm số lượng
-  const existingItem = cart.find(item => item.name === productName);
-  if (existingItem) {
-    existingItem.quantity += quantity;
-  } else {
-    cart.push({ name: productName, quantity, price });
-  }
-
-  localStorage.setItem("cart", JSON.stringify(cart));
-  cartMessage.classList.remove("hidden");
-}
 
 </script>
 
