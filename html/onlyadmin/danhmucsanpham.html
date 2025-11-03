@@ -3,11 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quản lý danh mục sản phẩm</title>
+    <title>Quản lý Bánh Trung Thu - MASH Bakery</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
   </head>
   <body class="bg-gray-900 text-white font-sans min-h-screen">
-    <div class="max-w-5xl mx-auto py-10 px-6">
+    <div class="max-w-6xl mx-auto py-10 px-6">
       <!-- Nút quay về -->
       <div class="mb-6">
         <a
@@ -18,113 +22,882 @@
         </a>
       </div>
 
-      <h1 class="text-3xl font-bold mb-6">Quản lý danh mục bánh trung thu</h1>
+      <h1 class="text-3xl font-bold mb-6 flex items-center">
+        <i class="fas fa-moon text-yellow-400 mr-3"></i>
+        Quản lý Bánh Trung Thu
+      </h1>
 
-      <!-- Form thêm bánh -->
+      <!-- Import sản phẩm có sẵn -->
       <div class="bg-gray-800 p-6 rounded-lg shadow-md mb-8">
-        <h2 class="text-xl font-semibold mb-4">Thêm sản phẩm</h2>
-        <form class="space-y-4">
-          <div class="grid grid-cols-2 gap-4">
+        <h2 class="text-xl font-semibold mb-4 flex items-center">
+          <i class="fas fa-download mr-2 text-green-400"></i>
+          Import sản phẩm có sẵn
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <p class="text-gray-300 mb-4">
+              Import các sản phẩm bánh trung thu có sẵn từ trang web:
+            </p>
+            <button
+              onclick="importExistingProducts()"
+              class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded text-white font-semibold w-full"
+            >
+              <i class="fas fa-bolt mr-2"></i>Import Sản Phẩm Có Sẵn
+            </button>
+            <p class="text-gray-400 text-sm mt-2">
+              Sẽ import 12 sản phẩm bánh trung thu hiện có
+            </p>
+          </div>
+          <div class="bg-gray-700 p-4 rounded-lg">
+            <h4 class="font-semibold mb-2 text-green-400">
+              Sản phẩm sẽ được import:
+            </h4>
+            <ul
+              class="text-sm text-gray-300 space-y-1 max-h-32 overflow-y-auto"
+            >
+              <li>• Trung Thu Mãng Cầu Xiêm Sen</li>
+              <li>• Trung Thu Sữa Dừa Cafe</li>
+              <li>• Trung Thu Khế Bưởi Quế Hoa</li>
+              <li>• Trung Thu Vải Hồng Cánh Sen</li>
+              <li>• Trung Thu Bò Sốt Tiêu Đen</li>
+              <li>• ... và 7 sản phẩm khác</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form thêm/sửa sản phẩm -->
+      <div class="bg-gray-800 p-6 rounded-lg shadow-md mb-8">
+        <h2 class="text-xl font-semibold mb-4" id="formTitle">
+          Thêm bánh trung thu mới
+        </h2>
+        <form id="productForm" class="space-y-4">
+          <input type="hidden" id="productId" value="" />
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block mb-1 text-gray-300">Loại bánh</label>
+              <label class="block mb-1 text-gray-300"
+                >Tên bánh trung thu *</label
+              >
               <input
                 type="text"
-                class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600"
-                placeholder="Ví dụ: Bánh thập cẩm"
+                id="productName"
+                class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="VD: Bánh Trung Thu Nhân Thập Cẩm"
+                required
               />
             </div>
             <div>
-              <label class="block mb-1 text-gray-300">Mã bánh</label>
-              <input
-                type="text"
-                class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600"
-                placeholder="Ví dụ: BT001"
-              />
-            </div>
-            <div>
-              <label class="block mb-1 text-gray-300">Tên bánh</label>
-              <input
-                type="text"
-                class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600"
-                placeholder="Ví dụ: Bánh trung thu thập cẩm 2 trứng"
-              />
-            </div>
-            <div>
-              <label class="block mb-1 text-gray-300">Hình ảnh (URL)</label>
-              <input
-                type="text"
-                class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600"
-                placeholder="https://..."
-              />
+              <label class="block mb-1 text-gray-300">Loại bánh *</label>
+              <select
+                id="productType"
+                class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              >
+                <option value="">Chọn loại bánh</option>
+                <option value="banh_nuong">Bánh nướng</option>
+                <option value="banh_deo">Bánh dẻo</option>
+                <option value="banh_chay">Bánh chay</option>
+                <option value="banh_dac_biet">Bánh đặc biệt</option>
+              </select>
             </div>
           </div>
+
           <div>
-            <label class="block mb-1 text-gray-300">Mô tả bánh</label>
+            <label class="block mb-1 text-gray-300">Mô tả nhân bánh *</label>
             <textarea
-              class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600"
+              id="productDescription"
+              class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Mô tả chi tiết về nhân bánh, hương vị..."
               rows="3"
-              placeholder="Nhập mô tả chi tiết về bánh..."
+              required
             ></textarea>
           </div>
-          <button
-            type="submit"
-            class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded text-white"
-          >
-            Thêm bánh
-          </button>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block mb-1 text-gray-300">Giá bán (VNĐ) *</label>
+              <input
+                type="number"
+                id="productPrice"
+                class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="VD: 150000"
+                min="0"
+                required
+              />
+            </div>
+            <div>
+              <label class="block mb-1 text-gray-300">Trọng lượng *</label>
+              <select
+                id="productWeight"
+                class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              >
+                <option value="">Chọn trọng lượng</option>
+                <option value="125g">125g</option>
+                <option value="150g">150g</option>
+                <option value="175g">175g</option>
+                <option value="200g">200g</option>
+                <option value="250g">250g</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block mb-1 text-gray-300">Hình ảnh bánh *</label>
+            <input
+              type="file"
+              id="productImage"
+              accept="image/*"
+              class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <small class="text-gray-400 text-sm"
+              >Chỉ chọn ảnh mới nếu muốn thay đổi</small
+            >
+          </div>
+
+          <div id="imagePreview" class="hidden">
+            <label class="block mb-1 text-gray-300">Xem trước ảnh</label>
+            <img
+              id="previewImg"
+              class="max-w-xs rounded-lg border border-gray-600"
+            />
+          </div>
+
+          <div class="flex gap-4">
+            <button
+              type="submit"
+              id="submitBtn"
+              class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded text-white font-semibold"
+            >
+              <i class="fas fa-plus mr-2"></i>Thêm bánh
+            </button>
+            <button
+              type="button"
+              id="updateBtn"
+              class="bg-yellow-500 hover:bg-yellow-600 px-6 py-2 rounded text-white font-semibold hidden"
+            >
+              <i class="fas fa-save mr-2"></i>Cập nhật
+            </button>
+            <button
+              type="button"
+              id="cancelBtn"
+              class="bg-gray-600 hover:bg-gray-500 px-6 py-2 rounded text-white font-semibold hidden"
+            >
+              <i class="fas fa-times mr-2"></i>Hủy
+            </button>
+          </div>
         </form>
       </div>
 
-      <!-- Danh sách bánh -->
+      <!-- Tìm kiếm -->
+      <div class="bg-gray-800 p-6 rounded-lg shadow-md mb-8">
+        <h2 class="text-xl font-semibold mb-4">Tìm kiếm bánh trung thu</h2>
+        <input
+          type="text"
+          id="searchInput"
+          class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+          placeholder="Tìm theo tên bánh, loại bánh..."
+        />
+      </div>
+
+      <!-- Thống kê -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-gray-800 p-4 rounded-lg text-center">
+          <div class="text-2xl font-bold text-blue-400" id="totalProducts">
+            0
+          </div>
+          <div class="text-gray-400 text-sm">Tổng số bánh</div>
+        </div>
+        <div class="bg-gray-800 p-4 rounded-lg text-center">
+          <div class="text-2xl font-bold text-green-400" id="banhNuongCount">
+            0
+          </div>
+          <div class="text-gray-400 text-sm">Bánh nướng</div>
+        </div>
+        <div class="bg-gray-800 p-4 rounded-lg text-center">
+          <div class="text-2xl font-bold text-yellow-400" id="banhDeoCount">
+            0
+          </div>
+          <div class="text-gray-400 text-sm">Bánh dẻo</div>
+        </div>
+        <div class="bg-gray-800 p-4 rounded-lg text-center">
+          <div class="text-2xl font-bold text-purple-400" id="banhDacBietCount">
+            0
+          </div>
+          <div class="text-gray-400 text-sm">Bánh đặc biệt</div>
+        </div>
+      </div>
+
+      <!-- Danh sách sản phẩm -->
       <div class="bg-gray-800 p-6 rounded-lg shadow-md">
         <h2 class="text-xl font-semibold mb-4">Danh sách bánh trung thu</h2>
-        <table class="w-full table-auto text-left">
-          <thead>
-            <tr class="text-gray-400 border-b border-gray-600">
-              <th class="pb-2">Mã</th>
-              <th class="pb-2">Tên</th>
-              <th class="pb-2">Loại</th>
-              <th class="pb-2">Hình</th>
-              <th class="pb-2">Mô tả</th>
-              <th class="pb-2">Hành động</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="border-b border-gray-700">
-              <td class="py-2">BT001</td>
-              <td class="py-2">Bánh trung thu thập cẩm 2 trứng</td>
-              <td class="py-2">Thập cẩm</td>
-              <td class="py-2">
-                <img
-                  src="https://via.placeholder.com/50"
-                  alt="Ảnh bánh"
-                  class="rounded"
-                />
-              </td>
-              <td class="py-2">
-                Bánh truyền thống nhân thập cẩm, vị đậm đà, có 2 trứng muối
-              </td>
-              <td class="py-2 space-x-2">
-                <button
-                  class="bg-yellow-500 hover:bg-yellow-600 px-3 py-1 rounded text-white text-sm"
-                >
-                  Sửa
-                </button>
-                <button
-                  class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-white text-sm"
-                >
-                  Xoá
-                </button>
-                <button
-                  class="bg-gray-600 hover:bg-gray-700 px-3 py-1 rounded text-white text-sm"
-                >
-                  Ẩn
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="overflow-x-auto">
+          <table class="w-full table-auto text-left">
+            <thead>
+              <tr class="text-gray-400 border-b border-gray-600">
+                <th class="pb-2">ID</th>
+                <th class="pb-2">Hình ảnh</th>
+                <th class="pb-2">Tên bánh</th>
+                <th class="pb-2">Loại</th>
+                <th class="pb-2">Trọng lượng</th>
+                <th class="pb-2">Giá</th>
+                <th class="pb-2">Hành động</th>
+              </tr>
+            </thead>
+            <tbody id="productTableBody">
+              <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
+            </tbody>
+          </table>
+        </div>
+        <div id="noProductsMessage" class="text-center py-8 text-gray-400">
+          <i class="fas fa-moon text-4xl mb-2"></i>
+          <p class="text-lg">Chưa có bánh trung thu nào</p>
+          <p class="text-sm mt-2">Hãy thêm bánh trung thu đầu tiên của bạn!</p>
+        </div>
       </div>
     </div>
+
+    <!-- Modal xác nhận xóa -->
+    <div
+      id="deleteModal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50"
+    >
+      <div class="bg-gray-800 p-6 rounded-lg max-w-md w-full mx-4">
+        <h3 class="text-xl font-semibold mb-4 text-white">Xác nhận xóa</h3>
+        <p class="text-gray-300 mb-6" id="deleteMessage">
+          Bạn có chắc chắn muốn xóa bánh trung thu này?
+        </p>
+        <div class="flex justify-end gap-4">
+          <button
+            id="cancelDelete"
+            class="bg-gray-600 hover:bg-gray-500 px-4 py-2 rounded text-white"
+          >
+            Hủy
+          </button>
+          <button
+            id="confirmDelete"
+            class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white"
+          >
+            Xóa
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Biến toàn cục
+      let products = JSON.parse(localStorage.getItem("mashMoonCakes")) || [];
+      let nextId = parseInt(localStorage.getItem("nextMoonCakeId")) || 1;
+      let currentEditingId = null;
+      let productToDelete = null;
+
+      // DOM Elements
+      const productForm = document.getElementById("productForm");
+      const productTableBody = document.getElementById("productTableBody");
+      const searchInput = document.getElementById("searchInput");
+      const noProductsMessage = document.getElementById("noProductsMessage");
+      const submitBtn = document.getElementById("submitBtn");
+      const updateBtn = document.getElementById("updateBtn");
+      const cancelBtn = document.getElementById("cancelBtn");
+      const formTitle = document.getElementById("formTitle");
+      const productId = document.getElementById("productId");
+      const imagePreview = document.getElementById("imagePreview");
+      const previewImg = document.getElementById("previewImg");
+      const productImage = document.getElementById("productImage");
+
+      // Modal elements
+      const deleteModal = document.getElementById("deleteModal");
+      const deleteMessage = document.getElementById("deleteMessage");
+      const cancelDelete = document.getElementById("cancelDelete");
+      const confirmDelete = document.getElementById("confirmDelete");
+
+      // FUNCTION IMPORT SẢN PHẨM CÓ SẴN
+      function importExistingProducts() {
+        if (
+          confirm(
+            "Bạn có chắc muốn import 12 sản phẩm bánh trung thu có sẵn?\n\nCác sản phẩm trùng tên sẽ không được thêm lại."
+          )
+        ) {
+          const existingProducts = [
+            {
+              id: nextId++,
+              name: "Trung Thu Mãng Cầu Xiêm Sen",
+              type: "banh_nuong",
+              description:
+                "Nhân chua thanh nhẹ, quyện vị béo dịu, mang hương sen tao nhã và độc đáo.",
+              price: 180000,
+              weight: "175g",
+              image: "/img/mangcauxiemsen.jpg",
+              slug: "trung-thu-mang-cau-xiem-sen",
+              category: "banh_trung_thu",
+              status: "active",
+            },
+            {
+              id: nextId++,
+              name: "Trung Thu Sữa Dừa Cafe",
+              type: "banh_nuong",
+              description:
+                "Nhân sữa dừa hòa quyện cà phê, béo ngậy, thơm dịu và ngọt vừa phải.",
+              price: 160000,
+              weight: "175g",
+              image: "/img/suaduacafe.jpg",
+              slug: "trung-thu-sua-dua-cafe",
+              category: "banh_trung_thu",
+              status: "active",
+            },
+            {
+              id: nextId++,
+              name: "Trung Thu Khế Bưởi Quế Hoa",
+              type: "banh_deo",
+              description:
+                "Nhân sữa béo nhẹ, ngọt dịu, hòa quyện hương thơm thanh mát và tinh tế.",
+              price: 170000,
+              weight: "175g",
+              image: "/img/khebuoiquehoa.jpg",
+              slug: "trung-thu-khe-buoi-que-hoa",
+              category: "banh_trung_thu",
+              status: "active",
+            },
+            {
+              id: nextId++,
+              name: "Trung Thu Vải Hồng Cánh Sen",
+              type: "banh_deo",
+              description:
+                "Bánh ngọt thanh hòa quyện hạt sen bùi và hương hoa hồng tinh tế",
+              price: 165000,
+              weight: "175g",
+              image: "/img/vaihongcanhsen.jpg",
+              slug: "trung-thu-vai-hong-canh-sen",
+              category: "banh_trung_thu",
+              status: "active",
+            },
+            {
+              id: nextId++,
+              name: "Trung Thu Bò Sốt Tiêu Đen",
+              type: "banh_dac_biet",
+              description:
+                "Nhân sốt tiêu đen đậm đà cay nhẹ kết hợp mứt và hạt tạo hương vị khó quên.",
+              price: 190000,
+              weight: "175g",
+              image: "/img/boxottieuden.jpg",
+              slug: "trung-thu-bo-sot-tieu-den",
+              category: "banh_trung_thu",
+              status: "active",
+            },
+            {
+              id: nextId++,
+              name: "Trung Thu Nấm Truffle",
+              type: "banh_dac_biet",
+              description:
+                "Nhân nấm truffle cao cấp – đại diện cho tinh thần sáng tạo và tay nghề thủ công",
+              price: 250000,
+              weight: "175g",
+              image: "/img/namtruffle.jpg",
+              slug: "trung-thu-nam-truffle",
+              category: "banh_trung_thu",
+              status: "active",
+            },
+            {
+              id: nextId++,
+              name: "Trung Thu Tomyum Hải Sản",
+              type: "banh_dac_biet",
+              description:
+                "Tomyum hải sản đem đến trải nghiệm Trung thu đầy thú vị và bổ dưỡng",
+              price: 200000,
+              weight: "175g",
+              image: "/img/tomyumhaisan.jpg",
+              slug: "trung-thu-tomyum-hai-san",
+              category: "banh_trung_thu",
+              status: "active",
+            },
+            {
+              id: nextId++,
+              name: "Trung Thu Sen Vàng Xoài Dẻo",
+              type: "banh_deo",
+              description:
+                "Nhân ngọt thanh, dẻo mềm hòa quyện vị xoài chín và hương sen thuần khiết.",
+              price: 155000,
+              weight: "175g",
+              image: "/img/senvangxoaideo.jpg",
+              slug: "trung-thu-sen-vang-xoai-deo",
+              category: "banh_trung_thu",
+              status: "active",
+            },
+            {
+              id: nextId++,
+              name: "Trung Thu Gạo Đỏ Cốm Dừa",
+              type: "banh_nuong",
+              description:
+                "Thơm béo vị sữa, quyện cùng dừa nạo mềm mại, ngọt dịu.",
+              price: 145000,
+              weight: "175g",
+              image: "/img/gaodocomdua.jpg",
+              slug: "trung-thu-gao-do-com-dua",
+              category: "banh_trung_thu",
+              status: "active",
+            },
+            {
+              id: nextId++,
+              name: "Trung Thu Mơ Tây",
+              type: "banh_nuong",
+              description:
+                "Nhân Mơ Tây chua ngọt hài hòa, mang vị thu nhẹ nhàng và lạ miệng.",
+              price: 160000,
+              weight: "175g",
+              image: "/img/motay.jpg",
+              slug: "trung-thu-mo-tay",
+              category: "banh_trung_thu",
+              status: "active",
+            },
+            {
+              id: nextId++,
+              name: "Trung Thu Cafe",
+              type: "banh_nuong",
+              description:
+                "Nhân Cà Phê đậm đà, thơm ngậy như một tách cà phê tinh tế giữa mùa thu.",
+              price: 150000,
+              weight: "175g",
+              image: "/img/cafe.jpg",
+              slug: "trung-thu-cafe",
+              category: "banh_trung_thu",
+              status: "active",
+            },
+            {
+              id: nextId++,
+              name: "Trung Thu Nam Việt Quất",
+              type: "banh_nuong",
+              description:
+                "Nhân Nam Việt Quất chua ngọt thanh lịch, phảng phất vị Tây phương hiện đại.",
+              price: 170000,
+              weight: "175g",
+              image: "/img/namvietquat.jpg",
+              slug: "trung-thu-nam-viet-quat",
+              category: "banh_trung_thu",
+              status: "active",
+            },
+          ];
+
+          let importedCount = 0;
+          let skippedCount = 0;
+
+          // Chỉ thêm sản phẩm không trùng tên
+          existingProducts.forEach((newProduct) => {
+            const existing = products.find((p) => p.name === newProduct.name);
+            if (!existing) {
+              products.push(newProduct);
+              importedCount++;
+            } else {
+              skippedCount++;
+            }
+          });
+
+          saveToLocalStorage();
+          renderProducts();
+          updateStats();
+
+          alert(
+            `✅ Import thành công!\n\nĐã thêm: ${importedCount} sản phẩm\nĐã bỏ qua: ${skippedCount} sản phẩm (trùng tên)\n\nTổng số sản phẩm: ${products.length}`
+          );
+
+          triggerProductUpdate();
+        }
+      }
+
+      // Xem trước ảnh
+      productImage.addEventListener("change", function (e) {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            previewImg.src = e.target.result;
+            imagePreview.classList.remove("hidden");
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Thêm/Cập nhật sản phẩm
+      productForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const name = document.getElementById("productName").value;
+        const type = document.getElementById("productType").value;
+        const description = document.getElementById("productDescription").value;
+        const price = document.getElementById("productPrice").value;
+        const weight = document.getElementById("productWeight").value;
+        const imageFile = document.getElementById("productImage").files[0];
+
+        // Validation
+        if (!name || !type || !description || !price || !weight) {
+          alert("Vui lòng điền đầy đủ thông tin bánh trung thu");
+          return;
+        }
+
+        if (!imageFile && !currentEditingId) {
+          alert("Vui lòng chọn hình ảnh bánh trung thu");
+          return;
+        }
+
+        // Nếu đang sửa và không chọn ảnh mới, giữ ảnh cũ
+        if (currentEditingId && !imageFile) {
+          const existingProduct = products.find(
+            (p) => p.id === currentEditingId
+          );
+          if (existingProduct) {
+            updateProduct(
+              currentEditingId,
+              name,
+              type,
+              description,
+              price,
+              weight,
+              existingProduct.image
+            );
+            return;
+          }
+        }
+
+        // Xử lý ảnh
+        if (imageFile) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            if (currentEditingId) {
+              updateProduct(
+                currentEditingId,
+                name,
+                type,
+                description,
+                price,
+                weight,
+                e.target.result
+              );
+            } else {
+              addProduct(
+                name,
+                type,
+                description,
+                price,
+                weight,
+                e.target.result
+              );
+            }
+          };
+          reader.readAsDataURL(imageFile);
+        }
+      });
+
+      // FUNCTION THÊM BÁNH TRUNG THU
+      function addProduct(name, type, description, price, weight, image) {
+        const productData = {
+          id: nextId,
+          name: name,
+          type: type,
+          description: description,
+          price: parseInt(price),
+          weight: weight,
+          image: image,
+          slug: generateSlug(name),
+          category: "banh_trung_thu",
+          createdAt: new Date().toISOString(),
+          status: "active",
+        };
+
+        products.push(productData);
+        nextId++;
+
+        saveToLocalStorage();
+        renderProducts();
+        updateStats();
+        resetForm();
+
+        alert(
+          '✅ Thêm bánh trung thu thành công!\n\nBánh "' +
+            name +
+            '" đã được hiển thị trên trang bán hàng.'
+        );
+        triggerProductUpdate();
+      }
+
+      // FUNCTION SỬA BÁNH TRUNG THU
+      function updateProduct(
+        id,
+        name,
+        type,
+        description,
+        price,
+        weight,
+        image
+      ) {
+        const index = products.findIndex((p) => p.id === id);
+        if (index !== -1) {
+          products[index] = {
+            ...products[index],
+            name: name,
+            type: type,
+            description: description,
+            price: parseInt(price),
+            weight: weight,
+            image: image,
+            slug: generateSlug(name),
+            updatedAt: new Date().toISOString(),
+          };
+
+          saveToLocalStorage();
+          renderProducts();
+          updateStats();
+          resetForm();
+          alert("✅ Cập nhật bánh trung thu thành công!");
+          triggerProductUpdate();
+        }
+      }
+
+      // FUNCTION XÓA BÁNH TRUNG THU
+      function deleteProduct(id) {
+        productToDelete = id;
+        const product = products.find((p) => p.id === id);
+        if (product) {
+          deleteMessage.textContent = `Bạn có chắc chắn muốn xóa bánh trung thu "${product.name}"?\n\nBánh sẽ bị xóa khỏi trang bán hàng.`;
+          deleteModal.classList.remove("hidden");
+        }
+      }
+
+      // Xác nhận xóa
+      confirmDelete.addEventListener("click", function () {
+        if (productToDelete) {
+          const product = products.find((p) => p.id === productToDelete);
+          products = products.filter((p) => p.id !== productToDelete);
+          saveToLocalStorage();
+          renderProducts();
+          updateStats();
+          deleteModal.classList.add("hidden");
+          productToDelete = null;
+
+          alert(
+            '✅ Xóa bánh trung thu thành công!\n\nBánh "' +
+              product.name +
+              '" đã được xóa khỏi trang bán hàng.'
+          );
+          triggerProductUpdate();
+        }
+      });
+
+      // Hủy xóa
+      cancelDelete.addEventListener("click", function () {
+        deleteModal.classList.add("hidden");
+        productToDelete = null;
+      });
+
+      // CẬP NHẬT THỐNG KÊ
+      function updateStats() {
+        const totalProducts = products.length;
+        const banhNuongCount = products.filter(
+          (p) => p.type === "banh_nuong"
+        ).length;
+        const banhDeoCount = products.filter(
+          (p) => p.type === "banh_deo"
+        ).length;
+        const banhDacBietCount = products.filter(
+          (p) => p.type === "banh_dac_biet"
+        ).length;
+
+        document.getElementById("totalProducts").textContent = totalProducts;
+        document.getElementById("banhNuongCount").textContent = banhNuongCount;
+        document.getElementById("banhDeoCount").textContent = banhDeoCount;
+        document.getElementById("banhDacBietCount").textContent =
+          banhDacBietCount;
+      }
+
+      // KÍCH HOẠT CẬP NHẬT TRANG SẢN PHẨM
+      function triggerProductUpdate() {
+        localStorage.setItem("mashProductsUpdated", Date.now().toString());
+      }
+
+      // FUNCTION SỬA SẢN PHẨM (Hiển thị form)
+      function editProduct(id) {
+        const product = products.find((p) => p.id === id);
+        if (product) {
+          document.getElementById("productName").value = product.name;
+          document.getElementById("productType").value = product.type;
+          document.getElementById("productDescription").value =
+            product.description;
+          document.getElementById("productPrice").value = product.price;
+          document.getElementById("productWeight").value = product.weight;
+          productId.value = product.id;
+
+          previewImg.src = product.image;
+          imagePreview.classList.remove("hidden");
+
+          currentEditingId = id;
+          formTitle.textContent = "Sửa bánh trung thu";
+          submitBtn.classList.add("hidden");
+          updateBtn.classList.remove("hidden");
+          cancelBtn.classList.remove("hidden");
+
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      }
+
+      // FUNCTION HỦY SỬA
+      function cancelEdit() {
+        resetForm();
+      }
+
+      // Reset form
+      function resetForm() {
+        productForm.reset();
+        imagePreview.classList.add("hidden");
+        currentEditingId = null;
+        productId.value = "";
+        formTitle.textContent = "Thêm bánh trung thu mới";
+        submitBtn.classList.remove("hidden");
+        updateBtn.classList.add("hidden");
+        cancelBtn.classList.add("hidden");
+      }
+
+      // Tạo slug từ tên sản phẩm
+      function generateSlug(name) {
+        return name
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[đĐ]/g, "d")
+          .replace(/[^a-z0-9 ]/g, "")
+          .replace(/\s+/g, "-")
+          .replace(/^-+|-+$/g, "");
+      }
+
+      // Lưu dữ liệu
+      function saveToLocalStorage() {
+        localStorage.setItem("mashMoonCakes", JSON.stringify(products));
+        localStorage.setItem("nextMoonCakeId", nextId.toString());
+      }
+
+      // Hiển thị sản phẩm
+      function renderProducts(filteredProducts = null) {
+        const productsToShow = filteredProducts || products;
+
+        if (productsToShow.length === 0) {
+          productTableBody.innerHTML = "";
+          noProductsMessage.classList.remove("hidden");
+          return;
+        }
+
+        noProductsMessage.classList.add("hidden");
+
+        productTableBody.innerHTML = productsToShow
+          .map(
+            (product) => `
+                <tr class="border-b border-gray-700 hover:bg-gray-750">
+                    <td class="py-4 font-mono">BTT${product.id
+                      .toString()
+                      .padStart(3, "0")}</td>
+                    <td class="py-4">
+                        <img src="${product.image}" alt="${
+              product.name
+            }" class="w-16 h-16 object-cover rounded-lg">
+                    </td>
+                    <td class="py-4">
+                        <div class="font-semibold">${product.name}</div>
+                        <div class="text-sm text-gray-400 mt-1">${product.description.substring(
+                          0,
+                          60
+                        )}...</div>
+                    </td>
+                    <td class="py-4">
+                        <span class="px-2 py-1 ${getTypeBadgeColor(
+                          product.type
+                        )} rounded text-sm">${getTypeName(product.type)}</span>
+                    </td>
+                    <td class="py-4 font-semibold">${product.weight}</td>
+                    <td class="py-4 font-semibold">${formatCurrency(
+                      product.price
+                    )}</td>
+                    <td class="py-4 space-x-2">
+                        <button
+                            onclick="editProduct(${product.id})"
+                            class="bg-yellow-500 hover:bg-yellow-600 px-3 py-1 rounded text-white text-sm"
+                            title="Sửa bánh"
+                        >
+                            <i class="fas fa-edit mr-1"></i>Sửa
+                        </button>
+                        <button
+                            onclick="deleteProduct(${product.id})"
+                            class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-white text-sm"
+                            title="Xóa bánh"
+                        >
+                            <i class="fas fa-trash mr-1"></i>Xóa
+                        </button>
+                    </td>
+                </tr>
+            `
+          )
+          .join("");
+      }
+
+      // Tìm kiếm sản phẩm
+      searchInput.addEventListener("input", function () {
+        const query = this.value.toLowerCase();
+        if (!query) {
+          renderProducts();
+          return;
+        }
+
+        const filteredProducts = products.filter(
+          (product) =>
+            product.name.toLowerCase().includes(query) ||
+            product.description.toLowerCase().includes(query) ||
+            getTypeName(product.type).toLowerCase().includes(query) ||
+            product.weight.toLowerCase().includes(query)
+        );
+
+        renderProducts(filteredProducts);
+      });
+
+      // Hàm hỗ trợ
+      function getTypeName(type) {
+        const types = {
+          banh_nuong: "Bánh nướng",
+          banh_deo: "Bánh dẻo",
+          banh_chay: "Bánh chay",
+          banh_dac_biet: "Bánh đặc biệt",
+        };
+        return types[type] || type;
+      }
+
+      function getTypeBadgeColor(type) {
+        const colors = {
+          banh_nuong: "bg-orange-500",
+          banh_deo: "bg-green-500",
+          banh_chay: "bg-blue-500",
+          banh_dac_biet: "bg-purple-500",
+        };
+        return colors[type] || "bg-gray-500";
+      }
+
+      function formatCurrency(amount) {
+        return new Intl.NumberFormat("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        }).format(amount);
+      }
+
+      // Event Listeners
+      cancelBtn.addEventListener("click", cancelEdit);
+      updateBtn.addEventListener("click", function () {
+        productForm.dispatchEvent(new Event("submit"));
+      });
+
+      // Khởi tạo trang
+      document.addEventListener("DOMContentLoaded", function () {
+        renderProducts();
+        updateStats();
+      });
+
+      // Xuất hàm ra global để sử dụng trong HTML
+      window.importExistingProducts = importExistingProducts;
+      window.editProduct = editProduct;
+      window.deleteProduct = deleteProduct;
+    </script>
   </body>
 </html>
