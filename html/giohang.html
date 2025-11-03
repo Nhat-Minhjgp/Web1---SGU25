@@ -8,6 +8,23 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <link href="./output.css" rel="stylesheet">
+  <style>
+    /* CSS để đảm bảo footer luôn ở dưới cùng */
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    main {
+      flex: 1;
+    }
+  </style>
 </head>
 
 <body class="font-sans text-gray-800 bg-white">
@@ -59,33 +76,35 @@
     </div>
   </header>
 
-  <!-- NỘI DUNG GIỎ HÀNG -->
-  <div id="cartContainer" class="mt-20 p-6 max-w-4xl mx-auto">
-    <h2 class="text-2xl font-bold text-[#8B0000] mb-6 text-center">Giỏ hàng của bạn</h2>
+  <!-- NỘI DUNG GIỎ HÀNG - Đặt trong main -->
+  <main>
+    <div id="cartContainer" class="mt-20 p-6 max-w-4xl mx-auto">
+      <h2 class="text-2xl font-bold text-[#8B0000] mb-6 text-center">Giỏ hàng của bạn</h2>
 
-    <form id="cartForm">
-      <div id="cartItems" class="space-y-4 mb-6">
-        <!-- Các sản phẩm sẽ được hiển thị ở đây -->
-      </div>
-
-      <!-- Tổng tiền -->
-      <div class="border-t pt-4 mt-6">
-        <div class="flex justify-between items-center mb-4">
-          <span class="text-lg font-semibold">Tổng cộng:</span>
-          <span id="totalAmount" class="text-xl font-bold text-[#8B0000]">0₫</span>
+      <form id="cartForm">
+        <div id="cartItems" class="space-y-4 mb-6">
+          <!-- Các sản phẩm sẽ được hiển thị ở đây -->
         </div>
-        
-        <button type="submit" 
-          class="w-full bg-[#8B0000] text-white px-6 py-3 rounded-lg hover:bg-red-900 transition font-semibold hidden"
-          id="orderBtn">
-          Tiến hành đặt hàng
-        </button>
-      </div>
-    </form>
-  </div>
+
+        <!-- Tổng tiền -->
+        <div class="border-t pt-4 mt-6">
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-lg font-semibold">Tổng cộng:</span>
+            <span id="totalAmount" class="text-xl font-bold text-[#8B0000]">0₫</span>
+          </div>
+          
+          <button type="submit" 
+            class="w-full bg-[#8B0000] text-white px-6 py-3 rounded-lg hover:bg-red-900 transition font-semibold hidden"
+            id="orderBtn">
+            Tiến hành đặt hàng
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
 
   <!-- FOOTER -->
-  <footer class="bg-[#811621] text-[#FFECDC] border-t-4 border-white">
+  <footer class="bg-[#811621] text-[#FFECDC] border-t-4 border-white mt-auto">
     <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
       <!-- Logo -->
       <div class="text-center">
@@ -135,10 +154,7 @@
     </div>
   </footer>
 
- 
-
-
- <script>
+  <script>
     document.addEventListener("DOMContentLoaded", () => {
       // Kiểm tra đăng nhập
       const loginSection = document.getElementById("loginSection");
