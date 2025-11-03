@@ -2,52 +2,614 @@
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <title>Quản lý nhập sản phẩm</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý nhập bánh trung thu - MASH Bakery</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
   </head>
   <body class="bg-gray-900 text-white font-sans min-h-screen">
-    <div class="max-w-5xl mx-auto py-10 px-6">
-      <!-- Nút quay về -->
-      <div class="mb-6">
-        <a
-          href="daodienad.html"
-          class="inline-block bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded"
-        >
-          ← Quay lại
-        </a>
+    <div class="max-w-7xl mx-auto py-8 px-4">
+      <!-- Header -->
+      <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+        <div class="flex items-center mb-4 md:mb-0">
+          <a
+            href="daodienad.html"
+            class="inline-flex items-center bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg mr-4 transition duration-300"
+          >
+            <i class="fas fa-arrow-left mr-2"></i> Quay lại
+          </a>
+          <div>
+            <h1 class="text-3xl md:text-4xl font-bold text-white">
+              <i class="fas fa-moon mr-2 text-blue-400"></i>Quản lý nhập bánh
+              trung thu
+            </h1>
+            <p class="text-gray-400 mt-2">
+              MASH Bakery - Gửi trọn hương vị đoàn viên
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center space-x-4">
+          <div class="text-right">
+            <p class="text-gray-400">Hôm nay</p>
+            <p class="text-white font-semibold" id="currentDate"></p>
+          </div>
+          <div class="bg-gray-700 p-3 rounded-full">
+            <i class="fas fa-moon text-blue-400 text-xl"></i>
+          </div>
+        </div>
       </div>
-  <body class="bg-gray-900 text-white p-6">
-    <h1 class="text-3xl font-bold mb-6">Quản lý nhập sản phẩm</h1>
 
-    <div class="mb-8">
-      <h2 class="text-xl font-semibold mb-2">Thêm phiếu nhập hàng</h2>
-      <form class="space-y-4">
-        <input
-          type="date"
-          class="w-full p-2 bg-gray-700 rounded border border-gray-600"
-        />
-        <input
-          type="number"
-          placeholder="Giá nhập"
-          class="w-full p-2 bg-gray-700 rounded border border-gray-600"
-        />
-        <input
-          type="number"
-          placeholder="Số lượng"
-          class="w-full p-2 bg-gray-700 rounded border border-gray-600"
-        />
-        <button class="bg-blue-600 px-4 py-2 rounded">Thêm phiếu</button>
-      </form>
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-gray-800 rounded-xl p-4 shadow-lg">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-gray-400">Tổng phiếu nhập</p>
+              <p class="text-2xl font-bold text-white" id="totalImports">0</p>
+            </div>
+            <div class="bg-gray-700 p-3 rounded-full">
+              <i class="fas fa-clipboard-list text-blue-400"></i>
+            </div>
+          </div>
+        </div>
+        <div class="bg-gray-800 rounded-xl p-4 shadow-lg">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-gray-400">Tổng sản phẩm</p>
+              <p class="text-2xl font-bold text-white" id="totalProducts">0</p>
+            </div>
+            <div class="bg-gray-700 p-3 rounded-full">
+              <i class="fas fa-box text-blue-400"></i>
+            </div>
+          </div>
+        </div>
+        <div class="bg-gray-800 rounded-xl p-4 shadow-lg">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-gray-400">Tổng giá trị</p>
+              <p class="text-2xl font-bold text-white" id="totalValue">0₫</p>
+            </div>
+            <div class="bg-gray-700 p-3 rounded-full">
+              <i class="fas fa-coins text-blue-400"></i>
+            </div>
+          </div>
+        </div>
+        <div class="bg-gray-800 rounded-xl p-4 shadow-lg">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-gray-400">Sản phẩm sắp hết</p>
+              <p class="text-2xl font-bold text-white" id="lowStock">0</p>
+            </div>
+            <div class="bg-gray-700 p-3 rounded-full">
+              <i class="fas fa-exclamation-circle text-blue-400"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Form thêm phiếu nhập -->
+        <div class="lg:col-span-1">
+          <div class="bg-gray-800 rounded-xl p-6 shadow-lg">
+            <h2 class="text-xl font-bold text-white mb-4 flex items-center">
+              <i class="fas fa-plus-circle mr-2 text-blue-400"></i> Thêm phiếu
+              nhập bánh
+            </h2>
+            <form id="importForm" class="space-y-4">
+              <div>
+                <label class="block text-gray-400 mb-2">Ngày nhập</label>
+                <input
+                  type="date"
+                  id="importDate"
+                  class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+
+              <div>
+                <label class="block text-gray-400 mb-2">Tên bánh</label>
+                <select
+                  id="cakeName"
+                  class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                  required
+                >
+                  <option value="" disabled selected>Chọn tên bánh</option>
+                  <option value="mangcauxiemsen">
+                    Trung Thu Mãng Cầu Xiêm Sen
+                  </option>
+                  <option value="suaduacafe">Trung Thu Sữa Dừa Cafe</option>
+                  <option value="khebuoiquehoa">
+                    Trung Thu Khế Bưởi Quế Hoa
+                  </option>
+                  <option value="vaihongcanhsen">
+                    Trung Thu Vải Hồng Cánh Sen
+                  </option>
+                  <option value="bosottieuden">
+                    Trung Thu Bò Sốt Tiêu Đen
+                  </option>
+                  <option value="namtruffle">Trung Thu Nấm Truffle</option>
+                  <option value="tomyumhaisan">Trung Thu Tomyum Hải Sản</option>
+                  <option value="senvangxoaideo">
+                    Trung Thu Sen Vàng Xoài Dẻo
+                  </option>
+                  <option value="gaodocomdua">Trung Thu Gạo Đỏ Cốm Dừa</option>
+                  <option value="motay">Trung Thu Mơ Tây</option>
+                  <option value="cafe">Trung Thu Cafe</option>
+                  <option value="namvietquat">Trung Thu Nam Việt Quất</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-gray-400 mb-2">Loại bánh</label>
+                <select
+                  id="cakeType"
+                  class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                  required
+                >
+                  <option value="" disabled selected>Chọn loại bánh</option>
+                  <option value="banh_nuong">Bánh nướng</option>
+                  <option value="banh_deo">Bánh dẻo</option>
+                  <option value="banh_chay">Bánh chay</option>
+                  <option value="banh_dac_biet">Bánh đặc biệt</option>
+                </select>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-gray-400 mb-2">Giá nhập (VNĐ)</label>
+                  <input
+                    type="number"
+                    id="importPrice"
+                    placeholder="VD: 50000"
+                    class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                    min="0"
+                    required
+                  />
+                </div>
+                <div>
+                  <label class="block text-gray-400 mb-2">Số lượng</label>
+                  <input
+                    type="number"
+                    id="importQuantity"
+                    placeholder="VD: 100"
+                    class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                    min="1"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-gray-400 mb-2">Nhà cung cấp</label>
+                <input
+                  type="text"
+                  id="supplier"
+                  placeholder="Tên nhà cung cấp"
+                  class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg flex items-center justify-center transition duration-300"
+              >
+                <i class="fas fa-save mr-2"></i> Thêm phiếu nhập
+              </button>
+            </form>
+          </div>
+
+          <!-- Thông tin tồn kho -->
+          <div class="bg-gray-800 rounded-xl p-6 shadow-lg mt-6">
+            <h2 class="text-xl font-bold text-white mb-4 flex items-center">
+              <i class="fas fa-boxes mr-2 text-blue-400"></i> Tồn kho bánh trung
+              thu
+            </h2>
+            <div class="space-y-4" id="stockList">
+              <!-- Dữ liệu tồn kho sẽ được thêm bằng JavaScript -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Danh sách phiếu nhập -->
+        <div class="lg:col-span-2">
+          <div class="bg-gray-800 rounded-xl p-6 shadow-lg">
+            <div
+              class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6"
+            >
+              <h2
+                class="text-xl font-bold text-white flex items-center mb-4 md:mb-0"
+              >
+                <i class="fas fa-list mr-2 text-blue-400"></i> Danh sách phiếu
+                nhập
+              </h2>
+              <div class="relative w-full md:w-64">
+                <input
+                  type="text"
+                  id="searchInput"
+                  placeholder="Tìm kiếm phiếu nhập..."
+                  class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 text-white pl-10 focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                />
+                <i
+                  class="fas fa-search absolute left-3 top-3.5 text-gray-400"
+                ></i>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto bg-gray-700 rounded-lg">
+              <table class="w-full">
+                <thead>
+                  <tr class="bg-gray-600">
+                    <th class="p-4 text-left">Mã phiếu</th>
+                    <th class="p-4 text-left">Ngày nhập</th>
+                    <th class="p-4 text-left">Tên bánh</th>
+                    <th class="p-4 text-left">Loại bánh</th>
+                    <th class="p-4 text-left">Số lượng</th>
+                    <th class="p-4 text-left">Giá nhập</th>
+                    <th class="p-4 text-left">Thành tiền</th>
+                    <th class="p-4 text-left">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="importTableBody">
+                  <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
+                </tbody>
+              </table>
+            </div>
+            <div
+              id="noDataMessage"
+              class="text-center py-8 text-gray-400 hidden"
+            >
+              <i class="fas fa-inbox text-4xl mb-2"></i>
+              <p>Chưa có phiếu nhập nào. Hãy thêm phiếu nhập mới!</p>
+            </div>
+          </div>
+
+          <!-- Biểu đồ thống kê -->
+          <div class="bg-gray-800 rounded-xl p-6 shadow-lg mt-6">
+            <h2 class="text-xl font-bold text-white mb-4 flex items-center">
+              <i class="fas fa-chart-bar mr-2 text-blue-400"></i> Thống kê nhập
+              hàng
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h3 class="text-gray-400 mb-2">Số lượng nhập theo loại</h3>
+                <div class="space-y-2" id="typeChart">
+                  <!-- Biểu đồ sẽ được thêm bằng JavaScript -->
+                </div>
+              </div>
+              <div>
+                <h3 class="text-gray-400 mb-2">Top sản phẩm nhập nhiều</h3>
+                <div class="space-y-2" id="topProducts">
+                  <!-- Top sản phẩm sẽ được thêm bằng JavaScript -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div>
-      <h2 class="text-xl font-semibold mb-2">Danh mục phiếu nhập</h2>
-      <input
-        type="text"
-        placeholder="Tìm kiếm..."
-        class="w-full p-2 bg-gray-700 rounded border border-gray-600 mb-4"
-      />
-      <!-- Bảng hiển thị -->
-    </div>
+    <script>
+      // Mảng lưu trữ danh sách phiếu nhập
+      let importList =
+        JSON.parse(localStorage.getItem("mashMoonCakeImports")) || [];
+
+      // Biến đếm ID tự động
+      let nextId = parseInt(localStorage.getItem("nextMashImportId")) || 1;
+
+      // DOM Elements
+      const importForm = document.getElementById("importForm");
+      const importTableBody = document.getElementById("importTableBody");
+      const searchInput = document.getElementById("searchInput");
+      const noDataMessage = document.getElementById("noDataMessage");
+      const currentDateElement = document.getElementById("currentDate");
+      const stockList = document.getElementById("stockList");
+      const typeChart = document.getElementById("typeChart");
+      const topProducts = document.getElementById("topProducts");
+
+      // Danh sách sản phẩm MASH Bakery
+      const productList = {
+        mangcauxiemsen: "Trung Thu Mãng Cầu Xiêm Sen",
+        suaduacafe: "Trung Thu Sữa Dừa Cafe",
+        khebuoiquehoa: "Trung Thu Khế Bưởi Quế Hoa",
+        vaihongcanhsen: "Trung Thu Vải Hồng Cánh Sen",
+        bosottieuden: "Trung Thu Bò Sốt Tiêu Đen",
+        namtruffle: "Trung Thu Nấm Truffle",
+        tomyumhaisan: "Trung Thu Tomyum Hải Sản",
+        senvangxoaideo: "Trung Thu Sen Vàng Xoài Dẻo",
+        gaodocomdua: "Trung Thu Gạo Đỏ Cốm Dừa",
+        motay: "Trung Thu Mơ Tây",
+        cafe: "Trung Thu Cafe",
+        namvietquat: "Trung Thu Nam Việt Quất",
+      };
+
+      // Danh sách loại bánh
+      const typeList = {
+        banh_nuong: "Bánh nướng",
+        banh_deo: "Bánh dẻo",
+        banh_chay: "Bánh chay",
+        banh_dac_biet: "Bánh đặc biệt",
+      };
+
+      // Hàm định dạng tiền tệ
+      function formatCurrency(amount) {
+        return new Intl.NumberFormat("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        }).format(amount);
+      }
+
+      // Hàm định dạng ngày tháng
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString("vi-VN");
+      }
+
+      // Hàm thêm phiếu nhập
+      function addImportItem(date, name, type, price, quantity, supplier) {
+        const importItem = {
+          id: nextId++,
+          date: date,
+          name: name,
+          type: type,
+          price: parseFloat(price),
+          quantity: parseInt(quantity),
+          supplier: supplier,
+          total: parseFloat(price) * parseInt(quantity),
+        };
+
+        importList.push(importItem);
+        saveToLocalStorage();
+        renderImportList();
+        updateStats();
+        updateStock();
+        updateCharts();
+        importForm.reset();
+
+        // Đặt lại ngày là hôm nay
+        const today = new Date().toISOString().split("T")[0];
+        document.getElementById("importDate").value = today;
+      }
+
+      // Hàm xóa phiếu nhập
+      function deleteImportItem(id) {
+        if (confirm("Bạn có chắc chắn muốn xóa phiếu nhập này?")) {
+          importList = importList.filter((item) => item.id !== id);
+          saveToLocalStorage();
+          renderImportList();
+          updateStats();
+          updateStock();
+          updateCharts();
+        }
+      }
+
+      // Hàm lưu dữ liệu vào localStorage
+      function saveToLocalStorage() {
+        localStorage.setItem("mashMoonCakeImports", JSON.stringify(importList));
+        localStorage.setItem("nextMashImportId", nextId.toString());
+      }
+
+      // Hàm hiển thị danh sách phiếu nhập
+      function renderImportList(filteredList = null) {
+        const listToRender = filteredList || importList;
+
+        if (listToRender.length === 0) {
+          importTableBody.innerHTML = "";
+          noDataMessage.classList.remove("hidden");
+          return;
+        }
+
+        noDataMessage.classList.add("hidden");
+
+        importTableBody.innerHTML = listToRender
+          .map(
+            (item) => `
+                <tr class="border-b border-gray-600 hover:bg-gray-700 transition duration-200">
+                    <td class="p-4 font-mono">MASH${item.id
+                      .toString()
+                      .padStart(4, "0")}</td>
+                    <td class="p-4">${formatDate(item.date)}</td>
+                    <td class="p-4">${productList[item.name] || item.name}</td>
+                    <td class="p-4">${typeList[item.type] || item.type}</td>
+                    <td class="p-4">${item.quantity}</td>
+                    <td class="p-4">${formatCurrency(item.price)}</td>
+                    <td class="p-4 font-semibold text-blue-400">${formatCurrency(
+                      item.total
+                    )}</td>
+                    <td class="p-4">
+                        <button 
+                            onclick="deleteImportItem(${item.id})" 
+                            class="bg-red-600 hover:bg-red-500 px-3 py-1 rounded text-sm transition duration-200"
+                        >
+                            <i class="fas fa-trash mr-1"></i> Xóa
+                        </button>
+                    </td>
+                </tr>
+            `
+          )
+          .join("");
+      }
+
+      // Hàm tìm kiếm phiếu nhập
+      function searchImports(query) {
+        if (!query) {
+          renderImportList();
+          return;
+        }
+
+        const filteredList = importList.filter(
+          (item) =>
+            item.date.includes(query) ||
+            (productList[item.name] || item.name)
+              .toLowerCase()
+              .includes(query.toLowerCase()) ||
+            (typeList[item.type] || item.type)
+              .toLowerCase()
+              .includes(query.toLowerCase()) ||
+            item.supplier.toLowerCase().includes(query.toLowerCase())
+        );
+
+        renderImportList(filteredList);
+      }
+
+      // Hàm cập nhật thống kê
+      function updateStats() {
+        const totalImports = importList.length;
+        const totalProducts = importList.reduce(
+          (sum, item) => sum + item.quantity,
+          0
+        );
+        const totalValue = importList.reduce(
+          (sum, item) => sum + item.total,
+          0
+        );
+
+        document.getElementById("totalImports").textContent = totalImports;
+        document.getElementById("totalProducts").textContent = totalProducts;
+        document.getElementById("totalValue").textContent =
+          formatCurrency(totalValue);
+      }
+
+      // Hàm cập nhật tồn kho
+      function updateStock() {
+        const stock = {};
+
+        importList.forEach((item) => {
+          if (!stock[item.name]) {
+            stock[item.name] = 0;
+          }
+          stock[item.name] += item.quantity;
+        });
+
+        stockList.innerHTML = "";
+
+        Object.keys(stock).forEach((productKey) => {
+          const productName = productList[productKey] || productKey;
+          const quantity = stock[productKey];
+
+          const stockItem = document.createElement("div");
+          stockItem.className =
+            "flex justify-between items-center p-3 bg-gray-700 rounded-lg";
+          stockItem.innerHTML = `
+                    <span class="text-white">${productName}</span>
+                    <span class="text-blue-400 font-bold">${quantity}</span>
+                `;
+          stockList.appendChild(stockItem);
+        });
+      }
+
+      // Hàm cập nhật biểu đồ
+      function updateCharts() {
+        // Biểu đồ theo loại bánh
+        const typeStats = {};
+        importList.forEach((item) => {
+          if (!typeStats[item.type]) {
+            typeStats[item.type] = 0;
+          }
+          typeStats[item.type] += item.quantity;
+        });
+
+        typeChart.innerHTML = "";
+        Object.keys(typeStats).forEach((typeKey) => {
+          const typeName = typeList[typeKey] || typeKey;
+          const quantity = typeStats[typeKey];
+          const totalQuantity = importList.reduce(
+            (sum, item) => sum + item.quantity,
+            0
+          );
+          const percentage =
+            totalQuantity > 0
+              ? Math.round((quantity / totalQuantity) * 100)
+              : 0;
+
+          const chartItem = document.createElement("div");
+          chartItem.className = "flex items-center";
+          chartItem.innerHTML = `
+                    <div class="w-24 text-white">${typeName}</div>
+                    <div class="flex-1 bg-gray-700 rounded-full h-4">
+                        <div class="bg-blue-500 h-4 rounded-full" style="width: ${percentage}%"></div>
+                    </div>
+                    <div class="w-10 text-right text-gray-400">${percentage}%</div>
+                `;
+          typeChart.appendChild(chartItem);
+        });
+
+        // Top sản phẩm
+        const productStats = {};
+        importList.forEach((item) => {
+          if (!productStats[item.name]) {
+            productStats[item.name] = 0;
+          }
+          productStats[item.name] += item.quantity;
+        });
+
+        // Sắp xếp sản phẩm theo số lượng
+        const sortedProducts = Object.keys(productStats)
+          .map((key) => ({ name: key, quantity: productStats[key] }))
+          .sort((a, b) => b.quantity - a.quantity)
+          .slice(0, 5); // Top 5 sản phẩm
+
+        topProducts.innerHTML = "";
+        sortedProducts.forEach((product, index) => {
+          const productName = productList[product.name] || product.name;
+          const rankItem = document.createElement("div");
+          rankItem.className =
+            "flex items-center justify-between p-2 bg-gray-700 rounded";
+          rankItem.innerHTML = `
+                    <div class="flex items-center">
+                        <span class="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs mr-2">${
+                          index + 1
+                        }</span>
+                        <span class="text-white">${productName}</span>
+                    </div>
+                    <span class="text-blue-400 font-bold">${
+                      product.quantity
+                    }</span>
+                `;
+          topProducts.appendChild(rankItem);
+        });
+      }
+
+      // Event Listeners
+      importForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const date = document.getElementById("importDate").value;
+        const name = document.getElementById("cakeName").value;
+        const type = document.getElementById("cakeType").value;
+        const price = document.getElementById("importPrice").value;
+        const quantity = document.getElementById("importQuantity").value;
+        const supplier = document.getElementById("supplier").value;
+
+        if (!date || !name || !type || !price || !quantity || !supplier) {
+          alert("Vui lòng điền đầy đủ thông tin");
+          return;
+        }
+
+        addImportItem(date, name, type, price, quantity, supplier);
+      });
+
+      searchInput.addEventListener("input", function () {
+        searchImports(this.value);
+      });
+
+      // Khởi tạo trang
+      document.addEventListener("DOMContentLoaded", function () {
+        // Đặt giá trị mặc định cho ngày là hôm nay
+        const today = new Date().toISOString().split("T")[0];
+        document.getElementById("importDate").value = today;
+
+        // Hiển thị ngày hiện tại
+        currentDateElement.textContent = formatDate(today);
+
+        renderImportList();
+        updateStats();
+        updateStock();
+        updateCharts();
+      });
+    </script>
   </body>
 </html>
