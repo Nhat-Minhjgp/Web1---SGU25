@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý Khuyến mãi - Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              gray: {
+                750: "#2d3748",
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .status-active {
+        background-color: rgba(34, 197, 94, 0.2);
+        color: rgb(34, 197, 94);
+        border-left: 4px solid #10b981;
+      }
+      .status-upcoming {
+        background-color: rgba(59, 130, 246, 0.2);
+        color: rgb(59, 130, 246);
+        border-left: 4px solid #3b82f6;
+      }
+      .status-expired {
+        background-color: rgba(107, 114, 128, 0.2);
+        color: rgb(107, 114, 128);
+        border-left: 4px solid #6b7280;
+      }
+      .discount-badge {
+        background: linear-gradient(135deg, #ff6b6b, #ffe66d);
+        color: #000;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-900 text-white min-h-screen">
+    <!-- HEADER -->
+    <header
+      class="flex justify-between items-center px-6 py-4 bg-gray-800 shadow-md"
+    >
+      <div class="flex items-center space-x-4">
+        <button
+          onclick="goBack()"
+          class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition flex items-center"
+        >
+          <i class="fas fa-arrow-left mr-2"></i> Quay lại
+        </button>
+        <h1 class="text-2xl font-bold text-cyan-400">Quản lý Khuyến mãi</h1>
+      </div>
+      <button
+        onclick="logout()"
+        class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-full text-sm transition"
+      >
+        Đăng xuất
+      </button>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="p-8">
+      <!-- Thống kê nhanh -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+        <div class="bg-gray-800 p-4 rounded-xl shadow-lg">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-400">Đang diễn ra</p>
+              <p class="text-2xl font-bold text-cyan-400">3</p>
+            </div>
+            <div class="p-3 bg-cyan-500 rounded-lg">
+              <i class="fas fa-rocket text-white"></i>
+            </div>
+          </div>
+        </div>
+        <div class="bg-gray-800 p-4 rounded-xl shadow-lg">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-400">Sắp diễn ra</p>
+              <p class="text-2xl font-bold text-blue-400">2</p>
+            </div>
+            <div class="p-3 bg-blue-500 rounded-lg">
+              <i class="fas fa-clock text-white"></i>
+            </div>
+          </div>
+        </div>
+        <div class="bg-gray-800 p-4 rounded-xl shadow-lg">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-400">Đã kết thúc</p>
+              <p class="text-2xl font-bold text-gray-400">5</p>
+            </div>
+            <div class="p-3 bg-gray-500 rounded-lg">
+              <i class="fas fa-calendar-times text-white"></i>
+            </div>
+          </div>
+        </div>
+        <div class="bg-gray-800 p-4 rounded-xl shadow-lg">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-400">Tổng KM</p>
+              <p class="text-2xl font-bold text-purple-400">10</p>
+            </div>
+            <div class="p-3 bg-purple-500 rounded-lg">
+              <i class="fas fa-tags text-white"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Form thêm khuyến mãi -->
+        <div class="bg-gray-800 p-6 rounded-xl shadow-lg">
+          <h2 class="text-xl font-bold text-cyan-400 mb-4">
+            Thêm khuyến mãi mới
+          </h2>
+          <form class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2"
+                >Tên chương trình</label
+              >
+              <input
+                type="text"
+                class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                placeholder="Nhập tên chương trình"
+              />
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2"
+                  >Giảm giá (%)</label
+                >
+                <input
+                  type="number"
+                  class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  placeholder="10%"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2"
+                  >Giảm giá (VNĐ)</label
+                >
+                <input
+                  type="number"
+                  class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  placeholder="50,000"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2"
+                >Áp dụng cho</label
+              >
+              <select
+                class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              >
+                <option value="">Tất cả sản phẩm</option>
+                <option value="category">Theo loại sản phẩm</option>
+                <option value="product">Sản phẩm cụ thể</option>
+                <option value="order">Đơn hàng từ số tiền</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2"
+                  >Ngày bắt đầu</label
+                >
+                <input
+                  type="datetime-local"
+                  class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2"
+                  >Ngày kết thúc</label
+                >
+                <input
+                  type="datetime-local"
+                  class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2"
+                >Mô tả</label
+              >
+              <textarea
+                rows="3"
+                class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                placeholder="Mô tả chương trình khuyến mãi"
+              ></textarea>
+            </div>
+
+            <button
+              type="button"
+              onclick="addPromotion()"
+              class="w-full bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition"
+            >
+              <i class="fas fa-plus mr-2"></i> Thêm khuyến mãi
+            </button>
+          </form>
+        </div>
+
+        <!-- Danh sách khuyến mãi -->
+        <div class="bg-gray-800 p-6 rounded-xl shadow-lg lg:col-span-2">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold text-cyan-400">
+              Danh sách khuyến mãi
+            </h2>
+            <div class="flex space-x-2">
+              <select
+                class="px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-sm"
+              >
+                <option value="">Tất cả trạng thái</option>
+                <option value="active">Đang diễn ra</option>
+                <option value="upcoming">Sắp diễn ra</option>
+                <option value="expired">Đã kết thúc</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <!-- Khuyến mãi 1 -->
+            <div class="p-4 rounded-lg status-active">
+              <div class="flex justify-between items-start mb-2">
+                <div>
+                  <h3 class="font-semibold text-white">
+                    Giảm 20% Tết Trung Thu
+                  </h3>
+                  <p class="text-sm text-gray-400">
+                    Áp dụng cho tất cả sản phẩm nhân ngọt
+                  </p>
+                </div>
+                <span class="discount-badge px-3 py-1 rounded-full text-sm"
+                  >20% OFF</span
+                >
+              </div>
+              <div class="flex justify-between items-center text-sm">
+                <div>
+                  <span class="text-gray-400">15/08 - 30/09/2024</span>
+                  <span class="ml-4 text-green-400"
+                    ><i class="fas fa-users mr-1"></i> 156 lượt dùng</span
+                  >
+                </div>
+                <div class="flex space-x-2">
+                  <button
+                    onclick="editPromotion(1)"
+                    class="text-cyan-400 hover:text-cyan-300"
+                  >
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button
+                    onclick="deletePromotion(1)"
+                    class="text-red-400 hover:text-red-300"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Khuyến mãi 2 -->
+            <div class="p-4 rounded-lg status-upcoming">
+              <div class="flex justify-between items-start mb-2">
+                <div>
+                  <h3 class="font-semibold text-white">Mua 5 tặng 1</h3>
+                  <p class="text-sm text-gray-400">
+                    Mua 5 bánh bất kỳ tặng 1 bánh nhân ngọt
+                  </p>
+                </div>
+                <span class="discount-badge px-3 py-1 rounded-full text-sm"
+                  >BUY 5 GET 1</span
+                >
+              </div>
+              <div class="flex justify-between items-center text-sm">
+                <div>
+                  <span class="text-gray-400">01/10 - 15/10/2024</span>
+                  <span class="ml-4 text-blue-400"
+                    ><i class="fas fa-clock mr-1"></i> Sắp diễn ra</span
+                  >
+                </div>
+                <div class="flex space-x-2">
+                  <button
+                    onclick="editPromotion(2)"
+                    class="text-cyan-400 hover:text-cyan-300"
+                  >
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button
+                    onclick="deletePromotion(2)"
+                    class="text-red-400 hover:text-red-300"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Khuyến mãi 3 -->
+            <div class="p-4 rounded-lg status-active">
+              <div class="flex justify-between items-start mb-2">
+                <div>
+                  <h3 class="font-semibold text-white">Freeship toàn quốc</h3>
+                  <p class="text-sm text-gray-400">Đơn hàng từ 500.000đ</p>
+                </div>
+                <span
+                  class="bg-gradient-to-r from-green-400 to-blue-500 px-3 py-1 rounded-full text-sm text-white"
+                  >FREESHIP</span
+                >
+              </div>
+              <div class="flex justify-between items-center text-sm">
+                <div>
+                  <span class="text-gray-400">01/09 - 31/12/2024</span>
+                  <span class="ml-4 text-green-400"
+                    ><i class="fas fa-users mr-1"></i> 892 lượt dùng</span
+                  >
+                </div>
+                <div class="flex space-x-2">
+                  <button
+                    onclick="editPromotion(3)"
+                    class="text-cyan-400 hover:text-cyan-300"
+                  >
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button
+                    onclick="deletePromotion(3)"
+                    class="text-red-400 hover:text-red-300"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Khuyến mãi 4 -->
+            <div class="p-4 rounded-lg status-expired">
+              <div class="flex justify-between items-start mb-2">
+                <div>
+                  <h3 class="font-semibold text-white">Giảm 50K đơn 300K</h3>
+                  <p class="text-sm text-gray-400">
+                    Áp dụng cho tất cả đơn hàng
+                  </p>
+                </div>
+                <span class="discount-badge px-3 py-1 rounded-full text-sm"
+                  >50K OFF</span
+                >
+              </div>
+              <div class="flex justify-between items-center text-sm">
+                <div>
+                  <span class="text-gray-400">01/08 - 31/08/2024</span>
+                  <span class="ml-4 text-gray-400"
+                    ><i class="fas fa-calendar-times mr-1"></i> Đã kết
+                    thúc</span
+                  >
+                </div>
+                <div class="flex space-x-2">
+                  <button
+                    onclick="editPromotion(4)"
+                    class="text-cyan-400 hover:text-cyan-300"
+                  >
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button
+                    onclick="deletePromotion(4)"
+                    class="text-red-400 hover:text-red-300"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thống kê hiệu quả -->
+      <div class="bg-gray-800 p-6 rounded-xl shadow-lg mt-6">
+        <h2 class="text-xl font-bold text-cyan-400 mb-4">
+          Thống kê hiệu quả khuyến mãi
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="p-4 bg-gray-750 rounded-lg">
+            <p class="text-sm text-gray-400">Tổng doanh thu KM</p>
+            <p class="text-2xl font-bold text-cyan-400">45.2M</p>
+            <p class="text-sm text-green-400">+12.5%</p>
+          </div>
+          <div class="p-4 bg-gray-750 rounded-lg">
+            <p class="text-sm text-gray-400">Đơn hàng sử dụng KM</p>
+            <p class="text-2xl font-bold text-blue-400">1,245</p>
+            <p class="text-sm text-green-400">+8.3%</p>
+          </div>
+          <div class="p-4 bg-gray-750 rounded-lg">
+            <p class="text-sm text-gray-400">Tỷ lệ sử dụng</p>
+            <p class="text-2xl font-bold text-green-400">68%</p>
+            <p class="text-sm text-green-400">+5.2%</p>
+          </div>
+          <div class="p-4 bg-gray-750 rounded-lg">
+            <p class="text-sm text-gray-400">Chiết khấu trung bình</p>
+            <p class="text-2xl font-bold text-purple-400">15%</p>
+            <p class="text-sm text-red-400">-2.1%</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      function goBack() {
+        window.location.href = "daodienad.html";
+      }
+
+      function logout() {
+        if (confirm("Bạn có chắc chắn muốn đăng xuất?")) {
+          alert("Đã đăng xuất!");
+          window.location.href = "adlog.html";
+        }
+      }
+
+      function addPromotion() {
+        alert("Đã thêm khuyến mãi mới thành công!");
+        // Thực tế sẽ gửi dữ liệu form đến server
+      }
+
+      function editPromotion(id) {
+        alert(`Chỉnh sửa khuyến mãi #${id}`);
+        // Thực tế sẽ mở modal chỉnh sửa với dữ liệu của khuyến mãi
+      }
+
+      function deletePromotion(id) {
+        if (confirm(`Bạn có chắc chắn muốn xóa khuyến mãi #${id}?`)) {
+          alert(`Đã xóa khuyến mãi #${id}`);
+          // Thực tế sẽ gửi yêu cầu xóa đến server
+        }
+      }
+
+      // Tự động cập nhật trạng thái khuyến mãi theo thời gian
+      function updatePromotionStatus() {
+        const now = new Date();
+        document.querySelectorAll(".promotion-item").forEach((item) => {
+          const startDate = new Date(item.dataset.start);
+          const endDate = new Date(item.dataset.end);
+
+          if (now < startDate) {
+            item.classList.add("status-upcoming");
+            item.classList.remove("status-active", "status-expired");
+          } else if (now <= endDate) {
+            item.classList.add("status-active");
+            item.classList.remove("status-upcoming", "status-expired");
+          } else {
+            item.classList.add("status-expired");
+            item.classList.remove("status-active", "status-upcoming");
+          }
+        });
+      }
+
+      // Cập nhật mỗi phút
+      setInterval(updatePromotionStatus, 60000);
+      updatePromotionStatus();
+    </script>
+  </body>
+</html>
