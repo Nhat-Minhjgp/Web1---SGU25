@@ -9,7 +9,6 @@
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <link href="./output.css" rel="stylesheet">
   <style>
-    /* CSS để đảm bảo footer luôn ở dưới cùng */
     html, body {
       height: 100%;
       margin: 0;
@@ -23,6 +22,37 @@
     
     main {
       flex: 1;
+    }
+    
+    .quantity-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      transition: all 0.2s;
+    }
+    
+    .quantity-btn:hover {
+      transform: scale(1.1);
+    }
+    
+    .quantity-input {
+      width: 50px;
+      text-align: center;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+    }
+    
+    .delete-btn {
+      transition: all 0.3s;
+    }
+    
+    .delete-btn:hover {
+      background-color: #fee2e2;
+      transform: scale(1.05);
     }
   </style>
 </head>
@@ -182,6 +212,29 @@
       }
 
       // Hiển thị giỏ hàng
+      renderCart();
+
+      // Xử lý đặt hàng
+      document.getElementById("cartForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const selected = Array.from(document.querySelectorAll('input[name="selectedItems"]:checked'))
+          .map(input => parseInt(input.value));
+
+        if (selected.length === 0) {
+          alert("Vui lòng chọn ít nhất một sản phẩm để đặt hàng.");
+          return;
+        }
+
+        const selectedItems = selected.map(i => cart[i]);
+        localStorage.setItem("checkoutItems", JSON.stringify(selectedItems));
+        alert("Chuyển hướng tới trang thanh toán");
+        window.location.href = "./thanhtoan.html";
+      });
+    });
+
+    // Hàm hiển thị giỏ hàng
+    function renderCart() {
       const cart = JSON.parse(localStorage.getItem("cart")) || [];
       const cartItems = document.getElementById("cartItems");
       const orderBtn = document.getElementById("orderBtn");
@@ -197,75 +250,104 @@
             </a>
           </div>
         `;
+        orderBtn.classList.add("hidden");
+        totalAmount.textContent = "0₫";
         return;
       }
 
+      cartItems.innerHTML = '';
+      
       cart.forEach((item, index) => {
         const itemPrice = item.price || 0;
         const itemTotal = itemPrice * item.quantity;
-        total += itemTotal;
         
         const div = document.createElement("div");
         div.className = "flex items-center justify-between border-b pb-4 bg-white p-4 rounded-lg shadow-sm";
         div.innerHTML = `
           <div class="flex items-center space-x-4 flex-1">
             <input type="checkbox" name="selectedItems" value="${index}" 
-              class="form-checkbox w-5 h-5 text-[#8B0000] cursor-pointer" checked />
+              class="form-checkbox w-5 h-5 text-[#8B0000] cursor-pointer select-item" checked 
+              onchange="updateTotal()" />
             
             <div class="flex-1">
               <p class="text-lg font-semibold text-gray-800">${item.name}</p>
-              <div class="grid grid-cols-2 gap-4 mt-2 text-sm">
-                <div>
+              <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mt-2 text-sm">
+                <div class="mb-2 sm:mb-0">
                   <p class="text-gray-600">Đơn giá: <span class="font-medium">${itemPrice.toLocaleString("vi-VN")}₫</span></p>
-                  <p class="text-gray-600">Số lượng: <span class="font-medium">${item.quantity}</span></p>
+                  <div class="flex items-center mt-1">
+                    <span class="text-gray-600 mr-2">Số lượng:</span>
+                    <div class="flex items-center">
+                      <button type="button" onclick="updateQuantity(${index}, -1)" 
+                        class="quantity-btn bg-gray-200 text-gray-700 hover:bg-gray-300">
+                        <i class="fas fa-minus">-</i>
+                      </button>
+                      <input type="number" value="${item.quantity}" min="1" 
+                        class="quantity-input mx-2 py-1" 
+                        onchange="updateQuantityInput(${index}, this.value)" />
+                      <button type="button" onclick="updateQuantity(${index}, 1)" 
+                        class="quantity-btn bg-gray-200 text-gray-700 hover:bg-gray-300">
+                        <i class="fas fa-plus">+</i>
+                      </button>
+                    </div>
+                  </div>
                 </div>
                 <div class="text-right">
                   <p class="text-gray-600">Thành tiền:</p>
-                  <p class="text-lg font-bold text-[#8B0000]">${itemTotal.toLocaleString("vi-VN")}₫</p>
+                  <p class="text-lg font-bold text-[#8B0000] item-total" data-index="${index}">${itemTotal.toLocaleString("vi-VN")}₫</p>
                 </div>
               </div>
             </div>
           </div>
           
           <button type="button" onclick="removeItem(${index})" 
-            class="ml-4 text-red-600 hover:text-red-800 transition">
-            <i class="fas fa-trash"></i>
+            class="ml-4 text-red-600 hover:text-red-800 transition p-2 rounded-full delete-btn border border-red-200">
+            <i class="fas fa-trash"></i> Xoá
           </button>
         `;
         cartItems.appendChild(div);
       });
 
       // Cập nhật tổng tiền
-      totalAmount.textContent = `${total.toLocaleString("vi-VN")}₫`;
+      updateTotal();
       orderBtn.classList.remove("hidden");
+    }
 
-      // Xử lý đặt hàng
-      document.getElementById("cartForm").addEventListener("submit", (e) => {
-        e.preventDefault();
-        const selected = Array.from(document.querySelectorAll('input[name="selectedItems"]:checked'))
-          .map(input => parseInt(input.value));
-
-        if (selected.length === 0) {
-          alert("Vui lòng chọn ít nhất một sản phẩm để đặt hàng.");
-          return;
-        }
-
-        const selectedItems = selected.map(i => cart[i]);
-        localStorage.setItem("checkoutItems", JSON.stringify(selectedItems));
-         alert("Chuyển hướng tới trang thanh toán");
-        window.location.href = "./thanhtoan.html";
+    // Hàm cập nhật tổng tiền dựa trên các sản phẩm được chọn
+    function updateTotal() {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const selectedItems = Array.from(document.querySelectorAll('input[name="selectedItems"]:checked'))
+        .map(input => parseInt(input.value));
+      
+      let total = 0;
+      
+      selectedItems.forEach(index => {
+        const item = cart[index];
+        const itemPrice = item.price || 0;
+        total += itemPrice * item.quantity;
       });
-    });
+      
+      document.getElementById("totalAmount").textContent = `${total.toLocaleString("vi-VN")}₫`;
+      
+      // Cập nhật trạng thái nút đặt hàng
+      const orderBtn = document.getElementById("orderBtn");
+      if (selectedItems.length === 0) {
+        orderBtn.classList.add("hidden");
+      } else {
+        orderBtn.classList.remove("hidden");
+      }
+    }
 
     // Hàm xóa sản phẩm khỏi giỏ hàng
     function removeItem(index) {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      cart.splice(index, 1);
-      localStorage.setItem("cart", JSON.stringify(cart));
-      window.location.reload();
+      if (confirm("Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?")) {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        cart.splice(index, 1);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        renderCart();
+      }
     }
 
-    // Hàm cập nhật số lượng (nếu muốn thêm chức năng này)
+    // Hàm cập nhật số lượng bằng nút +/-
     function updateQuantity(index, change) {
       let cart = JSON.parse(localStorage.getItem("cart")) || [];
       cart[index].quantity += change;
@@ -275,7 +357,22 @@
       }
       
       localStorage.setItem("cart", JSON.stringify(cart));
-      window.location.reload();
+      renderCart();
+    }
+
+    // Hàm cập nhật số lượng bằng input
+    function updateQuantityInput(index, value) {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const newQuantity = parseInt(value);
+      
+      if (isNaN(newQuantity) || newQuantity < 1) {
+        cart[index].quantity = 1;
+      } else {
+        cart[index].quantity = newQuantity;
+      }
+      
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
     }
   </script>
 </body>
