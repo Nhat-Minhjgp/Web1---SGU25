@@ -160,27 +160,10 @@
         <!-- Phân trang -->
         <div class="flex justify-between items-center mt-6">
           <div class="text-sm text-gray-400">
-            Hiển thị <span id="startItem">1</span>-<span id="endItem">8</span>
+            Hiển thị <span id="startItem">1</span>-<span id="endItem">12</span>
             của <span id="totalItems">12</span> sản phẩm
           </div>
-          <div class="flex space-x-2">
-            <button
-              class="px-3 py-1 bg-gray-700 rounded-lg hover:bg-gray-600 transition"
-            >
-              &laquo;
-            </button>
-            <button class="px-3 py-1 bg-cyan-600 rounded-lg">1</button>
-            <button
-              class="px-3 py-1 bg-gray-700 rounded-lg hover:bg-gray-600 transition"
-            >
-              2
-            </button>
-            <button
-              class="px-3 py-1 bg-gray-700 rounded-lg hover:bg-gray-600 transition"
-            >
-              &raquo;
-            </button>
-          </div>
+         
         </div>
       </div>
     </main>
@@ -336,7 +319,7 @@
           type: "Nhân ngọt",
           code: "MCXS01",
           name: "Trung Thu Mãng Cầu Xiêm Sen",
-          price: 185000,
+          price: 55000,
           stock: 50,
           image: "",
           description:
@@ -348,7 +331,7 @@
           type: "Nhân ngọt",
           code: "SDC01",
           name: "Trung Thu Sữa Dừa Cafe",
-          price: 175000,
+          price: 55000,
           stock: 45,
           image: "",
           description:
@@ -360,7 +343,7 @@
           type: "Nhân ngọt",
           code: "KBQH01",
           name: "Trung Thu Khế Bưởi Quế Hoa",
-          price: 195000,
+          price: 55000,
           stock: 30,
           image: "",
           description:
@@ -372,7 +355,7 @@
           type: "Nhân ngọt",
           code: "VHCS01",
           name: "Trung Thu Vải Hồng Cánh Sen",
-          price: 205000,
+          price: 55000,
           stock: 25,
           image: "",
           description:
@@ -384,7 +367,7 @@
           type: "Nhân mặn",
           code: "BSTD01",
           name: "Trung Thu Bò Sốt Tiêu Đen",
-          price: 215000,
+          price: 55000,
           stock: 40,
           image: "",
           description:
@@ -396,19 +379,19 @@
           type: "Đặc biệt",
           code: "NTT01",
           name: "Trung Thu Nấm Truffle",
-          price: 285000,
+          price: 55000,
           stock: 15,
           image: "",
           description:
             "Nhân nấm truffle cao cấp – đại diện cho tinh thần sáng tạo và tay nghề thủ công",
-          hidden: true,
+          hidden: false,
         },
         {
           id: 7,
           type: "Nhân mặn",
           code: "TMHS01",
           name: "Trung Thu Tomyum Hải Sản",
-          price: 225000,
+          price: 55000,
           stock: 35,
           image: "",
           description:
@@ -420,15 +403,64 @@
           type: "Nhân ngọt",
           code: "SVXD01",
           name: "Trung Thu Sen Vàng Xoài Dẻo",
-          price: 195000,
+          price: 55000,
           stock: 40,
           image: "",
           description:
             "Nhân ngọt thanh, dẻo mềm hòa quyện vị xoài chín và hương sen thuần khiết.",
           hidden: false,
         },
-      ];
+        
+         {
+          id: 9,
+          type: "Nhân ngọt",
+          code: "GDCD01",
+          name: "Trung Thu Gạo Đỏ Cốm Dừa",
+          price: 55000,
+          stock: 40,
+          image: "",
+          description:
+            "Thơm béo vị sữa, quyện cùng dừa nạo mềm mại, ngọt dịu.",
+          hidden: false,
+        },
+         {
+          id: 10,
+          type: "Nhân ngọt",
+          code: "MT01",
+          name: "Trung Thu Mơ Tây",
+          price: 55000,
+          stock: 40,
+          image: "",
+          description:
+            "Nhân Mơ Tây chua ngọt hài hòa, mang vị thu nhẹ nhàng và lạ miệng.",
+          hidden: false,
+        },
+        {
+          id: 11,
+          type: "Nhân ngọt",
+          code: "CAFE01",
+          name: "Trung Thu Cafe",
+          price: 55000,
+          stock: 40,
+          image: "",
+          description:
+            "Nhân Cà Phê đậm đà, thơm ngậy như một tách cà phê tinh tế giữa mùa thu.",
+          hidden: false,
+        },
+          {
+          id: 12,
+          type: "Nhân ngọt",
+          code: "VQ01",
+          name: "Trung Thu Nam Việt Quất",
+          price: 55000,
+          stock: 40,
+          image: "",
+          description:
+            "Nhân Nam Việt Quốc chua ngọt thanh lịch, phảng phất vị Tây phương hiện đại.",
+          hidden: false,
+        },
 
+      ];
       let currentEditId = null;
 
       // Hiển thị danh sách sản phẩm
@@ -664,6 +696,15 @@
       document.addEventListener("DOMContentLoaded", function () {
         renderProductList();
       });
+
+
+
+
+      
     </script>
+
+
+
+
   </body>
 </html>
