@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý Giá bán - Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              gray: {
+                750: "#2d3748",
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .profit-positive {
+        color: #10b981;
+      }
+      .profit-negative {
+        color: #ef4444;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-900 text-white min-h-screen">
+    <!-- HEADER -->
+    <header
+      class="flex justify-between items-center px-6 py-4 bg-gray-800 shadow-md"
+    >
+      <div class="flex items-center space-x-4">
+        <button
+          onclick="goBack()"
+          class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition flex items-center"
+        >
+          <i class="fas fa-arrow-left mr-2"></i> Quay lại
+        </button>
+        <h1 class="text-2xl font-bold text-cyan-400">Quản lý Giá bán</h1>
+      </div>
+      <button
+        onclick="logout()"
+        class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-full text-sm transition"
+      >
+        Đăng xuất
+      </button>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="p-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Tỷ lệ lợi nhuận theo loại -->
+        <div class="bg-gray-800 p-6 rounded-xl shadow-lg">
+          <h2 class="text-xl font-bold text-cyan-400 mb-4">
+            Tỷ lệ lợi nhuận theo loại sản phẩm
+          </h2>
+          <div class="space-y-4">
+            <div
+              class="flex justify-between items-center p-3 bg-gray-750 rounded-lg"
+            >
+              <span>Nhân ngọt</span>
+              <div class="flex items-center space-x-2">
+                <input
+                  type="number"
+                  value="30"
+                  class="w-20 px-2 py-1 bg-gray-700 border border-gray-600 rounded text-right"
+                />
+                <span>%</span>
+                <button class="text-cyan-400 hover:text-cyan-300">
+                  <i class="fas fa-save"></i>
+                </button>
+              </div>
+            </div>
+            <div
+              class="flex justify-between items-center p-3 bg-gray-750 rounded-lg"
+            >
+              <span>Nhân mặn</span>
+              <div class="flex items-center space-x-2">
+                <input
+                  type="number"
+                  value="35"
+                  class="w-20 px-2 py-1 bg-gray-700 border border-gray-600 rounded text-right"
+                />
+                <span>%</span>
+                <button class="text-cyan-400 hover:text-cyan-300">
+                  <i class="fas fa-save"></i>
+                </button>
+              </div>
+            </div>
+            <div
+              class="flex justify-between items-center p-3 bg-gray-750 rounded-lg"
+            >
+              <span>Đặc biệt</span>
+              <div class="flex items-center space-x-2">
+                <input
+                  type="number"
+                  value="40"
+                  class="w-20 px-2 py-1 bg-gray-700 border border-gray-600 rounded text-right"
+                />
+                <span>%</span>
+                <button class="text-cyan-400 hover:text-cyan-300">
+                  <i class="fas fa-save"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tỷ lệ lợi nhuận theo sản phẩm -->
+        <div class="bg-gray-800 p-6 rounded-xl shadow-lg">
+          <h2 class="text-xl font-bold text-cyan-400 mb-4">
+            Tỷ lệ lợi nhuận theo sản phẩm
+          </h2>
+          <div class="space-y-3">
+            <div
+              class="flex justify-between items-center p-3 bg-gray-750 rounded-lg"
+            >
+              <span class="text-sm">Mãng Cầu Xiêm Sen</span>
+              <div class="flex items-center space-x-2">
+                <input
+                  type="number"
+                  value="32"
+                  class="w-16 px-2 py-1 bg-gray-700 border border-gray-600 rounded text-right text-sm"
+                />
+                <span class="text-sm">%</span>
+                <button class="text-cyan-400 hover:text-cyan-300 text-sm">
+                  <i class="fas fa-save"></i>
+                </button>
+              </div>
+            </div>
+            <div
+              class="flex justify-between items-center p-3 bg-gray-750 rounded-lg"
+            >
+              <span class="text-sm">Sữa Dừa Cafe</span>
+              <div class="flex items-center space-x-2">
+                <input
+                  type="number"
+                  value="28"
+                  class="w-16 px-2 py-1 bg-gray-700 border border-gray-600 rounded text-right text-sm"
+                />
+                <span class="text-sm">%</span>
+                <button class="text-cyan-400 hover:text-cyan-300 text-sm">
+                  <i class="fas fa-save"></i>
+                </button>
+              </div>
+            </div>
+            <div
+              class="flex justify-between items-center p-3 bg-gray-750 rounded-lg"
+            >
+              <span class="text-sm">Nấm Truffle</span>
+              <div class="flex items-center space-x-2">
+                <input
+                  type="number"
+                  value="45"
+                  class="w-16 px-2 py-1 bg-gray-700 border border-gray-600 rounded text-right text-sm"
+                />
+                <span class="text-sm">%</span>
+                <button class="text-cyan-400 hover:text-cyan-300 text-sm">
+                  <i class="fas fa-save"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bảng giá sản phẩm -->
+      <div class="bg-gray-800 p-6 rounded-xl shadow-lg mt-6">
+        <h2 class="text-xl font-bold text-cyan-400 mb-4">
+          Tra cứu giá sản phẩm
+        </h2>
+
+        <!-- Bộ lọc -->
+        <div class="flex gap-4 mb-4">
+          <input
+            type="text"
+            placeholder="Tìm kiếm sản phẩm..."
+            class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 flex-1"
+          />
+          <select
+            class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          >
+            <option value="">Tất cả loại</option>
+            <option value="ngot">Nhân ngọt</option>
+            <option value="man">Nhân mặn</option>
+            <option value="dacbiet">Đặc biệt</option>
+          </select>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-700">
+            <thead class="bg-gray-750">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
+                >
+                  Sản phẩm
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
+                >
+                  Giá vốn
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
+                >
+                  Lợi nhuận
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
+                >
+                  Giá bán
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-gray-800 divide-y divide-gray-700">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm font-medium text-white">
+                    Mãng Cầu Xiêm Sen
+                  </div>
+                  <div class="text-sm text-gray-400">Nhân ngọt</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                  120.000đ
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm profit-positive">
+                  32%
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"
+                >
+                  185.000đ
+                </td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm font-medium text-white">Sữa Dừa Cafe</div>
+                  <div class="text-sm text-gray-400">Nhân ngọt</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                  115.000đ
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm profit-positive">
+                  28%
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"
+                >
+                  175.000đ
+                </td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm font-medium text-white">Nấm Truffle</div>
+                  <div class="text-sm text-gray-400">Đặc biệt</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                  180.000đ
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm profit-positive">
+                  45%
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"
+                >
+                  285.000đ
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      function goBack() {
+        window.location.href = "daodienad.html";
+      }
+
+      function logout() {
+        if (confirm("Bạn có chắc chắn muốn đăng xuất?")) {
+          alert("Đã đăng xuất!");
+          window.location.href = "adlog.html";
+        }
+      }
+    </script>
+  </body>
+</html>
