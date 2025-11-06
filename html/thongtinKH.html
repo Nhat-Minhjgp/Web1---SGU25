@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,15 +13,15 @@
   <!-- HEADER -->
   <header class="flex justify-between items-center px-8 py-4 bg-white shadow-md">
     <h2 class="text-2xl font-bold text-[#8B0000]">
-        <a href="./pages.html" class="hover:text-[#8B0000]">MASH</a>
-      </h2>
-      <nav class="hidden md:flex space-x-6 text-sm font-medium absolute left-1/2 transform -translate-x-1/2">
-        <a href="./pages.html" class="hover:text-[#8B0000]">Trang chủ</a>
-        <a href="./sanpham.html" class="hover:text-[#8B0000]">Sản phẩm</a>
-        <a href="./gioithieu.html" class="hover:text-[#8B0000]">Giới thiệu</a>
-        <a href="./lienhe.html" class="hover:text-[#8B0000]">Liên hệ</a>
-      </nav>
-  
+      <a href="./pages.html" class="hover:text-[#8B0000]">MASH</a>
+    </h2>
+    <nav class="hidden md:flex space-x-6 text-sm font-medium absolute left-1/2 transform -translate-x-1/2">
+      <a href="./pages.html" class="hover:text-[#8B0000]">Trang chủ</a>
+      <a href="./sanpham.html" class="hover:text-[#8B0000]">Sản phẩm</a>
+      <a href="./gioithieu.html" class="hover:text-[#8B0000]">Giới thiệu</a>
+      <a href="./lienhe.html" class="hover:text-[#8B0000]">Liên hệ</a>
+    </nav>
+
     <button id="logoutBtn" class="bg-[#8B0000] text-white px-4 py-2 rounded-full hover:bg-red-900 transition">
       Đăng xuất
     </button>
@@ -34,61 +35,68 @@
       <ul class="space-y-3 text-gray-700">
         <li><a href="thongtinKH.html" class="block hover:text-[#8B0000] font-medium">Thông tin cá nhân</a></li>
         <li><a href="LSmuahang.html" class="block hover:text-[#8B0000]">Lịch sử mua hàng</a></li>
-        
+
       </ul>
     </aside>
 
     <!-- Content -->
     <section class="flex-1 bg-gray-50 p-8">
-      <h2 class="text-2xl font-bold text-[#8B0000] mb-6">Thông tin cá nhân</h2>
+  <h2 class="text-2xl font-bold text-[#8B0000] mb-6">Thông tin cá nhân</h2>
 
-      <div id="infoSection" class="bg-white rounded-xl shadow-md p-6 space-y-4">
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-gray-600 text-sm mb-1">Họ và tên</label>
-            <input id="fullName" type="text" class="w-full border rounded-md px-3 py-2 focus:ring-[#8B0000]" disabled>
-          </div>
-
-          <div>
-            <label class="block text-gray-600 text-sm mb-1">Tên đăng nhập</label>
-            <input id="username" type="text" class="w-full border rounded-md px-3 py-2 focus:ring-[#8B0000]" disabled>
-          </div>
-
-          <div>
-            <label class="block text-gray-600 text-sm mb-1">Email</label>
-            <input id="email" type="email" class="w-full border rounded-md px-3 py-2 focus:ring-[#8B0000]" disabled>
-          </div>
-
-          <div>
-            <label class="block text-gray-600 text-sm mb-1">Số điện thoại</label>
-            <input id="phone" type="text" class="w-full border rounded-md px-3 py-2 focus:ring-[#8B0000]" disabled>
-          </div>
-          <div class="col-span-2">
-            <label class="block text-gray-600 text-sm mb-1">Địa chỉ</label>
-            <input id="address" type="text" class="w-full border rounded-md px-3 py-2 focus:ring-[#8B0000]" disabled>
-          </div>
-          
-        </div>
-
-        <div class="flex justify-end space-x-3 pt-4">
-          <button id="editBtn" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition">Chỉnh sửa</button>
-          <button id="saveBtn" class="hidden bg-[#8B0000] text-white px-4 py-2 rounded-lg hover:bg-red-900 transition">Lưu thay đổi</button>
-        </div>
+  <div id="infoSection" class="bg-white rounded-xl shadow-md p-6 space-y-4">
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-gray-600 text-sm mb-1">Họ và tên</label>
+        <input id="fullName" type="text" class="w-full border rounded-md px-3 py-2 focus:ring-[#8B0000]" disabled>
       </div>
 
-      <!-- Change password -->
-      <div class="bg-white rounded-xl shadow-md p-6 mt-8">
-        <h3 class="text-lg font-semibold mb-4 text-[#8B0000]">Đổi mật khẩu</h3>
-        <div class="space-y-3">
-          <input id="oldPassword" type="password" placeholder="Mật khẩu hiện tại" class="w-full border rounded-md px-3 py-2">
-          <input id="newPassword" type="password" placeholder="Mật khẩu mới" class="w-full border rounded-md px-3 py-2">
-          <input id="confirmPassword" type="password" placeholder="Xác nhận mật khẩu mới" class="w-full border rounded-md px-3 py-2">
-        </div>
-        <button id="changePasswordBtn" class="mt-4 bg-[#8B0000] text-white px-4 py-2 rounded-lg hover:bg-red-900 transition">
-          Đổi mật khẩu
-        </button>
+      <div>
+        <label class="block text-gray-600 text-sm mb-1">Tên đăng nhập</label>
+        <input id="username" type="text" class="w-full border rounded-md px-3 py-2 focus:ring-[#8B0000]" disabled>
       </div>
-    </section>
+
+      <div>
+        <label class="block text-gray-600 text-sm mb-1">Email</label>
+        <input id="email" type="email" class="w-full border rounded-md px-3 py-2 focus:ring-[#8B0000]" disabled>
+      </div>
+
+      <div>
+        <label class="block text-gray-600 text-sm mb-1">Số điện thoại</label>
+        <input id="phone" type="text" class="w-full border rounded-md px-3 py-2 focus:ring-[#8B0000]" disabled>
+      </div>
+      <div class="col-span-2">
+        <label class="block text-gray-600 text-sm mb-1">Địa chỉ</label>
+        <input id="address" type="text" class="w-full border rounded-md px-3 py-2 focus:ring-[#8B0000]" disabled>
+      </div>
+    </div>
+
+    <div class="flex justify-end space-x-3 pt-4">
+      <button id="editBtn" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition">Chỉnh
+        sửa</button>
+      <button id="saveBtn"
+        class="hidden bg-[#8B0000] text-white px-4 py-2 rounded-lg hover:bg-red-900 transition">Lưu thay
+        đổi</button>
+    </div>
+  </div>
+
+  <!-- Change password -->
+  <div class="bg-white rounded-xl shadow-md p-6 mt-8 w-[450px] mx-auto">
+    <h3 class="text-lg font-semibold mb-4 text-[#8B0000] text-center">Đổi mật khẩu</h3>
+    <div class="space-y-3">
+      <input id="oldPassword" type="password" placeholder="Mật khẩu hiện tại"
+        class="w-full border rounded-md px-3 py-2">
+      <input id="newPassword" type="password" placeholder="Mật khẩu mới" class="w-full border rounded-md px-3 py-2">
+      <input id="confirmPassword" type="password" placeholder="Xác nhận mật khẩu mới"
+        class="w-full border rounded-md px-3 py-2">
+    </div>
+    <div class="flex justify-center mt-4">
+      <button id="changePasswordBtn"
+        class="bg-[#8B0000] text-white px-4 py-2 rounded-lg hover:bg-red-900 transition">
+        Đổi mật khẩu
+      </button>
+    </div>
+  </div>
+</section>
   </main>
 
   <!-- FOOTER -->
@@ -140,8 +148,8 @@
       alert('Cập nhật thông tin thành công!');
       location.reload();
     });
-  // Đổi mật khẩu
-  document.getElementById('changePasswordBtn').addEventListener('click', () => {
+    // Đổi mật khẩu
+    document.getElementById('changePasswordBtn').addEventListener('click', () => {
       const oldPw = document.getElementById('oldPassword').value;
       const newPw = document.getElementById('newPassword').value;
       const confirmPw = document.getElementById('confirmPassword').value;
@@ -174,4 +182,5 @@
   </script>
 
 </body>
+
 </html>
