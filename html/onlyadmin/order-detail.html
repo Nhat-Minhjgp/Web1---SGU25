@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chi tiết Đơn hàng - Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              gray: {
+                750: "#2d3748",
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .status-pending {
+        background-color: #6b7280;
+        color: white;
+      }
+      .status-confirmed {
+        background-color: #3b82f6;
+        color: white;
+      }
+      .status-shipping {
+        background-color: #f59e0b;
+        color: white;
+      }
+      .status-delivered {
+        background-color: #10b981;
+        color: white;
+      }
+      .status-cancelled {
+        background-color: #ef4444;
+        color: white;
+      }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <!-- HEADER -->
+    <header class="flex justify-between items-center px-6 py-4 bg-gray-800 shadow-md">
+        <div class="flex items-center space-x-4">
+            <button onclick="goBack()" class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition flex items-center">
+                <i class="fas fa-arrow-left mr-2"></i> Quay lại
+            </button>
+            <h1 class="text-2xl font-bold text-cyan-400">Chi tiết Đơn hàng</h1>
+        </div>
+        <button onclick="printOrder()" class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition flex items-center">
+            <i class="fas fa-print mr-2"></i> In đơn hàng
+        </button>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="p-8">
+        <div class="max-w-6xl mx-auto">
+            <!-- Thông tin chung -->
+            <div class="bg-gray-800 rounded-xl shadow-lg p-6 mb-6">
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <h2 class="text-xl font-bold text-cyan-400 mb-2">Đơn hàng <span id="orderId" class="text-white">#</span></h2>
+                        <p class="text-gray-300">Ngày đặt: <span id="orderDate" class="text-white"></span></p>
+                    </div>
+                    <div id="orderStatus" class="px-4 py-2 rounded-full text-sm font-semibold"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Thông tin khách hàng -->
+                    <div class="bg-gray-750 p-4 rounded-lg">
+                        <h3 class="font-semibold text-cyan-400 mb-3 flex items-center">
+                            <i class="fas fa-user mr-2"></i> Thông tin khách hàng
+                        </h3>
+                        <div class="space-y-2 text-sm">
+                            <p><span class="text-gray-400">Họ tên:</span> <span id="customerName" class="text-white"></span></p>
+                            <p><span class="text-gray-400">Số điện thoại:</span> <span id="customerPhone" class="text-white"></span></p>
+                            <p><span class="text-gray-400">Email:</span> <span id="customerEmail" class="text-white"></span></p>
+                        </div>
+                    </div>
+
+                    <!-- Địa chỉ giao hàng -->
+                    <div class="bg-gray-750 p-4 rounded-lg">
+                        <h3 class="font-semibold text-cyan-400 mb-3 flex items-center">
+                            <i class="fas fa-map-marker-alt mr-2"></i> Địa chỉ giao hàng
+                        </h3>
+                        <div class="space-y-2 text-sm">
+                            <p id="deliveryAddress" class="text-white leading-relaxed"></p>
+                            <p><span class="text-gray-400">Quận/Huyện:</span> <span id="deliveryDistrict" class="text-cyan-300 font-medium"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chi tiết sản phẩm -->
+            <div class="bg-gray-800 rounded-xl shadow-lg p-6 mb-6">
+                <h3 class="font-semibold text-cyan-400 mb-4 flex items-center">
+                    <i class="fas fa-shopping-basket mr-2"></i> Chi tiết sản phẩm
+                </h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-700">
+                        <thead class="bg-gray-750">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Sản phẩm</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Đơn giá</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Số lượng</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orderItems" class="bg-gray-800 divide-y divide-gray-700">
+                            <!-- Items will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tổng thanh toán -->
+            <div class="bg-gray-800 rounded-xl shadow-lg p-6">
+                <div class="max-w-md ml-auto">
+                    <h3 class="font-semibold text-cyan-400 mb-4 flex items-center">
+                        <i class="fas fa-receipt mr-2"></i> Tổng thanh toán
+                    </h3>
+                    
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-300">Tạm tính:</span>
+                            <span id="subtotal" class="text-white font-medium">0₫</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-300">Phí vận chuyển:</span>
+                            <span id="shippingFee" class="text-white font-medium">30,000₫</span>
+                        </div>
+                        <div class="flex justify-between items-center border-t border-gray-600 pt-3">
+                            <span class="text-lg font-semibold text-cyan-400">Tổng cộng:</span>
+                            <span id="totalAmount" class="text-xl font-bold text-cyan-400">0₫</span>
+                        </div>
+                    </div>
+
+                    <!-- Phương thức thanh toán -->
+                    <div class="mt-6 pt-4 border-t border-gray-600">
+                        <h4 class="font-semibold text-cyan-400 mb-2 flex items-center">
+                            <i class="fas fa-credit-card mr-2"></i> Phương thức thanh toán
+                        </h4>
+                        <p id="paymentMethod" class="text-white"></p>
+                    </div>
+
+                    <!-- Ghi chú đơn hàng -->
+                    <div class="mt-4 pt-4 border-t border-gray-600">
+                        <h4 class="font-semibold text-cyan-400 mb-2 flex items-center">
+                            <i class="fas fa-sticky-note mr-2"></i> Ghi chú đơn hàng
+                        </h4>
+                        <p id="orderNote" class="text-white italic">Không có ghi chú</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lịch sử trạng thái -->
+            <div class="bg-gray-800 rounded-xl shadow-lg p-6 mt-6">
+                <h3 class="font-semibold text-cyan-400 mb-4 flex items-center">
+                    <i class="fas fa-history mr-2"></i> Lịch sử trạng thái
+                </h3>
+                <div id="statusHistory" class="space-y-3">
+                    <!-- Status history will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Dữ liệu mẫu - Trong thực tế, bạn sẽ lấy dữ liệu từ API hoặc localStorage
+        const ordersData = {
+            "DH001": {
+                id: "DH001",
+                customer: {
+                    name: "Nguyễn Văn A",
+                    phone: "0123456789",
+                    email: "nguyenvana@email.com"
+                },
+                address: {
+                    street: "123 Đường Lê Lợi",
+                    ward: "Phường Bến Nghé",
+                    district: "Quận 1",
+                    province: "TP.HCM"
+                },
+                date: "15/01/2025 14:30",
+                status: "delivered",
+                payment: "Thanh toán khi nhận hàng (COD)",
+                note: "Giao hàng giờ hành chính, gọi điện trước khi giao",
+                items: [
+                    { name: "Mãng Cầu Xiêm Sen", price: 185000, quantity: 2, total: 370000 },
+                    { name: "Sữa Dừa Cafe", price: 175000, quantity: 3, total: 525000 },
+                    { name: "Nấm Truffle", price: 285000, quantity: 1, total: 285000 }
+                ],
+                subtotal: 1180000,
+                shipping: 30000,
+                total: 1210000,
+                statusHistory: [
+                    { status: "pending", date: "15/01/2025 14:30", note: "Đơn hàng được đặt" },
+                    { status: "confirmed", date: "15/01/2025 15:45", note: "Đã xác nhận đơn hàng" },
+                    { status: "shipping", date: "16/01/2025 08:30", note: "Đã bàn giao cho đơn vị vận chuyển" },
+                    { status: "delivered", date: "16/01/2025 14:15", note: "Giao hàng thành công" }
+                ]
+            },
+            "DH002": {
+                id: "DH002",
+                customer: {
+                    name: "Trần Thị B",
+                    phone: "0987654321",
+                    email: "tranthib@email.com"
+                },
+                address: {
+                    street: "456 Đường Nguyễn Văn Linh",
+                    ward: "Phường Tân Phong",
+                    district: "Quận 7",
+                    province: "TP.HCM"
+                },
+                date: "16/02/2025 09:15",
+                status: "confirmed",
+                payment: "Ví MoMo",
+                note: "",
+                items: [
+                    { name: "Bánh Trung Thu Sữa Dừa Cafe", price: 55000, quantity: 4, total: 220000 }
+                ],
+                subtotal: 220000,
+                shipping: 30000,
+                total: 250000,
+                statusHistory: [
+                    { status: "pending", date: "16/02/2025 09:15", note: "Đơn hàng được đặt" },
+                    { status: "confirmed", date: "16/02/2025 10:30", note: "Đã xác nhận đơn hàng" }
+                ]
+            }
+        };
+
+        // Hàm lấy tham số từ URL
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // Hàm lấy tên trạng thái
+        function getStatusText(status) {
+            const statusMap = {
+                'pending': 'Chưa xử lý',
+                'confirmed': 'Đã xác nhận',
+                'shipping': 'Đang giao hàng',
+                'delivered': 'Đã giao thành công',
+                'cancelled': 'Đã hủy'
+            };
+            return statusMap[status] || status;
+        }
+
+        // Hàm lấy class CSS cho trạng thái
+        function getStatusClass(status) {
+            const statusClassMap = {
+                'pending': 'status-pending',
+                'confirmed': 'status-confirmed',
+                'shipping': 'status-shipping',
+                'delivered': 'status-delivered',
+                'cancelled': 'status-cancelled'
+            };
+            return statusClassMap[status] || 'status-pending';
+        }
+
+        // Hàm định dạng tiền
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+        }
+
+        // Hàm hiển thị chi tiết đơn hàng
+        function displayOrderDetail() {
+            const orderId = getUrlParameter('orderId');
+            const order = ordersData[orderId];
+
+            if (!order) {
+                document.body.innerHTML = `
+                    <div class="min-h-screen bg-gray-900 flex items-center justify-center">
+                        <div class="text-center">
+                            <i class="fas fa-exclamation-triangle text-6xl text-yellow-400 mb-4"></i>
+                            <h1 class="text-2xl font-bold text-white mb-2">Không tìm thấy đơn hàng</h1>
+                            <p class="text-gray-400 mb-4">Đơn hàng với mã ${orderId} không tồn tại</p>
+                            <button onclick="goBack()" class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-6 py-3 rounded-lg transition">
+                                Quay lại trang quản lý
+                            </button>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            // Hiển thị thông tin cơ bản
+            document.getElementById('orderId').textContent = order.id;
+            document.getElementById('orderDate').textContent = order.date;
+            
+            // Hiển thị trạng thái
+            const statusElement = document.getElementById('orderStatus');
+            statusElement.textContent = getStatusText(order.status);
+            statusElement.className = `px-4 py-2 rounded-full text-sm font-semibold ${getStatusClass(order.status)}`;
+
+            // Hiển thị thông tin khách hàng
+            document.getElementById('customerName').textContent = order.customer.name;
+            document.getElementById('customerPhone').textContent = order.customer.phone;
+            document.getElementById('customerEmail').textContent = order.customer.email;
+
+            // Hiển thị địa chỉ giao hàng
+            const fullAddress = `${order.address.street}, ${order.address.ward}, ${order.address.district}, ${order.address.province}`;
+            document.getElementById('deliveryAddress').textContent = fullAddress;
+            document.getElementById('deliveryDistrict').textContent = order.address.district;
+
+            // Hiển thị sản phẩm
+            const itemsContainer = document.getElementById('orderItems');
+            itemsContainer.innerHTML = '';
+            
+            order.items.forEach(item => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-750 transition-colors';
+                row.innerHTML = `
+                    <td class="px-4 py-4 text-sm text-white">
+                        <div class="font-medium">${item.name}</div>
+                    </td>
+                    <td class="px-4 py-4 text-sm text-gray-300">${formatCurrency(item.price)}</td>
+                    <td class="px-4 py-4 text-sm text-gray-300">${item.quantity}</td>
+                    <td class="px-4 py-4 text-sm font-semibold text-cyan-400">${formatCurrency(item.total)}</td>
+                `;
+                itemsContainer.appendChild(row);
+            });
+
+            // Hiển thị tổng thanh toán
+            document.getElementById('subtotal').textContent = formatCurrency(order.subtotal);
+            document.getElementById('shippingFee').textContent = formatCurrency(order.shipping);
+            document.getElementById('totalAmount').textContent = formatCurrency(order.total);
+
+            // Hiển thị phương thức thanh toán
+            document.getElementById('paymentMethod').textContent = order.payment;
+
+            // Hiển thị ghi chú
+            document.getElementById('orderNote').textContent = order.note || 'Không có ghi chú';
+
+            // Hiển thị lịch sử trạng thái
+            const historyContainer = document.getElementById('statusHistory');
+            historyContainer.innerHTML = '';
+            
+            order.statusHistory.forEach(history => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'flex items-start space-x-3 p-3 bg-gray-750 rounded-lg';
+                historyItem.innerHTML = `
+                    <div class="flex-shrink-0">
+                        <div class="w-3 h-3 rounded-full ${getStatusClass(history.status)} mt-1"></div>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start">
+                            <span class="font-medium text-white">${getStatusText(history.status)}</span>
+                            <span class="text-sm text-gray-400">${history.date}</span>
+                        </div>
+                        <p class="text-sm text-gray-300 mt-1">${history.note}</p>
+                    </div>
+                `;
+                historyContainer.appendChild(historyItem);
+            });
+        }
+
+         function goBack() {
+        window.location.href = "daodienad.html";
+      }
+
+        function printOrder() {
+            window.print();
+        }
+
+        // Khởi tạo trang
+        document.addEventListener('DOMContentLoaded', function() {
+            displayOrderDetail();
+        });
+    </script>
+
+    <style>
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            .bg-gray-900, .bg-gray-800, .bg-gray-750 {
+                background: white !important;
+                color: black !important;
+                border: 1px solid #ddd;
+            }
+            .text-cyan-400, .text-white {
+                color: black !important;
+            }
+            .text-gray-300, .text-gray-400 {
+                color: #666 !important;
+            }
+            button {
+                display: none !important;
+            }
+            header {
+                border-bottom: 2px solid #000;
+            }
+        }
+    </style>
+</body>
+</html>
