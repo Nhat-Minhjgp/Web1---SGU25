@@ -51,12 +51,7 @@
           Quản lý Danh mục Sản phẩm
         </h1>
       </div>
-      <button
-        onclick="logout()"
-        class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-full text-sm transition"
-      >
-        Đăng xuất
-      </button>
+      <!-- Đã bỏ nút đăng xuất theo yêu cầu -->
     </header>
 
     <!-- MAIN CONTENT -->
@@ -995,13 +990,13 @@
         window.location.href = "daodienad.html";
       }
 
-      // Xử lý đăng xuất
-      function logout() {
-        if (confirm("Bạn có chắc chắn muốn đăng xuất?")) {
-          alert("Đã đăng xuất!");
-          window.location.href = "adlog.html";
-        }
-      }
+      // Xử lý đăng xuất (đã bỏ theo yêu cầu)
+      // function logout() {
+      //   if (confirm("Bạn có chắc chắn muốn đăng xuất?")) {
+      //     alert("Đã đăng xuất!");
+      //     window.location.href = "adlog.html";
+      //   }
+      // }
 
       // Xử lý xem trước hình ảnh
       document
