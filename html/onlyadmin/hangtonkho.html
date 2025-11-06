@@ -1,1203 +1,726 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quản lý Giá bán & Đơn hàng</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              gray: {
-                750: "#2d3748",
-              },
-              primary: {
-                500: "#06b6d4",
-                600: "#0891b2",
-              },
-            },
-          },
-        },
-      };
-    </script>
-    <style>
-      .card-hover {
-        transition: all 0.3s ease;
-      }
-      .card-hover:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-      }
-      .fade-in {
-        animation: fadeIn 0.5s ease-in;
-      }
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        z-index: 1000;
-        align-items: center;
-        justify-content: center;
-      }
-      .modal-content {
-        background-color: #1f2937;
-        border-radius: 0.75rem;
-        padding: 1.5rem;
-        width: 90%;
-        max-width: 600px;
-        max-height: 90vh;
-        overflow-y: auto;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-      }
-      .status-pending {
-        background-color: rgba(245, 158, 11, 0.2);
-        border-left: 4px solid #f59e0b;
-      }
-      .status-confirmed {
-        background-color: rgba(59, 130, 246, 0.2);
-        border-left: 4px solid #3b82f6;
-      }
-      .status-completed {
-        background-color: rgba(16, 185, 129, 0.2);
-        border-left: 4px solid #10b981;
-      }
-      .status-cancelled {
-        background-color: rgba(239, 68, 68, 0.2);
-        border-left: 4px solid #ef4444;
-      }
-      .search-highlight {
-        background-color: rgba(6, 182, 212, 0.3);
-        padding: 2px 4px;
-        border-radius: 4px;
-      }
-      .editable {
-        cursor: pointer;
-        transition: all 0.2s ease;
-      }
-      .editable:hover {
-        background-color: rgba(6, 182, 212, 0.1);
-        border-radius: 4px;
-      }
-      .editing {
-        background-color: rgba(6, 182, 212, 0.2);
-        border: 1px solid #06b6d4;
-        border-radius: 4px;
-      }
-      .edit-mode {
-        background-color: rgba(245, 158, 11, 0.1);
-        border-left: 4px solid #f59e0b;
-      }
-    </style>
-  </head>
-  <body class="bg-gray-900 text-white min-h-screen">
-    <!-- HEADER -->
-    <header
-      class="flex justify-between items-center px-6 py-4 bg-gray-800 shadow-md sticky top-0 z-10"
-    >
-      <div class="flex items-center space-x-4">
-        <button
-          onclick="goBack()"
-          class="bg-primary-500 hover:bg-primary-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition flex items-center card-hover"
-        >
-          <i class="fas fa-arrow-left mr-2"></i> Quay lại
-        </button>
-        <div class="flex items-center">
-          <i class="fas fa-dollar-sign text-primary-500 text-2xl mr-3"></i>
-          <h1 class="text-2xl font-bold text-primary-500">
-            Quản lý Giá bán & Đơn hàng
-          </h1>
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quản lý Tồn kho</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+    .low-stock {
+      background-color: rgba(239, 68, 68, 0.2);
+      border-left: 4px solid #ef4444;
+    }
+    .medium-stock {
+      background-color: rgba(245, 158, 11, 0.2);
+      border-left: 4px solid #f59e0b;
+    }
+    .high-stock {
+      background-color: rgba(16, 185, 129, 0.2);
+      border-left: 4px solid #10b981;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+  <!-- HEADER -->
+  <header class="bg-gray-800 shadow-md p-4">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center">
+        <i class="fas fa-boxes text-cyan-400 text-2xl mr-3"></i>
+        <h1 class="text-2xl font-bold text-cyan-400">Quản lý Tồn kho</h1>
       </div>
-      <div class="flex items-center space-x-4">
-        <button
-          id="toggleEditMode"
-          onclick="toggleEditMode()"
-          class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition flex items-center card-hover"
-        >
-          <i class="fas fa-edit mr-2"></i> Chế độ chỉnh sửa
-        </button>
-        <button
-          onclick="exportReport()"
-          class="bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-lg transition flex items-center card-hover"
-        >
-          <i class="fas fa-file-export mr-2"></i> Xuất báo cáo
-        </button>
-      </div>
-    </header>
+      <button onclick="goBack()" class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition">
+        <i class="fas fa-arrow-left mr-2"></i> Quay lại
+      </button>
+    </div>
+  </header>
 
-    <!-- MAIN CONTENT -->
-    <main class="p-8">
-      <!-- Quản lý giá bán -->
-      <div
-        class="bg-gray-800 p-6 rounded-xl shadow-lg card-hover fade-in mb-6"
-        id="priceManagementSection"
-      >
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-xl font-bold text-primary-500">
-            <i class="fas fa-tags mr-2"></i>Quản lý Giá bán
-          </h2>
-          <div class="flex space-x-2">
-            <button
-              onclick="openAdvancedSearch()"
-              class="bg-purple-500 hover:bg-purple-600 text-white font-semibold px-4 py-2 rounded-lg transition flex items-center card-hover"
-            >
-              <i class="fas fa-search-plus mr-2"></i> Tra cứu nâng cao
-            </button>
-            <button
-              onclick="openPriceModal()"
-              class="bg-primary-500 hover:bg-primary-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition flex items-center card-hover"
-            >
-              <i class="fas fa-plus mr-2"></i> Thêm/Cập nhật giá
-            </button>
-          </div>
-        </div>
-
-        <!-- Thông báo chế độ chỉnh sửa -->
-        <div
-          id="editModeAlert"
-          class="hidden bg-yellow-500 text-gray-900 p-4 rounded-lg mb-4 flex items-center"
-        >
-          <i class="fas fa-exclamation-triangle mr-2"></i>
-          <span class="font-semibold">Đang ở chế độ chỉnh sửa:</span>
-          <span class="ml-2"
-            >Bạn có thể click vào các ô giá trị để chỉnh sửa trực tiếp</span
-          >
-          <button
-            onclick="toggleEditMode()"
-            class="ml-auto bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded text-sm"
-          >
-            Thoát chế độ chỉnh sửa
-          </button>
-        </div>
-
-        <!-- Bộ lọc sản phẩm -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+  <!-- MAIN CONTENT -->
+  <main class="p-4 md:p-8">
+    <!-- Thống kê nhanh -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <div class="bg-gray-800 p-4 rounded-lg card-hover">
+        <div class="flex justify-between items-center">
           <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2"
-              >Tìm kiếm sản phẩm</label
-            >
-            <input
-              type="text"
-              id="productSearch"
-              placeholder="Nhập tên sản phẩm..."
-              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 transition"
-            />
+            <p class="text-gray-400 text-sm">Tổng sản phẩm</p>
+            <h3 class="text-2xl font-bold text-white" id="totalProductsCount">0</h3>
           </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2"
-              >Loại sản phẩm</label
-            >
-            <select
-              id="priceCategorySelect"
-              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 transition"
-            >
-              <option value="">Tất cả loại</option>
-              <option value="ngot">Nhân ngọt</option>
-              <option value="man">Nhân mặn</option>
-              <option value="dacbiet">Đặc biệt</option>
-              <option value="chay">Chay</option>
-            </select>
+          <div class="bg-cyan-500 p-3 rounded-full">
+            <i class="fas fa-box text-white"></i>
           </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2"
-              >Khoảng giá bán</label
-            >
-            <select
-              id="priceRangeSelect"
-              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 transition"
-            >
-              <option value="">Tất cả giá</option>
-              <option value="0-50000">Dưới 50,000đ</option>
-              <option value="50000-80000">50,000đ - 80,000đ</option>
-              <option value="80000-120000">80,000đ - 120,000đ</option>
-              <option value="120000-999999">Trên 120,000đ</option>
-            </select>
-          </div>
-          <div class="flex items-end">
-            <button
-              onclick="searchProducts()"
-              class="bg-primary-500 hover:bg-primary-600 text-gray-900 font-semibold px-6 py-2 rounded-lg transition w-full card-hover"
-            >
-              <i class="fas fa-search mr-2"></i> Tìm kiếm
-            </button>
-          </div>
-        </div>
-
-        <!-- Thống kê nhanh -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <div class="bg-gray-750 p-4 rounded-lg">
-            <div class="flex justify-between items-center">
-              <div>
-                <p class="text-gray-400 text-sm">Tổng sản phẩm</p>
-                <h3
-                  class="text-2xl font-bold text-white"
-                  id="totalProductsCount"
-                >
-                  0
-                </h3>
-              </div>
-              <div class="bg-primary-500 p-3 rounded-full">
-                <i class="fas fa-box text-white"></i>
-              </div>
-            </div>
-          </div>
-          <div class="bg-gray-750 p-4 rounded-lg">
-            <div class="flex justify-between items-center">
-              <div>
-                <p class="text-gray-400 text-sm">Giá bán TB</p>
-                <h3 class="text-2xl font-bold text-green-400" id="avgPrice">
-                  0đ
-                </h3>
-              </div>
-              <div class="bg-green-500 p-3 rounded-full">
-                <i class="fas fa-chart-line text-white"></i>
-              </div>
-            </div>
-          </div>
-          <div class="bg-gray-750 p-4 rounded-lg">
-            <div class="flex justify-between items-center">
-              <div>
-                <p class="text-gray-400 text-sm">Lợi nhuận TB</p>
-                <h3 class="text-2xl font-bold text-yellow-400" id="avgProfit">
-                  0%
-                </h3>
-              </div>
-              <div class="bg-yellow-500 p-3 rounded-full">
-                <i class="fas fa-percentage text-white"></i>
-              </div>
-            </div>
-          </div>
-          <div class="bg-gray-750 p-4 rounded-lg">
-            <div class="flex justify-between items-center">
-              <div>
-                <p class="text-gray-400 text-sm">Sản phẩm tìm thấy</p>
-                <h3
-                  class="text-2xl font-bold text-purple-400"
-                  id="filteredProductsCount"
-                >
-                  0
-                </h3>
-              </div>
-              <div class="bg-purple-500 p-3 rounded-full">
-                <i class="fas fa-filter text-white"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="overflow-x-auto rounded-lg">
-          <table class="min-w-full divide-y divide-gray-700">
-            <thead class="bg-gray-750">
-              <tr>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer"
-                  onclick="sortProducts('name')"
-                >
-                  Sản phẩm <i class="fas fa-sort ml-1"></i>
-                </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer"
-                  onclick="sortProducts('costPrice')"
-                >
-                  Giá vốn <i class="fas fa-sort ml-1"></i>
-                </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer"
-                  onclick="sortProducts('profitPercent')"
-                >
-                  % Lợi nhuận <i class="fas fa-sort ml-1"></i>
-                </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer"
-                  onclick="sortProducts('sellingPrice')"
-                >
-                  Giá bán <i class="fas fa-sort ml-1"></i>
-                </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                >
-                  So sánh giá
-                </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                >
-                  Hành động
-                </th>
-              </tr>
-            </thead>
-            <tbody class="bg-gray-800 divide-y divide-gray-700" id="priceTable">
-              <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
-            </tbody>
-          </table>
         </div>
       </div>
-
-      <!-- Quản lý đơn đặt hàng -->
-      <div class="bg-gray-800 p-6 rounded-xl shadow-lg card-hover fade-in">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-xl font-bold text-primary-500">
-            <i class="fas fa-shopping-cart mr-2"></i>Quản lý Đơn đặt hàng
-          </h2>
-          <div class="flex space-x-2">
-            <button
-              onclick="openOrderSearch()"
-              class="bg-purple-500 hover:bg-purple-600 text-white font-semibold px-4 py-2 rounded-lg transition flex items-center card-hover"
-            >
-              <i class="fas fa-search-location mr-2"></i> Tra cứu đơn hàng
-            </button>
-            <button
-              onclick="printReport()"
-              class="bg-gray-700 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition flex items-center card-hover"
-            >
-              <i class="fas fa-print mr-2"></i> In báo cáo
-            </button>
+      <div class="bg-gray-800 p-4 rounded-lg card-hover">
+        <div class="flex justify-between items-center">
+          <div>
+            <p class="text-gray-400 text-sm">Tổng tồn kho</p>
+            <h3 class="text-2xl font-bold text-green-400" id="totalStock">0</h3>
+          </div>
+          <div class="bg-green-500 p-3 rounded-full">
+            <i class="fas fa-boxes text-white"></i>
           </div>
         </div>
-
-        <!-- Nội dung quản lý đơn hàng (giữ nguyên) -->
-        <!-- ... -->
       </div>
-    </main>
-
-    <!-- Modal quản lý giá -->
-    <div id="priceModal" class="modal">
-      <div class="modal-content">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-bold text-primary-500" id="priceModalTitle">
-            Thêm/Cập nhật giá sản phẩm
-          </h3>
-          <button
-            onclick="closePriceModal()"
-            class="text-gray-400 hover:text-white"
-          >
-            <i class="fas fa-times"></i>
-          </button>
+      <div class="bg-gray-800 p-4 rounded-lg card-hover">
+        <div class="flex justify-between items-center">
+          <div>
+            <p class="text-gray-400 text-sm">Sản phẩm sắp hết</p>
+            <h3 class="text-2xl font-bold text-red-400" id="lowStockCount">0</h3>
+          </div>
+          <div class="bg-red-500 p-3 rounded-full">
+            <i class="fas fa-exclamation-triangle text-white"></i>
+          </div>
         </div>
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-300 mb-2"
-            >Sản phẩm</label
-          >
-          <select
-            id="modalProductSelect"
-            class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 transition"
-          >
-            <option value="">Chọn sản phẩm</option>
-            <!-- Options sẽ được thêm bằng JavaScript -->
+      </div>
+      <div class="bg-gray-800 p-4 rounded-lg card-hover">
+        <div class="flex justify-between items-center">
+          <div>
+            <p class="text-gray-400 text-sm">Sản phẩm tìm thấy</p>
+            <h3 class="text-2xl font-bold text-purple-400" id="filteredProductsCount">0</h3>
+          </div>
+          <div class="bg-purple-500 p-3 rounded-full">
+            <i class="fas fa-filter text-white"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bộ lọc sản phẩm -->
+    <div class="bg-gray-800 p-4 rounded-lg mb-6">
+      <h2 class="text-xl font-bold text-cyan-400 mb-4">
+        <i class="fas fa-search mr-2"></i>Tra cứu tồn kho
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">Tìm kiếm sản phẩm</label>
+          <input type="text" id="productSearch" placeholder="Nhập tên sản phẩm..."
+            class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 transition" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">Loại sản phẩm</label>
+          <select id="inventoryCategorySelect"
+            class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 transition">
+            <option value="">Tất cả loại</option>
+            <option value="ngot">Nhân ngọt</option>
+            <option value="man">Nhân mặn</option>
+            <option value="dacbiet">Đặc biệt</option>
+            <option value="chay">Chay</option>
           </select>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2"
-              >Giá vốn (VNĐ)</label
-            >
-            <input
-              type="number"
-              id="costPrice"
-              min="0"
-              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 transition"
-            />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2"
-              >% Lợi nhuận</label
-            >
-            <input
-              type="number"
-              id="profitPercent"
-              min="0"
-              max="100"
-              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 transition"
-            />
-          </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">Tình trạng tồn kho</label>
+          <select id="stockStatusSelect"
+            class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 transition">
+            <option value="">Tất cả</option>
+            <option value="low">Sắp hết hàng</option>
+            <option value="medium">Tồn kho trung bình</option>
+            <option value="high">Tồn kho cao</option>
+          </select>
         </div>
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-300 mb-2"
-            >Giá bán (VNĐ)</label
-          >
-          <input
-            type="number"
-            id="sellingPrice"
-            min="0"
-            class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 transition"
-            readonly
-          />
-        </div>
-        <div class="flex justify-end space-x-3">
-          <button
-            onclick="closePriceModal()"
-            class="bg-gray-700 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition"
-          >
-            Hủy
-          </button>
-          <button
-            onclick="savePrice()"
-            class="bg-primary-500 hover:bg-primary-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition"
-          >
-            <i class="fas fa-save mr-2"></i> Lưu
+        <div class="flex items-end">
+          <button onclick="searchInventory()"
+            class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-6 py-2 rounded-lg transition w-full card-hover">
+            <i class="fas fa-search mr-2"></i> Tìm kiếm
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Modal xác nhận thay đổi -->
-    <div id="confirmModal" class="modal">
-      <div class="modal-content">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-bold text-primary-500">Xác nhận thay đổi</h3>
-          <button
-            onclick="closeConfirmModal()"
-            class="text-gray-400 hover:text-white"
-          >
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300" id="confirmMessage">
-            Bạn có chắc muốn lưu thay đổi này?
-          </p>
-        </div>
-        <div class="flex justify-end space-x-3">
-          <button
-            onclick="closeConfirmModal()"
-            class="bg-gray-700 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition"
-          >
-            Hủy
-          </button>
-          <button
-            onclick="confirmChanges()"
-            class="bg-primary-500 hover:bg-primary-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition"
-          >
-            <i class="fas fa-check mr-2"></i> Xác nhận
-          </button>
-        </div>
+    <!-- Bảng tồn kho -->
+    <div class="bg-gray-800 p-4 rounded-lg mb-6">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-cyan-400">
+          <i class="fas fa-boxes mr-2"></i>Danh sách tồn kho
+        </h2>
+        <button onclick="openStockAdjustmentModal()"
+          class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition flex items-center card-hover">
+          <i class="fas fa-plus mr-2"></i> Điều chỉnh tồn kho
+        </button>
+      </div>
+
+      <div class="overflow-x-auto rounded-lg">
+        <table class="min-w-full divide-y divide-gray-700">
+          <thead class="bg-gray-750">
+            <tr>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer"
+                onclick="sortInventory('name')">
+                Sản phẩm <i class="fas fa-sort ml-1"></i>
+              </th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer"
+                onclick="sortInventory('currentStock')">
+                Tồn kho <i class="fas fa-sort ml-1"></i>
+              </th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                Tồn tối thiểu
+              </th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                Tình trạng
+              </th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                Hành động
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-gray-800 divide-y divide-gray-700" id="inventoryTable">
+            <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
+          </tbody>
+        </table>
       </div>
     </div>
 
-    <script>
-      // Dữ liệu sản phẩm và giá
-      const products = [
-        {
-          id: 1,
-          name: "Mãng Cầu Xiêm Sen",
-          category: "ngot",
-          costPrice: 35000,
-          profitPercent: 30,
-          sellingPrice: 45500,
-        },
-        {
-          id: 2,
-          name: "Sữa Dừa Cafe",
-          category: "ngot",
-          costPrice: 32000,
-          profitPercent: 35,
-          sellingPrice: 43200,
-        },
-        {
-          id: 3,
-          name: "Nấm Truffle",
-          category: "dacbiet",
-          costPrice: 55000,
-          profitPercent: 40,
-          sellingPrice: 77000,
-        },
-        {
-          id: 4,
-          name: "Khế Bưởi Quế Hoa",
-          category: "ngot",
-          costPrice: 38000,
-          profitPercent: 30,
-          sellingPrice: 49400,
-        },
-        {
-          id: 5,
-          name: "Bánh Pía Sầu Riêng",
-          category: "ngot",
-          costPrice: 42000,
-          profitPercent: 35,
-          sellingPrice: 56700,
-        },
-      ];
+    <!-- Báo cáo nhập - xuất - tồn -->
+    <div class="bg-gray-800 p-4 rounded-lg">
+      <h2 class="text-xl font-bold text-cyan-400 mb-4">
+        <i class="fas fa-chart-line mr-2"></i>Báo cáo Nhập - Xuất - Tồn
+      </h2>
 
-      let currentEditingProduct = null;
-      let currentProductSort = { field: "name", direction: "asc" };
-      let currentEditingField = null;
-      let isEditMode = false;
-      let pendingChanges = [];
+      <!-- Bộ lọc thời gian -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">Từ ngày</label>
+          <input type="date" id="startDate"
+            class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 transition" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">Đến ngày</label>
+          <input type="date" id="endDate"
+            class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 transition" />
+        </div>
+        <div class="flex items-end">
+          <button onclick="generateStockReport()"
+            class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-6 py-2 rounded-lg transition w-full card-hover">
+            <i class="fas fa-chart-bar mr-2"></i> Tạo báo cáo
+          </button>
+        </div>
+      </div>
 
-      // Hiển thị bảng giá
-      function renderPriceTable(filteredProducts = products) {
-        const tableBody = document.getElementById("priceTable");
-        tableBody.innerHTML = "";
+      <!-- Kết quả báo cáo -->
+      <div class="overflow-x-auto rounded-lg">
+        <table class="min-w-full divide-y divide-gray-700">
+          <thead class="bg-gray-750">
+            <tr>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                Sản phẩm
+              </th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                Tồn đầu kỳ
+              </th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                Nhập
+              </th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                Xuất
+              </th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                Tồn cuối kỳ
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-gray-800 divide-y divide-gray-700" id="stockReportTable">
+            <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
 
-        // Cập nhật thống kê
-        updatePriceStats(filteredProducts);
+  <!-- Modal điều chỉnh tồn kho -->
+  <div id="stockAdjustmentModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+    <div class="bg-gray-800 rounded-lg p-6 w-full max-w-md">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-cyan-400">Điều chỉnh tồn kho</h3>
+        <button onclick="closeStockAdjustmentModal()" class="text-gray-400 hover:text-white">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-300 mb-2">Sản phẩm</label>
+        <select id="modalProductSelect"
+          class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 transition">
+          <option value="">Chọn sản phẩm</option>
+        </select>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">Loại điều chỉnh</label>
+          <select id="adjustmentType"
+            class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 transition">
+            <option value="import">Nhập hàng</option>
+            <option value="export">Xuất hàng</option>
+            <option value="adjust">Điều chỉnh</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">Số lượng</label>
+          <input type="number" id="adjustmentQuantity" min="0"
+            class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 transition" />
+        </div>
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-300 mb-2">Lý do</label>
+        <textarea id="adjustmentReason"
+          class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 transition"
+          rows="2"></textarea>
+      </div>
+      
+      <!-- Cảnh báo khi xuất quá số lượng -->
+      <div id="exportWarning" class="hidden bg-red-900 text-red-200 p-3 rounded-lg mb-4">
+        <div class="flex items-center">
+          <i class="fas fa-exclamation-triangle mr-2"></i>
+          <span id="warningMessage"></span>
+        </div>
+      </div>
+      
+      <div class="flex justify-end space-x-3">
+        <button onclick="closeStockAdjustmentModal()"
+          class="bg-gray-700 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition">
+          Hủy
+        </button>
+        <button onclick="saveStockAdjustment()"
+          class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition">
+          <i class="fas fa-save mr-2"></i> Lưu
+        </button>
+      </div>
+    </div>
+  </div>
 
-        filteredProducts.forEach((product) => {
-          const row = document.createElement("tr");
-          row.className = `hover:bg-gray-750 transition ${
-            isEditMode ? "edit-mode" : ""
-          }`;
+  <script>
+    // Dữ liệu tồn kho
+    const inventory = [
+      {
+        id: 1,
+        name: "Mãng Cầu Xiêm Sen",
+        category: "ngot",
+        currentStock: 50,
+        minStock: 20,
+        maxStock: 100,
+        stockHistory: [
+          { date: "2023-10-01", type: "import", quantity: 100, reason: "Nhập hàng đầu kỳ" },
+          { date: "2023-10-15", type: "export", quantity: 30, reason: "Bán hàng" },
+          { date: "2023-10-20", type: "export", quantity: 20, reason: "Bán hàng" }
+        ]
+      },
+      {
+        id: 2,
+        name: "Sữa Dừa Cafe",
+        category: "ngot",
+        currentStock: 15,
+        minStock: 20,
+        maxStock: 80,
+        stockHistory: [
+          { date: "2023-10-01", type: "import", quantity: 50, reason: "Nhập hàng đầu kỳ" },
+          { date: "2023-10-10", type: "export", quantity: 25, reason: "Bán hàng" },
+          { date: "2023-10-18", type: "export", quantity: 10, reason: "Bán hàng" }
+        ]
+      },
+      {
+        id: 3,
+        name: "Nấm Truffle",
+        category: "dacbiet",
+        currentStock: 5,
+        minStock: 5,
+        maxStock: 30,
+        stockHistory: [
+          { date: "2023-10-05", type: "import", quantity: 15, reason: "Nhập hàng" },
+          { date: "2023-10-12", type: "export", quantity: 5, reason: "Bán hàng" },
+          { date: "2023-10-22", type: "export", quantity: 5, reason: "Bán hàng" }
+        ]
+      },
+      {
+        id: 4,
+        name: "Khế Bưởi Quế Hoa",
+        category: "ngot",
+        currentStock: 80,
+        minStock: 30,
+        maxStock: 120,
+        stockHistory: [
+          { date: "2023-10-01", type: "import", quantity: 100, reason: "Nhập hàng đầu kỳ" },
+          { date: "2023-10-08", type: "export", quantity: 10, reason: "Bán hàng" },
+          { date: "2023-10-16", type: "export", quantity: 10, reason: "Bán hàng" }
+        ]
+      },
+      {
+        id: 5,
+        name: "Bánh Pía Sầu Riêng",
+        category: "ngot",
+        currentStock: 25,
+        minStock: 15,
+        maxStock: 60,
+        stockHistory: [
+          { date: "2023-10-03", type: "import", quantity: 40, reason: "Nhập hàng" },
+          { date: "2023-10-14", type: "export", quantity: 10, reason: "Bán hàng" },
+          { date: "2023-10-21", type: "export", quantity: 5, reason: "Bán hàng" }
+        ]
+      },
+    ];
 
-          // Tính phần trăm so với giá trung bình
-          const avgPrice =
-            filteredProducts.reduce((sum, p) => sum + p.sellingPrice, 0) /
-            filteredProducts.length;
-          const priceComparison = (
-            ((product.sellingPrice - avgPrice) / avgPrice) *
-            100
-          ).toFixed(1);
+    let currentInventorySort = { field: "name", direction: "asc" };
+    let currentAdjustingProduct = null;
 
-          row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium text-white" id="product-name-${
-                          product.id
-                        }">${product.name}</div>
-                        <div class="text-sm text-gray-400">${getCategoryName(
-                          product.category
-                        )}</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                        <span class="${isEditMode ? "editable" : ""}" 
-                              onclick="${
-                                isEditMode
-                                  ? `editProductField(${product.id}, 'costPrice')`
-                                  : ""
-                              }">
-                            ${formatCurrency(product.costPrice)}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-yellow-400">
-                        <span class="${isEditMode ? "editable" : ""}" 
-                              onclick="${
-                                isEditMode
-                                  ? `editProductField(${product.id}, 'profitPercent')`
-                                  : ""
-                              }">
-                            ${product.profitPercent}%
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-400">
-                        <span class="${isEditMode ? "editable" : ""}" 
-                              onclick="${
-                                isEditMode
-                                  ? `editProductField(${product.id}, 'sellingPrice')`
-                                  : ""
-                              }">
-                            ${formatCurrency(product.sellingPrice)}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm ${
-                      priceComparison >= 0 ? "text-red-400" : "text-green-400"
-                    }">
-                        ${priceComparison >= 0 ? "+" : ""}${priceComparison}%
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <button onclick="quickEditPrice(${
-                          product.id
-                        })" class="text-xs bg-primary-500 hover:bg-primary-600 text-white px-3 py-1 rounded transition mr-2">
-                            <i class="fas fa-edit mr-1"></i>Sửa nhanh
-                        </button>
-                        <button onclick="viewProductAnalysis(${
-                          product.id
-                        })" class="text-xs bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 rounded transition">
-                            <i class="fas fa-chart-bar mr-1"></i>Phân tích
-                        </button>
-                    </td>
-                `;
+    // Hiển thị bảng tồn kho
+    function renderInventoryTable(filteredInventory = inventory) {
+      const tableBody = document.getElementById("inventoryTable");
+      tableBody.innerHTML = "";
 
-          tableBody.appendChild(row);
-        });
-      }
+      // Cập nhật thống kê
+      updateInventoryStats(filteredInventory);
 
-      // Bật/tắt chế độ chỉnh sửa
-      function toggleEditMode() {
-        isEditMode = !isEditMode;
-        const button = document.getElementById("toggleEditMode");
-        const alert = document.getElementById("editModeAlert");
-        const section = document.getElementById("priceManagementSection");
-
-        if (isEditMode) {
-          button.innerHTML =
-            '<i class="fas fa-times mr-2"></i> Thoát chế độ chỉnh sửa';
-          button.classList.remove("bg-yellow-500", "hover:bg-yellow-600");
-          button.classList.add("bg-red-500", "hover:bg-red-600");
-          alert.classList.remove("hidden");
-          section.classList.add("edit-mode");
-        } else {
-          button.innerHTML =
-            '<i class="fas fa-edit mr-2"></i> Chế độ chỉnh sửa';
-          button.classList.remove("bg-red-500", "hover:bg-red-600");
-          button.classList.add("bg-yellow-500", "hover:bg-yellow-600");
-          alert.classList.add("hidden");
-          section.classList.remove("edit-mode");
-
-          // Nếu có thay đổi chưa lưu, hỏi người dùng
-          if (pendingChanges.length > 0) {
-            showConfirmModal(
-              "Bạn có thay đổi chưa lưu. Bạn có muốn lưu các thay đổi này trước khi thoát?",
-              () => saveAllPendingChanges()
-            );
-          }
+      filteredInventory.forEach((product) => {
+        const row = document.createElement("tr");
+        
+        // Xác định tình trạng tồn kho
+        let stockStatus = "high";
+        let statusClass = "high-stock";
+        let statusText = "Tồn kho cao";
+        
+        if (product.currentStock <= product.minStock) {
+          stockStatus = "low";
+          statusClass = "low-stock";
+          statusText = "Sắp hết hàng";
+        } else if (product.currentStock <= product.minStock * 1.5) {
+          stockStatus = "medium";
+          statusClass = "medium-stock";
+          statusText = "Tồn kho trung bình";
         }
 
-        renderPriceTable();
-      }
-
-      // Sửa nhanh - mở modal với dữ liệu sản phẩm
-      function quickEditPrice(productId) {
-        const product = products.find((p) => p.id === productId);
-        if (!product) return;
-
-        openPriceModal(productId);
-      }
-
-      // Sửa trực tiếp trên bảng sản phẩm
-      function editProductField(productId, field) {
-        if (!isEditMode) return;
-
-        const product = products.find((p) => p.id === productId);
-        if (!product) return;
-
-        const cell = document.querySelector(
-          `[onclick="editProductField(${productId}, '${field}')"]`
-        );
-        if (!cell) return;
-
-        // Nếu đang sửa thì không làm gì
-        if (cell.classList.contains("editing")) return;
-
-        currentEditingField = {
-          productId,
-          field,
-          cell,
-          originalValue: product[field],
-        };
-        cell.classList.add("editing");
-
-        let currentValue = product[field];
-        let inputType = "number";
-        let step = field === "profitPercent" ? 1 : 1000;
-
-        if (field === "costPrice" || field === "sellingPrice") {
-          currentValue = currentValue.toString().replace(/\D/g, "");
-        }
-
-        const input = document.createElement("input");
-        input.type = inputType;
-        input.value = currentValue;
-        input.step = step;
-        input.min = field === "profitPercent" ? 0 : 0;
-        input.max = field === "profitPercent" ? 100 : null;
-        input.className =
-          "w-24 px-2 py-1 bg-gray-700 border border-primary-500 rounded text-white text-sm";
-
-        // Thay thế nội dung cell bằng input
-        cell.innerHTML = "";
-        cell.appendChild(input);
-        input.focus();
-        input.select();
-
-        // Xử lý khi nhấn Enter
-        input.addEventListener("keypress", function (e) {
-          if (e.key === "Enter") {
-            saveProductFieldEdit(input.value);
-          }
-          if (e.key === "Escape") {
-            cancelProductFieldEdit();
-          }
-        });
-
-        // Xử lý khi mất focus
-        input.addEventListener("blur", function () {
-          if (input.value !== currentEditingField.originalValue.toString()) {
-            saveProductFieldEdit(input.value);
-          } else {
-            cancelProductFieldEdit();
-          }
-        });
-      }
-
-      // Lưu chỉnh sửa trực tiếp
-      function saveProductFieldEdit(newValue) {
-        if (!currentEditingField) return;
-
-        const { productId, field, cell, originalValue } = currentEditingField;
-        const product = products.find((p) => p.id === productId);
-
-        if (
-          product &&
-          newValue !== "" &&
-          newValue !== originalValue.toString()
-        ) {
-          let numericValue = parseFloat(newValue);
-
-          // Kiểm tra giá trị hợp lệ
-          if (
-            isNaN(numericValue) ||
-            (field === "profitPercent" &&
-              (numericValue < 0 || numericValue > 100))
-          ) {
-            alert("Giá trị không hợp lệ! Vui lòng nhập giá trị phù hợp.");
-            cancelProductFieldEdit();
-            return;
-          }
-
-          // Thêm vào danh sách thay đổi chờ xử lý
-          pendingChanges.push({
-            productId,
-            field,
-            oldValue: originalValue,
-            newValue: numericValue,
-            productName: product.name,
-          });
-
-          // Cập nhật tạm thời để hiển thị
-          if (field === "costPrice" || field === "sellingPrice") {
-            product[field] = numericValue;
-
-            // Nếu sửa giá vốn hoặc % lợi nhuận, tính lại giá bán
-            if (field === "costPrice" || field === "profitPercent") {
-              product.sellingPrice = Math.round(
-                product.costPrice * (1 + product.profitPercent / 100)
-              );
-            }
-
-            // Nếu sửa giá bán, tính lại % lợi nhuận
-            if (field === "sellingPrice") {
-              product.profitPercent = Math.round(
-                ((product.sellingPrice - product.costPrice) /
-                  product.costPrice) *
-                  100
-              );
-            }
-          } else if (field === "profitPercent") {
-            product[field] = numericValue;
-            product.sellingPrice = Math.round(
-              product.costPrice * (1 + product.profitPercent / 100)
-            );
-          }
-
-          // Cập nhật hiển thị
-          if (field === "costPrice" || field === "sellingPrice") {
-            cell.textContent = formatCurrency(product[field]);
-          } else {
-            cell.textContent = product[field] + "%";
-          }
-
-          // Hiển thị thông báo có thay đổi
-          showPendingChangesAlert();
-        } else {
-          // Khôi phục giá trị ban đầu
-          if (field === "costPrice" || field === "sellingPrice") {
-            cell.textContent = formatCurrency(originalValue);
-          } else {
-            cell.textContent = originalValue + "%";
-          }
-        }
-
-        cell.classList.remove("editing");
-        currentEditingField = null;
-
-        // Cập nhật lại toàn bộ bảng để đồng bộ dữ liệu
-        renderPriceTable();
-      }
-
-      // Hủy chỉnh sửa
-      function cancelProductFieldEdit() {
-        if (!currentEditingField) return;
-
-        const { field, cell, originalValue } = currentEditingField;
-
-        if (field === "costPrice" || field === "sellingPrice") {
-          cell.textContent = formatCurrency(originalValue);
-        } else {
-          cell.textContent = originalValue + "%";
-        }
-
-        cell.classList.remove("editing");
-        currentEditingField = null;
-      }
-
-      // Hiển thị thông báo có thay đổi chờ xử lý
-      function showPendingChangesAlert() {
-        const existingAlert = document.getElementById("pendingChangesAlert");
-        if (existingAlert) existingAlert.remove();
-
-        if (pendingChanges.length > 0) {
-          const alert = document.createElement("div");
-          alert.id = "pendingChangesAlert";
-          alert.className =
-            "bg-blue-500 text-white p-3 rounded-lg mb-4 flex items-center justify-between";
-          alert.innerHTML = `
-                    <div class="flex items-center">
-                        <i class="fas fa-info-circle mr-2"></i>
-                        <span>Có <strong>${pendingChanges.length}</strong> thay đổi chưa được lưu</span>
-                    </div>
-                    <div class="flex space-x-2">
-                        <button onclick="saveAllPendingChanges()" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
-                            <i class="fas fa-save mr-1"></i> Lưu tất cả
-                        </button>
-                        <button onclick="discardAllPendingChanges()" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
-                            <i class="fas fa-times mr-1"></i> Hủy bỏ
-                        </button>
-                    </div>
-                `;
-
-          const priceSection = document.getElementById(
-            "priceManagementSection"
-          );
-          priceSection.insertBefore(alert, priceSection.querySelector(".grid"));
-        }
-      }
-
-      // Lưu tất cả thay đổi
-      function saveAllPendingChanges() {
-        if (pendingChanges.length === 0) return;
-
-        // Trong thực tế, ở đây sẽ gọi API để lưu vào database
-        alert(`Đã lưu ${pendingChanges.length} thay đổi thành công!`);
-
-        // Xóa thông báo
-        const alert = document.getElementById("pendingChangesAlert");
-        if (alert) alert.remove();
-
-        // Xóa danh sách thay đổi
-        pendingChanges = [];
-
-        // Cập nhật lại giao diện
-        renderPriceTable();
-      }
-
-      // Hủy bỏ tất cả thay đổi
-      function discardAllPendingChanges() {
-        if (pendingChanges.length === 0) return;
-
-        if (confirm("Bạn có chắc muốn hủy bỏ tất cả thay đổi chưa lưu?")) {
-          // Khôi phục giá trị gốc
-          pendingChanges.forEach((change) => {
-            const product = products.find((p) => p.id === change.productId);
-            if (product) {
-              product[change.field] = change.oldValue;
-
-              // Tính lại các giá trị liên quan
-              if (
-                change.field === "costPrice" ||
-                change.field === "profitPercent"
-              ) {
-                product.sellingPrice = Math.round(
-                  product.costPrice * (1 + product.profitPercent / 100)
-                );
-              } else if (change.field === "sellingPrice") {
-                product.profitPercent = Math.round(
-                  ((product.sellingPrice - product.costPrice) /
-                    product.costPrice) *
-                    100
-                );
-              }
-            }
-          });
-
-          // Xóa thông báo
-          const alert = document.getElementById("pendingChangesAlert");
-          if (alert) alert.remove();
-
-          // Xóa danh sách thay đổi
-          pendingChanges = [];
-
-          // Cập nhật lại giao diện
-          renderPriceTable();
-
-          alert("Đã hủy bỏ tất cả thay đổi!");
-        }
-      }
-
-      // Hiển thị modal xác nhận
-      function showConfirmModal(message, confirmCallback) {
-        document.getElementById("confirmMessage").textContent = message;
-        window.confirmCallback = confirmCallback;
-        document.getElementById("confirmModal").style.display = "flex";
-      }
-
-      // Đóng modal xác nhận
-      function closeConfirmModal() {
-        document.getElementById("confirmModal").style.display = "none";
-      }
-
-      // Xác nhận thay đổi
-      function confirmChanges() {
-        if (window.confirmCallback) {
-          window.confirmCallback();
-        }
-        closeConfirmModal();
-      }
-
-      // Các hàm hỗ trợ khác
-      function updatePriceStats(productsList) {
-        const totalProducts = products.length;
-        const filteredCount = productsList.length;
-        const avgPrice =
-          productsList.length > 0
-            ? productsList.reduce((sum, p) => sum + p.sellingPrice, 0) /
-              productsList.length
-            : 0;
-        const avgProfit =
-          productsList.length > 0
-            ? productsList.reduce((sum, p) => sum + p.profitPercent, 0) /
-              productsList.length
-            : 0;
-
-        document.getElementById("totalProductsCount").textContent =
-          totalProducts;
-        document.getElementById("filteredProductsCount").textContent =
-          filteredCount;
-        document.getElementById("avgPrice").textContent =
-          formatCurrency(avgPrice);
-        document.getElementById("avgProfit").textContent =
-          avgProfit.toFixed(1) + "%";
-      }
-
-      function getCategoryName(category) {
-        const categories = {
-          ngot: "Nhân ngọt",
-          man: "Nhân mặn",
-          dacbiet: "Đặc biệt",
-          chay: "Chay",
-        };
-        return categories[category] || "Không xác định";
-      }
-
-      function formatCurrency(amount) {
-        return new Intl.NumberFormat("vi-VN", {
-          style: "currency",
-          currency: "VND",
-        }).format(amount);
-      }
-
-      // Các hàm modal và sự kiện khác
-      function openPriceModal(productId = null) {
-        const modal = document.getElementById("priceModal");
-        const title = document.getElementById("priceModalTitle");
-        const productSelect = document.getElementById("modalProductSelect");
-
-        productSelect.innerHTML = '<option value="">Chọn sản phẩm</option>';
-        products.forEach((product) => {
-          const option = document.createElement("option");
-          option.value = product.id;
-          option.textContent = product.name;
-          productSelect.appendChild(option);
-        });
-
-        if (productId) {
-          title.textContent = "Cập nhật giá sản phẩm";
-          currentEditingProduct = products.find((p) => p.id === productId);
-
-          if (currentEditingProduct) {
-            productSelect.value = currentEditingProduct.id;
-            document.getElementById("costPrice").value =
-              currentEditingProduct.costPrice;
-            document.getElementById("profitPercent").value =
-              currentEditingProduct.profitPercent;
-            document.getElementById("sellingPrice").value =
-              currentEditingProduct.sellingPrice;
-            productSelect.disabled = true;
-          }
-        } else {
-          title.textContent = "Thêm giá sản phẩm";
-          currentEditingProduct = null;
-          document.getElementById("costPrice").value = "";
-          document.getElementById("profitPercent").value = "";
-          document.getElementById("sellingPrice").value = "";
-          productSelect.disabled = false;
-        }
-
-        modal.style.display = "flex";
-      }
-
-      function closePriceModal() {
-        document.getElementById("priceModal").style.display = "none";
-        currentEditingProduct = null;
-      }
-
-      function calculateSellingPrice() {
-        const costPrice =
-          parseFloat(document.getElementById("costPrice").value) || 0;
-        const profitPercent =
-          parseFloat(document.getElementById("profitPercent").value) || 0;
-
-        if (costPrice > 0 && profitPercent > 0) {
-          const sellingPrice = costPrice * (1 + profitPercent / 100);
-          document.getElementById("sellingPrice").value =
-            Math.round(sellingPrice);
-        }
-      }
-
-      function savePrice() {
-        const productId = parseInt(
-          document.getElementById("modalProductSelect").value
-        );
-        const costPrice = parseFloat(
-          document.getElementById("costPrice").value
-        );
-        const profitPercent = parseFloat(
-          document.getElementById("profitPercent").value
-        );
-        const sellingPrice = parseFloat(
-          document.getElementById("sellingPrice").value
-        );
-
-        if (!productId || !costPrice || !profitPercent) {
-          alert("Vui lòng điền đầy đủ thông tin");
-          return;
-        }
-
-        if (currentEditingProduct) {
-          currentEditingProduct.costPrice = costPrice;
-          currentEditingProduct.profitPercent = profitPercent;
-          currentEditingProduct.sellingPrice = sellingPrice;
-        } else {
-          const existingProduct = products.find((p) => p.id === productId);
-          if (existingProduct) {
-            existingProduct.costPrice = costPrice;
-            existingProduct.profitPercent = profitPercent;
-            existingProduct.sellingPrice = sellingPrice;
-          }
-        }
-
-        renderPriceTable();
-        closePriceModal();
-        alert("Đã lưu thông tin giá thành công!");
-      }
-
-      function viewProductAnalysis(productId) {
-        const product = products.find((p) => p.id === productId);
-        if (product) {
-          const analysis = `
-Phân tích sản phẩm: ${product.name}
-
-• Giá vốn: ${formatCurrency(product.costPrice)}
-• Tỷ lệ lợi nhuận: ${product.profitPercent}%
-• Giá bán: ${formatCurrency(product.sellingPrice)}
-• Lợi nhuận trên mỗi sản phẩm: ${formatCurrency(
-            product.sellingPrice - product.costPrice
-          )}
-• Tỷ lệ lợi nhuận thực tế: ${(
-            ((product.sellingPrice - product.costPrice) /
-              product.sellingPrice) *
-            100
-          ).toFixed(1)}%
-
-${
-  product.profitPercent > 40
-    ? "⚠️ Tỷ lệ lợi nhuận cao, có thể ảnh hưởng đến khả năng cạnh tranh"
-    : product.profitPercent < 20
-    ? "⚠️ Tỷ lệ lợi nhuận thấp, cần xem xét điều chỉnh"
-    : "✓ Tỷ lệ lợi nhuận phù hợp"
-}
-                `;
-          alert(analysis);
-        }
-      }
-
-      // Các hàm khác
-      function openAdvancedSearch() {
-        alert("Mở cửa sổ tra cứu nâng cao");
-      }
-
-      function searchProducts() {
-        const searchTerm = document
-          .getElementById("productSearch")
-          .value.toLowerCase();
-        const category = document.getElementById("priceCategorySelect").value;
-        const priceRange = document.getElementById("priceRangeSelect").value;
-
-        let filteredProducts = products.filter((product) => {
-          const matchesSearch = product.name.toLowerCase().includes(searchTerm);
-          const matchesCategory = !category || product.category === category;
-          const matchesPriceRange =
-            !priceRange || checkPriceRange(product.sellingPrice, priceRange);
-
-          return matchesSearch && matchesCategory && matchesPriceRange;
-        });
-
-        renderPriceTable(filteredProducts);
-      }
-
-      function checkPriceRange(price, range) {
-        const [min, max] = range.split("-").map(Number);
-        return price >= min && price <= max;
-      }
-
-      function sortProducts(field) {
-        if (currentProductSort.field === field) {
-          currentProductSort.direction =
-            currentProductSort.direction === "asc" ? "desc" : "asc";
-        } else {
-          currentProductSort.field = field;
-          currentProductSort.direction = "asc";
-        }
-
-        const sortedProducts = [...products].sort((a, b) => {
-          let aValue = a[field];
-          let bValue = b[field];
-
-          if (aValue < bValue)
-            return currentProductSort.direction === "asc" ? -1 : 1;
-          if (aValue > bValue)
-            return currentProductSort.direction === "asc" ? 1 : -1;
-          return 0;
-        });
-
-        renderPriceTable(sortedProducts);
-      }
-
-      function goBack() {
-        window.location.href = "daodienad.html";
-      }
-
-      function exportReport() {
-        alert("Tính năng xuất báo cáo đang được phát triển!");
-      }
-
-      function printReport() {
-        window.print();
-      }
-
-      // Khởi tạo trang
-      document.addEventListener("DOMContentLoaded", function () {
-        renderPriceTable();
-
-        document
-          .getElementById("costPrice")
-          .addEventListener("input", calculateSellingPrice);
-        document
-          .getElementById("profitPercent")
-          .addEventListener("input", calculateSellingPrice);
-
-        const cards = document.querySelectorAll(".fade-in");
-        cards.forEach((card, index) => {
-          card.style.animationDelay = `${index * 0.1}s`;
-        });
+        row.className = `hover:bg-gray-750 transition ${statusClass}`;
+
+        row.innerHTML = `
+          <td class="px-4 py-4 whitespace-nowrap">
+            <div class="text-sm font-medium text-white">${product.name}</div>
+            <div class="text-sm text-gray-400">${getCategoryName(product.category)}</div>
+          </td>
+          <td class="px-4 py-4 whitespace-nowrap text-sm text-white">
+            ${product.currentStock}
+          </td>
+          <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-300">
+            ${product.minStock}
+          </td>
+          <td class="px-4 py-4 whitespace-nowrap text-sm font-medium ${stockStatus === 'low' ? 'text-red-400' : stockStatus === 'medium' ? 'text-yellow-400' : 'text-green-400'}">
+            ${statusText}
+          </td>
+          <td class="px-4 py-4 whitespace-nowrap">
+            <button onclick="adjustStock(${product.id})" class="text-xs bg-cyan-500 hover:bg-cyan-600 text-white px-3 py-1 rounded transition mr-2">
+              <i class="fas fa-edit mr-1"></i>Điều chỉnh
+            </button>
+            <button onclick="viewStockHistory(${product.id})" class="text-xs bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 rounded transition">
+              <i class="fas fa-history mr-1"></i>Lịch sử
+            </button>
+          </td>
+        `;
+
+        tableBody.appendChild(row);
       });
-    </script>
-  </body>
+    }
+
+    // Cập nhật thống kê tồn kho
+    function updateInventoryStats(inventoryList) {
+      const totalProducts = inventory.length;
+      const filteredCount = inventoryList.length;
+      const totalStock = inventoryList.reduce((sum, p) => sum + p.currentStock, 0);
+      const lowStockCount = inventoryList.filter(p => p.currentStock <= p.minStock).length;
+
+      document.getElementById("totalProductsCount").textContent = totalProducts;
+      document.getElementById("filteredProductsCount").textContent = filteredCount;
+      document.getElementById("totalStock").textContent = totalStock;
+      document.getElementById("lowStockCount").textContent = lowStockCount;
+    }
+
+    // Tìm kiếm tồn kho
+    function searchInventory() {
+      const searchTerm = document.getElementById("productSearch").value.toLowerCase();
+      const category = document.getElementById("inventoryCategorySelect").value;
+      const stockStatus = document.getElementById("stockStatusSelect").value;
+
+      let filteredInventory = inventory.filter((product) => {
+        const matchesSearch = product.name.toLowerCase().includes(searchTerm);
+        const matchesCategory = !category || product.category === category;
+        
+        let matchesStockStatus = true;
+        if (stockStatus) {
+          if (stockStatus === "low") {
+            matchesStockStatus = product.currentStock <= product.minStock;
+          } else if (stockStatus === "medium") {
+            matchesStockStatus = product.currentStock > product.minStock && 
+                                product.currentStock <= product.minStock * 1.5;
+          } else if (stockStatus === "high") {
+            matchesStockStatus = product.currentStock > product.minStock * 1.5;
+          }
+        }
+
+        return matchesSearch && matchesCategory && matchesStockStatus;
+      });
+
+      renderInventoryTable(filteredInventory);
+    }
+
+    // Sắp xếp tồn kho
+    function sortInventory(field) {
+      if (currentInventorySort.field === field) {
+        currentInventorySort.direction =
+          currentInventorySort.direction === "asc" ? "desc" : "asc";
+      } else {
+        currentInventorySort.field = field;
+        currentInventorySort.direction = "asc";
+      }
+
+      const sortedInventory = [...inventory].sort((a, b) => {
+        let aValue = a[field];
+        let bValue = b[field];
+
+        if (aValue < bValue)
+          return currentInventorySort.direction === "asc" ? -1 : 1;
+        if (aValue > bValue)
+          return currentInventorySort.direction === "asc" ? 1 : -1;
+        return 0;
+      });
+
+      renderInventoryTable(sortedInventory);
+    }
+
+    // Mở modal điều chỉnh tồn kho
+    function openStockAdjustmentModal(productId = null) {
+      const modal = document.getElementById("stockAdjustmentModal");
+      const productSelect = document.getElementById("modalProductSelect");
+      const adjustmentType = document.getElementById("adjustmentType");
+      const adjustmentQuantity = document.getElementById("adjustmentQuantity");
+      const exportWarning = document.getElementById("exportWarning");
+
+      // Ẩn cảnh báo khi mở modal
+      exportWarning.classList.add("hidden");
+
+      productSelect.innerHTML = '<option value="">Chọn sản phẩm</option>';
+      inventory.forEach((product) => {
+        const option = document.createElement("option");
+        option.value = product.id;
+        option.textContent = product.name;
+        productSelect.appendChild(option);
+      });
+
+      if (productId) {
+        currentAdjustingProduct = inventory.find((p) => p.id === productId);
+
+        if (currentAdjustingProduct) {
+          productSelect.value = currentAdjustingProduct.id;
+          productSelect.disabled = true;
+        }
+      } else {
+        currentAdjustingProduct = null;
+        productSelect.disabled = false;
+      }
+
+      // Reset các trường nhập liệu
+      adjustmentQuantity.value = "";
+      
+      // Thêm sự kiện kiểm tra số lượng khi thay đổi
+      adjustmentType.addEventListener("change", checkExportQuantity);
+      adjustmentQuantity.addEventListener("input", checkExportQuantity);
+
+      modal.classList.remove("hidden");
+    }
+
+    // Kiểm tra số lượng xuất có vượt quá tồn kho không
+    function checkExportQuantity() {
+      const adjustmentType = document.getElementById("adjustmentType").value;
+      const adjustmentQuantity = parseInt(document.getElementById("adjustmentQuantity").value) || 0;
+      const productId = parseInt(document.getElementById("modalProductSelect").value);
+      const exportWarning = document.getElementById("exportWarning");
+      const warningMessage = document.getElementById("warningMessage");
+
+      if (adjustmentType === "export" && productId) {
+        const product = inventory.find((p) => p.id === productId);
+        if (product && adjustmentQuantity > product.currentStock) {
+          exportWarning.classList.remove("hidden");
+          warningMessage.textContent = `Cảnh báo: Số lượng xuất (${adjustmentQuantity}) vượt quá tồn kho hiện tại (${product.currentStock})!`;
+        } else {
+          exportWarning.classList.add("hidden");
+        }
+      } else {
+        exportWarning.classList.add("hidden");
+      }
+    }
+
+    // Đóng modal điều chỉnh tồn kho
+    function closeStockAdjustmentModal() {
+      document.getElementById("stockAdjustmentModal").classList.add("hidden");
+      currentAdjustingProduct = null;
+    }
+
+    // Lưu điều chỉnh tồn kho
+    function saveStockAdjustment() {
+      const productId = parseInt(document.getElementById("modalProductSelect").value);
+      const adjustmentType = document.getElementById("adjustmentType").value;
+      const quantity = parseInt(document.getElementById("adjustmentQuantity").value);
+      const reason = document.getElementById("adjustmentReason").value;
+
+      if (!productId || !quantity || quantity <= 0) {
+        alert("Vui lòng điền đầy đủ thông tin");
+        return;
+      }
+
+      const product = inventory.find((p) => p.id === productId);
+      if (!product) {
+        alert("Sản phẩm không tồn tại");
+        return;
+      }
+
+      // Kiểm tra nếu xuất quá số lượng tồn kho
+      if (adjustmentType === "export" && quantity > product.currentStock) {
+        alert(`Không thể xuất hàng! Số lượng xuất (${quantity}) vượt quá tồn kho hiện tại (${product.currentStock})`);
+        return;
+      }
+
+      // Thêm lịch sử điều chỉnh
+      const today = new Date().toISOString().split('T')[0];
+      product.stockHistory.push({
+        date: today,
+        type: adjustmentType,
+        quantity: quantity,
+        reason: reason
+      });
+
+      // Cập nhật tồn kho hiện tại
+      if (adjustmentType === "import") {
+        product.currentStock += quantity;
+      } else if (adjustmentType === "export") {
+        product.currentStock -= quantity;
+        if (product.currentStock < 0) product.currentStock = 0;
+      } else if (adjustmentType === "adjust") {
+        product.currentStock = quantity;
+      }
+
+      renderInventoryTable();
+      closeStockAdjustmentModal();
+      alert("Đã điều chỉnh tồn kho thành công!");
+    }
+
+    // Điều chỉnh tồn kho nhanh
+    function adjustStock(productId) {
+      openStockAdjustmentModal(productId);
+    }
+
+    // Xem lịch sử tồn kho
+    function viewStockHistory(productId) {
+      const product = inventory.find((p) => p.id === productId);
+      if (product) {
+        let historyText = `Lịch sử tồn kho: ${product.name}\n\n`;
+        
+        product.stockHistory.forEach(record => {
+          const typeText = record.type === 'import' ? 'Nhập' : 
+                          record.type === 'export' ? 'Xuất' : 'Điều chỉnh';
+          historyText += `${record.date}: ${typeText} ${record.quantity} - ${record.reason}\n`;
+        });
+        
+        historyText += `\nTồn kho hiện tại: ${product.currentStock}`;
+        
+        alert(historyText);
+      }
+    }
+
+    // Tạo báo cáo nhập - xuất - tồn
+    function generateStockReport() {
+      const startDate = document.getElementById("startDate").value;
+      const endDate = document.getElementById("endDate").value;
+      
+      if (!startDate || !endDate) {
+        alert("Vui lòng chọn khoảng thời gian");
+        return;
+      }
+      
+      const tableBody = document.getElementById("stockReportTable");
+      tableBody.innerHTML = "";
+      
+      inventory.forEach(product => {
+        // Tính toán số liệu trong khoảng thời gian
+        const periodData = calculatePeriodStock(product, startDate, endDate);
+        
+        const row = document.createElement("tr");
+        row.className = "hover:bg-gray-750 transition";
+        
+        row.innerHTML = `
+          <td class="px-4 py-4 whitespace-nowrap text-sm text-white">${product.name}</td>
+          <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-300">${periodData.openingStock}</td>
+          <td class="px-4 py-4 whitespace-nowrap text-sm text-green-400">${periodData.totalImport}</td>
+          <td class="px-4 py-4 whitespace-nowrap text-sm text-red-400">${periodData.totalExport}</td>
+          <td class="px-4 py-4 whitespace-nowrap text-sm text-white">${periodData.closingStock}</td>
+        `;
+        
+        tableBody.appendChild(row);
+      });
+    }
+    
+    // Tính toán số liệu tồn kho trong khoảng thời gian
+    function calculatePeriodStock(product, startDate, endDate) {
+      let openingStock = product.currentStock;
+      let totalImport = 0;
+      let totalExport = 0;
+      
+      // Tính toán dựa trên lịch sử tồn kho
+      product.stockHistory.forEach(record => {
+        if (record.date < startDate) {
+          // Trước kỳ báo cáo
+          if (record.type === 'import') {
+            openingStock -= record.quantity;
+          } else if (record.type === 'export') {
+            openingStock += record.quantity;
+          }
+        } else if (record.date >= startDate && record.date <= endDate) {
+          // Trong kỳ báo cáo
+          if (record.type === 'import') {
+            totalImport += record.quantity;
+          } else if (record.type === 'export') {
+            totalExport += record.quantity;
+          }
+        }
+      });
+      
+      const closingStock = openingStock + totalImport - totalExport;
+      
+      return {
+        openingStock,
+        totalImport,
+        totalExport,
+        closingStock
+      };
+    }
+
+    // Các hàm hỗ trợ khác
+    function getCategoryName(category) {
+      const categories = {
+        ngot: "Nhân ngọt",
+        man: "Nhân mặn",
+        dacbiet: "Đặc biệt",
+        chay: "Chay",
+      };
+      return categories[category] || "Không xác định";
+    }
+
+    function goBack() {
+      window.location.href = "daodienad.html";
+    }
+
+    // Khởi tạo trang
+    document.addEventListener("DOMContentLoaded", function () {
+      renderInventoryTable();
+      
+      // Đặt ngày mặc định cho báo cáo (tháng hiện tại)
+      const today = new Date();
+      const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+      const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+      
+      document.getElementById("startDate").value = firstDay.toISOString().split('T')[0];
+      document.getElementById("endDate").value = lastDay.toISOString().split('T')[0];
+      
+      // Tạo báo cáo mặc định
+      generateStockReport();
+    });
+  </script>
+</body>
 </html>
