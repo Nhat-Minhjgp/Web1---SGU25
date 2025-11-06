@@ -68,9 +68,6 @@
     <div class="max-w-5xl mx-auto px-6 py-10">
         <h1 class="text-2xl font-bold text-[#8B0000] mb-6 text-center">Thông tin thanh toán</h1>
 
-        <!-- Thông báo trường bắt buộc -->
-       
-
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <!-- Chi tiết đơn hàng -->
             <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
@@ -313,58 +310,10 @@
         subtotalEl.textContent = `${subtotal.toLocaleString("vi-VN")}₫`;
         totalAmountEl.textContent = `${total.toLocaleString("vi-VN")}₫`;
 
-        // Xử lý form thanh toán
-        document.getElementById("checkoutForm").addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            const fullName = document.getElementById("fullName").value;
-            const phone = document.getElementById("phone").value;
-            const address = document.getElementById("address").value;
-            const note = document.getElementById("note").value;
-            const payment = document.querySelector('input[name="payment"]:checked').value;
-
-            if (!fullName || !phone || !address) {
-                alert("Vui lòng điền đầy đủ thông tin nhận hàng.");
-                return;
-            }
-
-            // Tạo đơn hàng với thông tin tài khoản
-            const order = {
-                id: Date.now().toString(),
-                date: new Date().toISOString(),
-                customer: {
-                    email: currentUser.email, // Lưu email để phân biệt tài khoản
-                    name: fullName,
-                    phone: phone,
-                    address: address
-                },
-                items: items.map(item => ({
-                    name: item.name,
-                    price: item.price,
-                    quantity: item.quantity,
-                    total: item.price * item.quantity
-                })),
-                payment: payment,
-                subtotal: subtotal,
-                shipping: shippingFee,
-                total: total,
-                status: "pending",
-                note: note || ""
-            };
-
-            // Lưu đơn hàng vào lịch sử theo tài khoản
-            saveOrderToUserAccount(order);
-
-            // Xóa sản phẩm đã thanh toán khỏi giỏ hàng
-            removeCheckedOutItemsFromCart(items);
-
-            // Xóa checkoutItems
-            localStorage.removeItem("checkoutItems");
-
-            // Hiển thị thông báo và chuyển hướng
-            alert(`Đơn hàng #${order.id} đã được xác nhận!\n\nTổng tiền: ${total.toLocaleString("vi-VN")}₫\nPhương thức: ${getPaymentMethodName(payment)}\n\nCảm ơn bạn đã mua hàng tại MASH Bakery!`);
-            window.location.href = "./pages.html";
-        });
+        // Hàm tạo mã đơn hàng
+        function generateOrderId() {
+            return 'ORD' + Date.now() + Math.floor(Math.random() * 1000);
+        }
 
         // Hàm lấy tên phương thức thanh toán
         function getPaymentMethodName(value) {
@@ -424,12 +373,58 @@
             localStorage.setItem("cart", JSON.stringify(updatedCart));
         }
 
-        // Hàm tạo mã đơn hàng (nếu cần phức tạp hơn)
-        function generateOrderId() {
-            return 'ORD' + Date.now() + Math.floor(Math.random() * 1000);
-        }
-    });
-</script>
-</body>
+        // Xử lý form thanh toán
+        document.getElementById("checkoutForm").addEventListener("submit", function (e) {
+            e.preventDefault();
 
+            const fullName = document.getElementById("fullName").value;
+            const phone = document.getElementById("phone").value;
+            const address = document.getElementById("address").value;
+            const note = document.getElementById("note").value;
+            const payment = document.querySelector('input[name="payment"]:checked').value;
+
+            if (!fullName || !phone || !address) {
+                alert("Vui lòng điền đầy đủ thông tin nhận hàng.");
+                return;
+            }
+
+            // Tạo đơn hàng với thông tin tài khoản
+            const order = {
+                id: generateOrderId(),
+                date: new Date().toISOString(),
+                customer: {
+                    email: currentUser.email,
+                    name: fullName,
+                    phone: phone,
+                    address: address
+                },
+                items: items.map(item => ({
+                    name: item.name,
+                    price: item.price,
+                    quantity: item.quantity,
+                    total: item.price * item.quantity
+                })),
+                payment: payment,
+                subtotal: subtotal,
+                shipping: shippingFee,
+                total: total,
+                status: "pending",
+                note: note || ""
+            };
+
+            // Lưu đơn hàng vào lịch sử theo tài khoản
+            saveOrderToUserAccount(order);
+
+            // Xóa sản phẩm đã thanh toán khỏi giỏ hàng
+            removeCheckedOutItemsFromCart(items);
+
+            // Xóa checkoutItems
+            localStorage.removeItem("checkoutItems");
+
+            // CHUYỂN HƯỚNG ĐẾN TRANG TÓM TẮT ĐƠN HÀNG
+            window.location.href = `./order-summary.html?orderId=${order.id}`;
+        });
+    });
+    </script>
+</body>
 </html>
