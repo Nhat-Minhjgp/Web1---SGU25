@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,36 +11,42 @@
     .card-hover {
       transition: all 0.3s ease;
     }
+
     .card-hover:hover {
       transform: translateY(-5px);
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
     }
+
     .low-stock {
       background-color: rgba(239, 68, 68, 0.2);
       border-left: 4px solid #ef4444;
     }
+
     .medium-stock {
       background-color: rgba(245, 158, 11, 0.2);
       border-left: 4px solid #f59e0b;
     }
+
     .high-stock {
       background-color: rgba(16, 185, 129, 0.2);
       border-left: 4px solid #10b981;
     }
   </style>
 </head>
+
 <body class="bg-gray-900 text-white min-h-screen">
   <!-- HEADER -->
-  <header class="bg-gray-800 shadow-md p-4">
-    <div class="flex items-center justify-between">
-      <div class="flex items-center">
-        <i class="fas fa-boxes text-cyan-400 text-2xl mr-3"></i>
-        <h1 class="text-2xl font-bold text-cyan-400">Quản lý Tồn kho</h1>
-      </div>
-      <button onclick="goBack()" class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition">
-        <i class="fas fa-arrow-left mr-2"></i> Quay lại
-      </button>
+  <header class="flex justify-between items-center px-6 py-4 bg-gray-800 shadow-md">
+    <div class="flex items-center space-x-4">
+      <button
+          onclick="goBack()"
+          class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition flex items-center"
+        >
+          <i class="fas fa-arrow-left mr-2"></i> Quay lại
+        </button>
+      <h1 class="text-2xl font-bold text-cyan-400">Quản lý Tồn Kho</h1>
     </div>
+  
   </header>
 
   <!-- MAIN CONTENT -->
@@ -232,7 +239,8 @@
   </main>
 
   <!-- Modal điều chỉnh tồn kho -->
-  <div id="stockAdjustmentModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+  <div id="stockAdjustmentModal"
+    class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
     <div class="bg-gray-800 rounded-lg p-6 w-full max-w-md">
       <div class="flex justify-between items-center mb-4">
         <h3 class="text-xl font-bold text-cyan-400">Điều chỉnh tồn kho</h3>
@@ -269,7 +277,7 @@
           class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 transition"
           rows="2"></textarea>
       </div>
-      
+
       <!-- Cảnh báo khi xuất quá số lượng -->
       <div id="exportWarning" class="hidden bg-red-900 text-red-200 p-3 rounded-lg mb-4">
         <div class="flex items-center">
@@ -277,7 +285,7 @@
           <span id="warningMessage"></span>
         </div>
       </div>
-      
+
       <div class="flex justify-end space-x-3">
         <button onclick="closeStockAdjustmentModal()"
           class="bg-gray-700 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition">
@@ -335,8 +343,8 @@
       },
       {
         id: 4,
-        name: "Khế Bưởi Quế Hoa",
-        category: "ngot",
+        name: "Tomyum Hải Sản",
+        category: "man",
         currentStock: 80,
         minStock: 30,
         maxStock: 120,
@@ -348,8 +356,8 @@
       },
       {
         id: 5,
-        name: "Bánh Pía Sầu Riêng",
-        category: "ngot",
+        name: "Bò Sốt Tiêu Đen",
+        category: "man",
         currentStock: 25,
         minStock: 15,
         maxStock: 60,
@@ -701,7 +709,12 @@
       };
       return categories[category] || "Không xác định";
     }
-
+    function logout() {
+        if (confirm("Bạn có chắc chắn muốn đăng xuất?")) {
+          alert("Đã đăng xuất!");
+          window.location.href = "adlog.html";
+        }
+      }
     function goBack() {
       window.location.href = "daodienad.html";
     }
@@ -723,4 +736,5 @@
     });
   </script>
 </body>
+
 </html>

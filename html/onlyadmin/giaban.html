@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quản lý Giá bán - Admin</title>
+    <title>Quản lý Đơn đặt hàng - Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
@@ -23,11 +23,25 @@
       };
     </script>
     <style>
-      .profit-positive {
-        color: #10b981;
+      .status-pending {
+        background-color: #6b7280;
+        color: white;
       }
-      .profit-negative {
-        color: #ef4444;
+      .status-confirmed {
+        background-color: #3b82f6;
+        color: white;
+      }
+      .status-shipping {
+        background-color: #f59e0b;
+        color: white;
+      }
+      .status-delivered {
+        background-color: #10b981;
+        color: white;
+      }
+      .status-cancelled {
+        background-color: #ef4444;
+        color: white;
       }
     </style>
   </head>
@@ -43,117 +57,116 @@
         >
           <i class="fas fa-arrow-left mr-2"></i> Quay lại
         </button>
-        <h1 class="text-2xl font-bold text-cyan-400">Quản lý Giá bán</h1>
+        <h1 class="text-2xl font-bold text-cyan-400">Quản lý Đơn đặt hàng</h1>
       </div>
-      <button
-        onclick="logout()"
-        class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-full text-sm transition"
-      >
-        Đăng xuất
-      </button>
+      
     </header>
 
     <!-- MAIN CONTENT -->
     <main class="p-8">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Tỷ lệ lợi nhuận theo loại -->
-        <div class="bg-gray-800 p-6 rounded-xl shadow-lg">
-          <h2 class="text-xl font-bold text-cyan-400 mb-4">
-            Tỷ lệ lợi nhuận theo loại sản phẩm
-          </h2>
-          <div class="space-y-4">
-            <div
-              class="flex justify-between items-center p-3 bg-gray-750 rounded-lg"
+      <div class="bg-gray-800 p-6 rounded-xl shadow-lg">
+        <!-- Bộ lọc và sắp xếp -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2"
+              >Từ ngày</label
             >
-              <span>Nhân ngọt</span>
-              <div class="flex items-center space-x-2">
-                <input
-                  type="number"
-                  value="37.5"
-                  class="w-20 px-2 py-1 bg-gray-700 border border-gray-600 rounded text-right profit-input"
-                  data-type="ngot"
-                />
-                <span>%</span>
-                <button class="text-cyan-400 hover:text-cyan-300" onclick="saveProfitRate('ngot')">
-                  <i class="fas fa-save"></i>
-                </button>
-              </div>
-            </div>
-            <div
-              class="flex justify-between items-center p-3 bg-gray-750 rounded-lg"
+            <input
+              type="date"
+              id="fromDate"
+              onchange="filterOrders()"
+              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2"
+              >Đến ngày</label
             >
-              <span>Nhân mặn</span>
-              <div class="flex items-center space-x-2">
-                <input
-                  type="number"
-                  value="37.5"
-                  class="w-20 px-2 py-1 bg-gray-700 border border-gray-600 rounded text-right profit-input"
-                  data-type="man"
-                />
-                <span>%</span>
-                <button class="text-cyan-400 hover:text-cyan-300" onclick="saveProfitRate('man')">
-                  <i class="fas fa-save"></i>
-                </button>
-              </div>
-            </div>
-            <div
-              class="flex justify-between items-center p-3 bg-gray-750 rounded-lg"
+            <input
+              type="date"
+              id="toDate"
+              onchange="filterOrders()"
+              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2"
+              >Tình trạng</label
             >
-              <span>Đặc biệt</span>
-              <div class="flex items-center space-x-2">
-                <input
-                  type="number"
-                  value="37.5"
-                  class="w-20 px-2 py-1 bg-gray-700 border border-gray-600 rounded text-right profit-input"
-                  data-type="dacbiet"
-                />
-                <span>%</span>
-                <button class="text-cyan-400 hover:text-cyan-300" onclick="saveProfitRate('dacbiet')">
-                  <i class="fas fa-save"></i>
-                </button>
-              </div>
-            </div>
+            <select id="statusFilter" onchange="filterOrders()"
+              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            >
+              <option value="">Tất cả</option>
+              <option value="pending">Chưa xử lý</option>
+              <option value="confirmed">Đã xác nhận</option>
+              <option value="shipping">Đang giao hàng</option>
+              <option value="delivered">Đã giao thành công</option>
+              <option value="cancelled">Đã hủy</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2"
+              >Sắp xếp theo Quận</label
+            >
+            <select id="districtSort" onchange="filterOrders()"
+              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            >
+              <option value="">Tất cả Quận</option>
+              <option value="quan1">Quận 1</option>
+              <option value="quan2">Quận 2</option>
+              <option value="quan3">Quận 3</option>
+              <option value="quan4">Quận 4</option>
+              <option value="quan5">Quận 5</option>
+              <option value="quan6">Quận 6</option>
+              <option value="quan7">Quận 7</option>
+              <option value="quan8">Quận 8</option>
+              <option value="quan9">Quận 9</option>
+              <option value="quan10">Quận 10</option>
+              <option value="quan11">Quận 11</option>
+              <option value="quan12">Quận 12</option>
+              <option value="quanbt">Bình Thạnh</option>
+              <option value="quanpnh">Phú Nhuận</option>
+              <option value="quangv">Gò Vấp</option>
+              <option value="quantb">Tân Bình</option>
+              <option value="quantp">Tân Phú</option>
+              <option value="quanbth">Bình Tân</option>
+            </select>
+          </div>
+          <div class="flex items-end">
+            <button
+              onclick="resetFilters()"
+              class="w-full px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-500 transition flex items-center justify-center"
+            >
+              <i class="fas fa-refresh mr-2"></i> Đặt lại
+            </button>
           </div>
         </div>
 
-        <!-- Tỷ lệ lợi nhuận theo sản phẩm -->
-        <div class="bg-gray-800 p-6 rounded-xl shadow-lg">
-          <h2 class="text-xl font-bold text-cyan-400 mb-4">
-            Tỷ lệ lợi nhuận theo sản phẩm
-          </h2>
-          <div class="space-y-3 max-h-96 overflow-y-auto" id="productProfitRates">
-            <!-- Sẽ được tạo động bằng JavaScript -->
+        <!-- Thống kê nhanh -->
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+          <div class="bg-gray-750 p-4 rounded-lg text-center">
+            <div class="text-2xl font-bold text-cyan-400" id="totalOrders">0</div>
+            <div class="text-sm text-gray-300">Tổng đơn</div>
+          </div>
+          <div class="bg-gray-750 p-4 rounded-lg text-center">
+            <div class="text-2xl font-bold text-blue-400" id="pendingOrders">0</div>
+            <div class="text-sm text-gray-300">Chưa xử lý</div>
+          </div>
+          <div class="bg-gray-750 p-4 rounded-lg text-center">
+            <div class="text-2xl font-bold text-yellow-400" id="confirmedOrders">0</div>
+            <div class="text-sm text-gray-300">Đã xác nhận</div>
+          </div>
+          <div class="bg-gray-750 p-4 rounded-lg text-center">
+            <div class="text-2xl font-bold text-green-400" id="deliveredOrders">0</div>
+            <div class="text-sm text-gray-300">Đã giao</div>
+          </div>
+          <div class="bg-gray-750 p-4 rounded-lg text-center">
+            <div class="text-2xl font-bold text-red-400" id="cancelledOrders">0</div>
+            <div class="text-sm text-gray-300">Đã hủy</div>
           </div>
         </div>
-      </div>
 
-      <!-- Bảng giá sản phẩm -->
-      <div class="bg-gray-800 p-6 rounded-xl shadow-lg mt-6">
-        <h2 class="text-xl font-bold text-cyan-400 mb-4">
-          Tra cứu giá sản phẩm
-        </h2>
-
-        <!-- Bộ lọc -->
-        <div class="flex gap-4 mb-4">
-          <input
-            type="text"
-            id="searchProduct"
-            placeholder="Tìm kiếm sản phẩm..."
-            class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 flex-1"
-            onkeyup="filterProductTable()"
-          />
-          <select
-            id="categoryFilter"
-            class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-            onchange="filterProductTable()"
-          >
-            <option value="">Tất cả loại</option>
-            <option value="ngot">Nhân ngọt</option>
-            <option value="man">Nhân mặn</option>
-            <option value="dacbiet">Đặc biệt</option>
-          </select>
-        </div>
-
+        <!-- Danh sách đơn hàng -->
         <div class="overflow-x-auto">
           <table class="min-w-full divide-y divide-gray-700">
             <thead class="bg-gray-750">
@@ -161,260 +174,253 @@
                 <th
                   class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
                 >
-                  Sản phẩm
+                  Mã đơn
                 </th>
                 <th
                   class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
                 >
-                  Giá vốn
+                  Khách hàng
                 </th>
                 <th
                   class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
                 >
-                  Lợi nhuận
+                  Ngày đặt
                 </th>
                 <th
                   class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
                 >
-                  Giá bán
+                  Địa chỉ giao hàng
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
+                >
+                  Tổng tiền
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
+                >
+                  Tình trạng
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
+                >
+                  Thao tác
                 </th>
               </tr>
             </thead>
-            <tbody class="bg-gray-800 divide-y divide-gray-700" id="productTableBody">
-              <!-- Sẽ được tạo động bằng JavaScript -->
+            <tbody id="ordersTableBody" class="bg-gray-800 divide-y divide-gray-700">
+              <!-- Orders will be populated by JavaScript -->
             </tbody>
           </table>
         </div>
       </div>
     </main>
 
+    <!-- Modal chi tiết đơn hàng -->
+    <div
+      id="orderDetailModal"
+      class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden"
+    >
+      <div
+        class="bg-gray-800 rounded-xl shadow-2xl w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto"
+      >
+        <div
+          class="flex justify-between items-center p-6 border-b border-gray-700"
+        >
+          <h3 class="text-xl font-bold text-cyan-400">
+            Chi tiết đơn hàng <span id="orderId"></span>
+          </h3>
+          <button onclick="closeModal()" class="text-gray-400 hover:text-white">
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+        <div class="p-6">
+          <div id="orderDetailContent">
+            <!-- Nội dung chi tiết đơn hàng sẽ được thêm ở đây -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal cập nhật trạng thái -->
+    <div
+      id="statusUpdateModal"
+      class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden"
+    >
+      <div class="bg-gray-800 rounded-xl shadow-2xl w-full max-w-md mx-4">
+        <div
+          class="flex justify-between items-center p-6 border-b border-gray-700"
+        >
+          <h3 class="text-xl font-bold text-cyan-400">
+            Cập nhật trạng thái
+          </h3>
+          <button onclick="closeStatusModal()" class="text-gray-400 hover:text-white">
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+        <div class="p-6">
+          <input type="hidden" id="currentOrderId">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">
+                Trạng thái hiện tại:
+              </label>
+              <span id="currentStatus" class="px-3 py-1 text-sm rounded-full"></span>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">
+                Chọn trạng thái mới:
+              </label>
+              <select id="newStatusSelect" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                <option value="pending">Chưa xử lý</option>
+                <option value="confirmed">Đã xác nhận</option>
+                <option value="shipping">Đang giao hàng</option>
+                <option value="delivered">Đã giao thành công</option>
+                <option value="cancelled">Đã hủy</option>
+              </select>
+            </div>
+          </div>
+          <div class="flex justify-end space-x-3 mt-6">
+            <button
+              onclick="closeStatusModal()"
+              class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-500 transition"
+            >
+              Hủy
+            </button>
+            <button
+              onclick="confirmStatusUpdate()"
+              class="px-4 py-2 bg-cyan-500 text-gray-900 font-semibold rounded-lg hover:bg-cyan-600 transition"
+            >
+              Cập nhật
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script>
-      // Dữ liệu sản phẩm từ trang sản phẩm
-      const products = [
+      // Dữ liệu mẫu cho đơn hàng với thông tin địa chỉ chi tiết
+      let orders = [
         {
-          id: "mangcauxiemsen",
-          name: "Trung Thu Mãng Cầu Xiêm Sen",
-          category: "ngot",
-          cost: 40000,
-          profitRate: 37.5,
-          description: "Nhân chua thanh nhẹ, quyện vị béo dịu, mang hương sen tao nhã và độc đáo."
+          id: "DH001",
+          customer: "Nguyễn Văn A",
+          phone: "0123456789",
+          address: {
+            street: "123 Đường Lê Lợi",
+            ward: "Phường Bến Nghé",
+            district: "quan1",
+            districtName: "Quận 1",
+            province: "TP.HCM"
+          },
+          date: "15/1/2025",
+          timestamp: new Date("2025-1-15").getTime(),
+          total: "1.250.000đ",
+          status: "delivered",
+          items: [
+            { name: "Mãng Cầu Xiêm Sen", quantity: 2, price: "370.000đ" },
+            { name: "Sữa Dừa Cafe", quantity: 3, price: "525.000đ" },
+            { name: "Nấm Truffle", quantity: 1, price: "285.000đ" }
+          ]
         },
         {
-          id: "suaduacafe",
-          name: "Trung Thu Sữa Dừa Cafe",
-          category: "ngot",
-          cost: 40000,
-          profitRate: 37.5,
-          description: "Nhân sữa dừa hòa quyện cà phê, béo ngậy, thơm dịu và ngọt vừa phải."
+          id: "DH002",
+          customer: "Trần Thị B",
+          phone: "0987654321",
+          address: {
+            street: "456 Đường Nguyễn Văn Linh",
+            ward: "Phường Tân Phong",
+            district: "quan7",
+            districtName: "Quận 7",
+            province: "TP.HCM"
+          },
+          date: "16/2/2025",
+          timestamp: new Date("2025-2-16").getTime(),
+          total: "850.000đ",
+          status: "delivered",
+          items: [
+            { name: "Bánh Trung Thu Sữa Dừa Cafe", quantity: 4, price: "220.000đ" },
+          ]
         },
         {
-          id: "khebuoiquehoa",
-          name: "Trung Thu Khế Bưởi Quế Hoa",
-          category: "ngot",
-          cost: 40000,
-          profitRate: 37.5,
-          description: "Nhân sữa béo nhẹ, ngọt dịu, hòa quyện hương thơm thanh mát và tinh tế."
+          id: "DH003",
+          customer: "Lê Văn C",
+          phone: "0912345678",
+          address: {
+            street: "789 Đường Phan Văn Trị",
+            ward: "Phường 7",
+            district: "quangv",
+            districtName: "Gò Vấp",
+            province: "TP.HCM"
+          },
+          date: "14/1/2025",
+          timestamp: new Date("2025-1-14").getTime(),
+          total: "2.150.000đ",
+          status: "pending",
+          items: [
+            { name: "Bánh Trung Thu Sữa Dừa Cafe", quantity: 4, price: "220.000đ" },
+          ]
         },
         {
-          id: "vaihongcanhsen",
-          name: "Trung Thu Vải Hồng Cánh Sen",
-          category: "ngot",
-          cost: 40000,
-          profitRate: 37.5,
-          description: "Bánh ngọt thanh hòa quyện hạt sen bùi và hương hoa hồng tinh tế"
+          id: "DH004",
+          customer: "Phạm Thị D",
+          phone: "0934567890",
+          address: {
+            street: "321 Đường Lý Thường Kiệt",
+            ward: "Phường 14",
+            district: "quantb",
+            districtName: "Tân Bình",
+            province: "TP.HCM"
+          },
+          date: "13/8/2025",
+          timestamp: new Date("2025-8-13").getTime(),
+          total: "1.750.000đ",
+          status: "confirmed",
+          items: [
+            { name: "Mãng Cầu Xiêm Sen", quantity: 3, price: "555.000đ" },
+            { name: "Sữa Dừa Cafe", quantity: 2, price: "350.000đ" }
+          ]
         },
         {
-          id: "bosottieuden",
-          name: "Trung Thu Bò Sốt Tiêu Đen",
-          category: "man",
-          cost: 40000,
-          profitRate: 37.5,
-          description: "Nhân sốt tiêu đen đậm đà cay nhẹ kết hợp mứt và hạt tạo hương vị khó quên."
+          id: "DH005",
+          customer: "Hoàng Văn E",
+          phone: "0945678901",
+          address: {
+            street: "654 Đường Cách Mạng Tháng 8",
+            ward: "Phường 11",
+            district: "quan3",
+            districtName: "Quận 3",
+            province: "TP.HCM"
+          },
+          date: "17/7/2025",
+          timestamp: new Date("2025-7-17").getTime(),
+          total: "3.200.000đ",
+          status: "shipping",
+          items: [
+            { name: "Mãng Cầu Xiêm Sen", quantity: 2, price: "370.000đ" },
+            { name: "Sữa Dừa Cafe", quantity: 3, price: "525.000đ" },
+            { name: "Nấm Truffle", quantity: 4, price: "1.140.000đ" }
+          ]
         },
         {
-          id: "namtruffle",
-          name: "Trung Thu Nấm Truffle",
-          category: "dacbiet",
-          cost: 40000,
-          profitRate: 37.5,
-          description: "Nhân nấm truffle cao cấp – đại diện cho tinh thần sáng tạo và tay nghề thủ công"
-        },
-        {
-          id: "tomyumhaisan",
-          name: "Trung Thu Tomyum Hải Sản",
-          category: "man",
-          cost: 40000,
-          profitRate: 37.5,
-          description: "Tomyum hải sản đem đến trải nghiệm Trung thu đầy thú vị và bổ dưỡng"
-        },
-        {
-          id: "senvangxoaideo",
-          name: "Trung Thu Sen Vàng Xoài Dẻo",
-          category: "ngot",
-          cost: 40000,
-          profitRate: 37.5,
-          description: "Nhân ngọt thanh, dẻo mềm hòa quyện vị xoài chín và hương sen thuần khiết."
-        },
-        {
-          id: "gaodocomdua",
-          name: "Trung Thu Gạo Đỏ Cốm Dừa",
-          category: "ngot",
-          cost: 40000,
-          profitRate: 37.5,
-          description: "Thơm béo vị sữa, quyện cùng dừa nạo mềm mại, ngọt dịu."
-        },
-        {
-          id: "motay",
-          name: "Trung Thu Mơ Tây",
-          category: "ngot",
-          cost: 40000,
-          profitRate: 37.5,
-          description: "Nhân Mơ Tây chua ngọt hài hòa, mang vị thu nhẹ nhàng và lạ miệng."
-        },
-        {
-          id: "cafe",
-          name: "Trung Thu Cafe",
-          category: "ngot",
-          cost: 40000,
-          profitRate: 37.5,
-          description: "Nhân Cà Phê đậm đà, thơm ngậy như một tách cà phê tinh tế giữa mùa thu."
-        },
-        {
-          id: "namvietquat",
-          name: "Trung Thu Nam Việt Quất",
-          category: "ngot",
-          cost: 40000,
-          profitRate: 37.5,
-          description: "Nhân Nam Việt Quốc chua ngọt thanh lịch, phảng phất vị Tây phương hiện đại."
+          id: "DH006",
+          customer: "Nguyễn Thị F",
+          phone: "0956789012",
+          address: {
+            street: "987 Đường Lê Văn Sỹ",
+            ward: "Phường 10",
+            district: "quanpnh",
+            districtName: "Phú Nhuận",
+            province: "TP.HCM"
+          },
+          date: "12/6/2025",
+          timestamp: new Date("2025-6-12").getTime(),
+          total: "1.100.000đ",
+          status: "cancelled",
+          items: [
+            { name: "Bánh Trung Thu Sữa Dừa Cafe", quantity: 5, price: "275.000đ" },
+          ]
         }
       ];
-
-      // Danh sách loại sản phẩm
-      const categories = {
-        'ngot': 'Nhân ngọt',
-        'man': 'Nhân mặn',
-        'dacbiet': 'Đặc biệt'
-      };
-
-      // Khởi tạo trang
-      document.addEventListener('DOMContentLoaded', function() {
-        loadProductProfitRates();
-        loadProductTable();
-      });
-
-      // Tải tỷ lệ lợi nhuận theo sản phẩm - HIỂN THỊ TẤT CẢ SẢN PHẨM
-      function loadProductProfitRates() {
-        const container = document.getElementById('productProfitRates');
-        container.innerHTML = '';
-
-        // Hiển thị TẤT CẢ sản phẩm
-        products.forEach(product => {
-          const productElement = document.createElement('div');
-          productElement.className = 'flex justify-between items-center p-3 bg-gray-750 rounded-lg mb-2';
-          productElement.innerHTML = `
-            <span class="text-sm flex-1 truncate mr-2">${product.name}</span>
-            <div class="flex items-center space-x-2 flex-shrink-0">
-              <input
-                type="number"
-                value="${product.profitRate}"
-                class="w-16 px-2 py-1 bg-gray-700 border border-gray-600 rounded text-right text-sm product-profit-input"
-                data-product="${product.id}"
-              />
-              <span class="text-sm">%</span>
-              <button class="text-cyan-400 hover:text-cyan-300 text-sm" onclick="saveProductProfitRate('${product.id}')">
-                <i class="fas fa-save"></i>
-              </button>
-            </div>
-          `;
-          container.appendChild(productElement);
-        });
-      }
-
-      // Tải bảng sản phẩm
-      function loadProductTable() {
-        const tbody = document.getElementById('productTableBody');
-        tbody.innerHTML = '';
-
-        products.forEach(product => {
-          const sellingPrice = Math.round(product.cost * (1 + product.profitRate / 100));
-          const row = document.createElement('tr');
-          row.className = 'product-row';
-          row.setAttribute('data-category', product.category);
-          row.setAttribute('data-name', product.name.toLowerCase());
-          row.innerHTML = `
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm font-medium text-white">${product.name}</div>
-              <div class="text-sm text-gray-400">${categories[product.category]}</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-              ${product.cost.toLocaleString()}đ
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm profit-positive">
-              ${product.profitRate}%
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
-              ${sellingPrice.toLocaleString()}đ
-            </td>
-          `;
-          tbody.appendChild(row);
-        });
-      }
-
-      // Lọc bảng sản phẩm
-      function filterProductTable() {
-        const searchTerm = document.getElementById('searchProduct').value.toLowerCase();
-        const categoryFilter = document.getElementById('categoryFilter').value;
-        const rows = document.querySelectorAll('.product-row');
-
-        rows.forEach(row => {
-          const productName = row.getAttribute('data-name');
-          const productCategory = row.getAttribute('data-category');
-          
-          const matchesSearch = productName.includes(searchTerm);
-          const matchesCategory = !categoryFilter || productCategory === categoryFilter;
-          
-          row.style.display = (matchesSearch && matchesCategory) ? '' : 'none';
-        });
-      }
-
-      // Lưu tỷ lệ lợi nhuận theo loại
-      function saveProfitRate(type) {
-        const input = document.querySelector(`.profit-input[data-type="${type}"]`);
-        const newRate = parseFloat(input.value);
-        
-        if (!isNaN(newRate)) {
-          // Cập nhật tất cả sản phẩm thuộc loại này
-          products.forEach(product => {
-            if (product.category === type) {
-              product.profitRate = newRate;
-            }
-          });
-          
-          // Cập nhật lại giao diện
-          loadProductProfitRates();
-          loadProductTable();
-          alert(`Đã cập nhật tỷ lệ lợi nhuận cho ${categories[type]} thành ${newRate}%`);
-        } else {
-          alert('Vui lòng nhập số hợp lệ');
-        }
-      }
-
-      // Lưu tỷ lệ lợi nhuận theo sản phẩm
-      function saveProductProfitRate(productId) {
-        const input = document.querySelector(`.product-profit-input[data-product="${productId}"]`);
-        const newRate = parseFloat(input.value);
-        
-        if (!isNaN(newRate)) {
-          const product = products.find(p => p.id === productId);
-          if (product) {
-            product.profitRate = newRate;
-            loadProductTable();
-            alert(`Đã cập nhật tỷ lệ lợi nhuận cho ${product.name} thành ${newRate}%`);
-          }
-        } else {
-          alert('Vui lòng nhập số hợp lệ');
-        }
-      }
 
       function goBack() {
         window.location.href = "daodienad.html";
@@ -426,6 +432,267 @@
           window.location.href = "adlog.html";
         }
       }
+
+      // Hàm lấy tên trạng thái
+      function getStatusText(status) {
+        const statusMap = {
+          'pending': 'Chưa xử lý',
+          'confirmed': 'Đã xác nhận',
+          'shipping': 'Đang giao hàng',
+          'delivered': 'Đã giao thành công',
+          'cancelled': 'Đã hủy'
+        };
+        return statusMap[status] || status;
+      }
+
+      // Hàm lấy class CSS cho trạng thái
+      function getStatusClass(status) {
+        const statusClassMap = {
+          'pending': 'status-pending',
+          'confirmed': 'status-confirmed',
+          'shipping': 'status-shipping',
+          'delivered': 'status-delivered',
+          'cancelled': 'status-cancelled'
+        };
+        return statusClassMap[status] || 'status-pending';
+      }
+
+      // Hàm lọc đơn hàng theo thời gian, trạng thái và quận
+      function filterOrders() {
+        const fromDate = document.getElementById('fromDate').value;
+        const toDate = document.getElementById('toDate').value;
+        const statusFilter = document.getElementById('statusFilter').value;
+        const districtFilter = document.getElementById('districtSort').value;
+
+        let filteredOrders = [...orders];
+
+        // Lọc theo thời gian
+        if (fromDate) {
+          const fromTimestamp = new Date(fromDate).getTime();
+          filteredOrders = filteredOrders.filter(order => order.timestamp >= fromTimestamp);
+        }
+
+        if (toDate) {
+          const toTimestamp = new Date(toDate).getTime() + 86400000;
+          filteredOrders = filteredOrders.filter(order => order.timestamp <= toTimestamp);
+        }
+
+        // Lọc theo trạng thái
+        if (statusFilter) {
+          filteredOrders = filteredOrders.filter(order => order.status === statusFilter);
+        }
+
+        // Lọc theo quận
+        if (districtFilter) {
+          filteredOrders = filteredOrders.filter(order => order.address.district === districtFilter);
+        }
+
+        // Sắp xếp theo quận nếu có lọc quận
+        if (districtFilter) {
+          filteredOrders.sort((a, b) => a.address.districtName.localeCompare(b.address.districtName));
+        } else {
+          // Mặc định sắp xếp theo thời gian mới nhất
+          filteredOrders.sort((a, b) => b.timestamp - a.timestamp);
+        }
+
+        renderOrders(filteredOrders);
+      }
+
+      // Hàm đặt lại bộ lọc
+      function resetFilters() {
+        document.getElementById('fromDate').value = '';
+        document.getElementById('toDate').value = '';
+        document.getElementById('statusFilter').value = '';
+        document.getElementById('districtSort').value = '';
+        renderOrders(orders);
+      }
+
+      // Hàm cập nhật thống kê
+      function updateStatistics(filteredOrders = orders) {
+        const total = filteredOrders.length;
+        const pending = filteredOrders.filter(o => o.status === 'pending').length;
+        const confirmed = filteredOrders.filter(o => o.status === 'confirmed').length;
+        const delivered = filteredOrders.filter(o => o.status === 'delivered').length;
+        const cancelled = filteredOrders.filter(o => o.status === 'cancelled').length;
+
+        document.getElementById('totalOrders').textContent = total;
+        document.getElementById('pendingOrders').textContent = pending;
+        document.getElementById('confirmedOrders').textContent = confirmed;
+        document.getElementById('deliveredOrders').textContent = delivered;
+        document.getElementById('cancelledOrders').textContent = cancelled;
+      }
+
+      // Hàm hiển thị danh sách đơn hàng
+      function renderOrders(ordersToRender = orders) {
+        const tbody = document.getElementById('ordersTableBody');
+        tbody.innerHTML = '';
+
+        if (ordersToRender.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="7" class="px-6 py-8 text-center text-gray-400">
+                <i class="fas fa-inbox text-4xl mb-2"></i>
+                <p>Không có đơn hàng nào phù hợp</p>
+                <p class="text-sm mt-2">Hãy thử điều chỉnh bộ lọc</p>
+              </td>
+            </tr>
+          `;
+          updateStatistics(ordersToRender);
+          return;
+        }
+
+        ordersToRender.forEach(order => {
+          const fullAddress = `${order.address.street}, ${order.address.ward}, ${order.address.districtName}, ${order.address.province}`;
+          
+          const row = document.createElement('tr');
+          row.className = 'hover:bg-gray-750 transition-colors';
+          row.innerHTML = `
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
+              <a href="order-detail.html?orderId=${order.id}" 
+                 class="text-cyan-400 hover:text-cyan-300 underline cursor-pointer"
+                 target="_blank">
+                ${order.id}
+              </a>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+              <div class="font-medium">${order.customer}</div>
+              <div class="text-xs text-gray-400">${order.phone}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+              ${order.date}
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-300">
+              <div class="font-medium text-cyan-300">${order.address.districtName}</div>
+              <div class="text-xs text-gray-400 truncate max-w-xs">${order.address.street}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-cyan-400">
+              ${order.total}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-3 py-1 text-xs rounded-full font-medium ${getStatusClass(order.status)}">
+                ${getStatusText(order.status)}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+              <a href="order-detail.html?orderId=${order.id}"
+                class="text-cyan-400 hover:text-cyan-300 mr-3 transition-colors inline-flex items-center"
+                target="_blank"
+                title="Xem chi tiết trong tab mới">
+                <i class="fas fa-external-link-alt mr-1"></i> Xem
+              </a>
+              <button onclick="openStatusUpdateModal('${order.id}')"
+                class="text-yellow-400 hover:text-yellow-300 transition-colors inline-flex items-center"
+                title="Cập nhật trạng thái">
+                <i class="fas fa-edit mr-1"></i> Cập nhật
+              </button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+
+        updateStatistics(ordersToRender);
+      }
+
+      function viewOrderDetail(orderId) {
+        const order = orders.find(o => o.id === orderId);
+        if (!order) return;
+
+        document.getElementById("orderId").textContent = orderId;
+        
+        let itemsHtml = '';
+        let totalItems = 0;
+        order.items.forEach(item => {
+          totalItems += item.quantity;
+          itemsHtml += `
+            <div class="flex justify-between items-center p-3 bg-gray-750 rounded">
+              <div>
+                <span class="text-gray-300">${item.name}</span>
+                <span class="text-gray-400 text-sm ml-2">x${item.quantity}</span>
+              </div>
+              <span class="text-cyan-400 font-medium">${item.price}</span>
+            </div>
+          `;
+        });
+
+        const fullAddress = `${order.address.street}, ${order.address.ward}, ${order.address.districtName}, ${order.address.province}`;
+
+        document.getElementById("orderDetailContent").innerHTML = `
+          <div class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-gray-750 p-4 rounded-lg">
+                <h4 class="font-semibold text-cyan-400 mb-3">Thông tin khách hàng</h4>
+                <div class="space-y-2 text-sm">
+                  <p><span class="text-gray-400">Họ tên:</span> ${order.customer}</p>
+                  <p><span class="text-gray-400">SĐT:</span> ${order.phone}</p>
+                  <p><span class="text-gray-400">Địa chỉ:</span> ${fullAddress}</p>
+                </div>
+              </div>
+              <div class="bg-gray-750 p-4 rounded-lg">
+                <h4 class="font-semibold text-cyan-400 mb-3">Thông tin đơn hàng</h4>
+                <div class="space-y-2 text-sm">
+                  <p><span class="text-gray-400">Mã đơn:</span> ${order.id}</p>
+                  <p><span class="text-gray-400">Ngày đặt:</span> ${order.date}</p>
+                  <p><span class="text-gray-400">Tổng sản phẩm:</span> ${totalItems}</p>
+                  <p><span class="text-gray-400">Tình trạng:</span> 
+                    <span class="${getStatusClass(order.status)} px-2 py-1 text-xs rounded-full ml-2">
+                      ${getStatusText(order.status)}
+                    </span>
+                  </p>
+                  <p><span class="text-gray-400">Tổng tiền:</span> 
+                    <span class="text-cyan-400 font-semibold">${order.total}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-gray-750 p-4 rounded-lg">
+              <h4 class="font-semibold text-cyan-400 mb-3">Danh sách sản phẩm (${totalItems} sản phẩm)</h4>
+              <div class="space-y-2">
+                ${itemsHtml}
+              </div>
+            </div>
+          </div>
+        `;
+        document.getElementById("orderDetailModal").classList.remove("hidden");
+      }
+
+      function openStatusUpdateModal(orderId) {
+        const order = orders.find(o => o.id === orderId);
+        if (!order) return;
+
+        document.getElementById('currentOrderId').value = orderId;
+        document.getElementById('currentStatus').textContent = getStatusText(order.status);
+        document.getElementById('currentStatus').className = `px-3 py-1 text-sm rounded-full font-medium ${getStatusClass(order.status)}`;
+        document.getElementById('newStatusSelect').value = order.status;
+        
+        document.getElementById("statusUpdateModal").classList.remove("hidden");
+      }
+
+      function closeStatusModal() {
+        document.getElementById("statusUpdateModal").classList.add("hidden");
+      }
+
+      function confirmStatusUpdate() {
+        const orderId = document.getElementById('currentOrderId').value;
+        const newStatus = document.getElementById('newStatusSelect').value;
+        
+        const orderIndex = orders.findIndex(o => o.id === orderId);
+        if (orderIndex !== -1) {
+          orders[orderIndex].status = newStatus;
+          filterOrders();
+          closeStatusModal();
+          alert(`✅ Đã cập nhật trạng thái đơn hàng ${orderId} thành "${getStatusText(newStatus)}"`);
+        }
+      }
+
+      function closeModal() {
+        document.getElementById("orderDetailModal").classList.add("hidden");
+      }
+
+      // Khởi tạo trang
+      document.addEventListener('DOMContentLoaded', function() {
+        renderOrders();
+      });
     </script>
   </body>
 </html>
