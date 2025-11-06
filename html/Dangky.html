@@ -24,6 +24,10 @@
       body {
         font-family: "Inter", sans-serif;
       }
+      .required::after {
+        content: " *";
+        color: #ef4444;
+      }
     </style>
   </head>
 
@@ -45,9 +49,6 @@
       </nav>
 
       <div class="flex items-center space-x-4">
-        <!-- <a href="./login.html" class="flex items-center text-[#8B0000] hover:text-red-900 transition space-x-2">
-        <img src="./iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain" />
-      </a> -->
         <button
           class="bg-[#8B0000] text-white px-4 py-2 rounded-full hover:bg-red-900 transition text-sm"
         >
@@ -57,7 +58,7 @@
     </header>
 
     <!-- FORM ĐĂNG KÝ -->
-    <main class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <main class="bg-gray-100 flex items-center justify-center min-h-screen py-8">
       <div class="bg-white w-full max-w-lg p-8 rounded-xl shadow-lg m-4">
         <h1 class="text-3xl font-bold text-center text-[#990000] mb-6">
           Tạo tài khoản
@@ -67,6 +68,11 @@
           id="message"
           class="hidden text-center p-3 rounded-md mb-4 text-white"
         ></div>
+
+        <!-- Thông báo trường bắt buộc -->
+        <p class="text-sm text-gray-600 mb-4 text-center">
+          Các trường có dấu <span class="text-red-500">*</span> là bắt buộc
+        </p>
 
         <form
           id="register-form"
@@ -78,7 +84,7 @@
           <div class="mb-4">
             <label
               for="full-name"
-              class="block text-sm font-medium text-gray-700 mb-2"
+              class="block text-sm font-medium text-gray-700 mb-2 required"
               >Họ và Tên Khách Hàng</label
             >
             <input
@@ -95,7 +101,7 @@
           <div class="mb-4">
             <label
               for="username"
-              class="block text-sm font-medium text-gray-700 mb-2"
+              class="block text-sm font-medium text-gray-700 mb-2 required"
               >Tên Đăng Nhập</label
             >
             <input
@@ -112,7 +118,7 @@
           <div class="mb-4">
             <label
               for="email"
-              class="block text-sm font-medium text-gray-700 mb-2"
+              class="block text-sm font-medium text-gray-700 mb-2 required"
               >Email</label
             >
             <input
@@ -129,7 +135,7 @@
           <div class="mb-4">
             <label
               for="phone"
-              class="block text-sm font-medium text-gray-700 mb-2"
+              class="block text-sm font-medium text-gray-700 mb-2 required"
               >Số Điện Thoại</label
             >
             <input
@@ -146,7 +152,7 @@
           <div class="mb-4">
             <label
               for="password"
-              class="block text-sm font-medium text-gray-700 mb-2"
+              class="block text-sm font-medium text-gray-700 mb-2 required"
               >Mật Khẩu</label
             >
             <input
@@ -160,10 +166,10 @@
           </div>
 
           <!-- Xác nhận mật khẩu -->
-          <div class="mb-6">
+          <div class="mb-4">
             <label
               for="confirm-password"
-              class="block text-sm font-medium text-gray-700 mb-2"
+              class="block text-sm font-medium text-gray-700 mb-2 required"
               >Xác Nhận Mật Khẩu</label
             >
             <input
@@ -174,6 +180,26 @@
               required
               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#EB5726] transition duration-200"
             />
+          </div>
+
+          <!-- BOX ĐỊA CHỈ ĐƠN GIẢN -->
+          <div class="mb-6">
+            <label
+              for="address"
+              class="block text-sm font-medium text-gray-700 mb-2 required"
+              >Địa chỉ giao hàng</label
+            >
+            <textarea
+              id="address"
+              name="address"
+              placeholder="Ví dụ: 273 Trần Lưu Nguyễn, Phường Chợ Quán, Quận 5, TP.HCM"
+              rows="3"
+              required
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#EB5726] transition duration-200 resize-none"
+            ></textarea>
+            <p class="text-xs text-gray-500 mt-1">
+              Nhập đầy đủ địa chỉ để nhận hàng: số nhà, đường, phường/xã, quận/huyện, tỉnh/thành phố
+            </p>
           </div>
 
           <!-- Nút đăng ký -->
@@ -305,8 +331,8 @@
         const email = document.getElementById("email").value.trim();
         const phone = document.getElementById("phone").value.trim();
         const password = document.getElementById("password").value;
-        const confirmPassword =
-          document.getElementById("confirm-password").value;
+        const confirmPassword = document.getElementById("confirm-password").value;
+        const address = document.getElementById("address").value.trim();
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const phoneRegex = /^\d{10}$/;
@@ -318,7 +344,8 @@
           !email ||
           !phone ||
           !password ||
-          !confirmPassword
+          !confirmPassword ||
+          !address
         )
           return showMessage("Vui lòng điền đầy đủ thông tin.");
         if (!emailRegex.test(email)) return showMessage("Email không hợp lệ.");
@@ -328,6 +355,8 @@
           return showMessage("Mật khẩu phải có ít nhất 6 ký tự.");
         if (password !== confirmPassword)
           return showMessage("Mật khẩu và xác nhận mật khẩu không khớp.");
+        if (address.length < 10)
+          return showMessage("Vui lòng nhập địa chỉ chi tiết hơn.");
 
         // Lấy danh sách user đã lưu (nếu có)
         const users = JSON.parse(localStorage.getItem("users")) || [];
@@ -340,8 +369,15 @@
           );
         }
 
-        // Tạo user mới
-        const newUser = { fullName, username, email, phone, password };
+        // Tạo user mới với thông tin địa chỉ đơn giản
+        const newUser = { 
+          fullName, 
+          username, 
+          email, 
+          phone, 
+          password,
+          address: address
+        };
 
         // Lưu vào danh sách user
         users.push(newUser);
@@ -357,6 +393,16 @@
           window.location.href = "pages.html";
         }, 1500);
       }
+
+      // Tự động điền địa chỉ mẫu khi click vào ô địa chỉ
+      document.addEventListener('DOMContentLoaded', function() {
+        const addressInput = document.getElementById('address');
+        addressInput.addEventListener('click', function() {
+          if (!this.value) {
+            this.value = "";
+          }
+        });
+      });
     </script>
   </body>
 </html>
