@@ -74,12 +74,14 @@
                 id="searchInput"
                 placeholder="Tìm kiếm sản phẩm..."
                 class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                onkeyup="filterProducts()"
               />
             </div>
             <div class="flex gap-2">
               <select
                 id="categoryFilter"
                 class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                onchange="filterProducts()"
               >
                 <option value="">Tất cả loại</option>
                 <option value="Nhân ngọt">Nhân ngọt</option>
@@ -89,6 +91,7 @@
               <select
                 id="statusFilter"
                 class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                onchange="filterProducts()"
               >
                 <option value="">Tất cả trạng thái</option>
                 <option value="active">Đang bán</option>
@@ -97,13 +100,21 @@
             </div>
           </div>
 
-          <!-- Nút thêm sản phẩm -->
-          <button
-            onclick="openAddModal()"
-            class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-6 py-2 rounded-lg transition flex items-center whitespace-nowrap"
-          >
-            <i class="fas fa-plus mr-2"></i> Thêm sản phẩm
-          </button>
+          <!-- Nút thêm sản phẩm và quản lý loại -->
+          <div class="flex gap-2">
+            <button
+              onclick="openCategoryModal()"
+              class="bg-purple-500 hover:bg-purple-600 text-gray-900 font-semibold px-6 py-2 rounded-lg transition flex items-center whitespace-nowrap"
+            >
+              <i class="fas fa-tags mr-2"></i> Quản lý loại
+            </button>
+            <button
+              onclick="openAddModal()"
+              class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-6 py-2 rounded-lg transition flex items-center whitespace-nowrap"
+            >
+              <i class="fas fa-plus mr-2"></i> Thêm sản phẩm
+            </button>
+          </div>
         </div>
 
         <!-- Danh sách sản phẩm -->
@@ -163,7 +174,21 @@
             Hiển thị <span id="startItem">1</span>-<span id="endItem">12</span>
             của <span id="totalItems">12</span> sản phẩm
           </div>
-         
+          <div class="flex gap-2">
+            <button
+              id="prevPage"
+              class="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded disabled:opacity-50"
+              disabled
+            >
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <button
+              id="nextPage"
+              class="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded disabled:opacity-50"
+            >
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
         </div>
       </div>
     </main>
@@ -174,7 +199,7 @@
       class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden"
     >
       <div
-        class="bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto"
+        class="bg-gray-800 rounded-xl shadow-2xl w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto"
       >
         <div
           class="flex justify-between items-center p-6 border-b border-gray-700"
@@ -198,9 +223,7 @@
                 required
               >
                 <option value="">Chọn loại sản phẩm</option>
-                <option value="Nhân ngọt">Nhân ngọt</option>
-                <option value="Nhân mặn">Nhân mặn</option>
-                <option value="Đặc biệt">Đặc biệt</option>
+                <!-- Options sẽ được thêm bằng JavaScript -->
               </select>
             </div>
             <div>
@@ -226,7 +249,7 @@
               required
             />
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-300 mb-1"
                 >Giá bán (VNĐ)</label
@@ -245,6 +268,43 @@
               <input
                 type="number"
                 id="productStock"
+                class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                required
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-1"
+                >Đơn vị tính</label
+              >
+              <input
+                type="text"
+                id="productUnit"
+                class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                value="Cái"
+                required
+              />
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-1"
+                >Tỷ lệ lợi nhuận (%)</label
+              >
+              <input
+                type="number"
+                id="productProfit"
+                class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                value="30"
+                required
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-1"
+                >Nhà cung cấp</label
+              >
+              <input
+                type="text"
+                id="productSupplier"
                 class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 required
               />
@@ -311,8 +371,64 @@
       </div>
     </div>
 
+    <!-- Modal Quản lý loại sản phẩm -->
+    <div
+      id="categoryModal"
+      class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden"
+    >
+      <div
+        class="bg-gray-800 rounded-xl shadow-2xl w-full max-w-md mx-4 max-h-[80vh] overflow-y-auto"
+      >
+        <div
+          class="flex justify-between items-center p-6 border-b border-gray-700"
+        >
+          <h3 class="text-xl font-bold text-cyan-400">Quản lý loại sản phẩm</h3>
+          <button
+            onclick="closeCategoryModal()"
+            class="text-gray-400 hover:text-white"
+          >
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+        <div class="p-6 space-y-4">
+          <div class="flex gap-2">
+            <input
+              type="text"
+              id="newCategoryName"
+              placeholder="Tên loại sản phẩm mới"
+              class="flex-1 px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            />
+            <button
+              onclick="addCategory()"
+              class="px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold rounded-lg transition"
+            >
+              Thêm
+            </button>
+          </div>
+          <div class="border-t border-gray-700 pt-4">
+            <h4 class="text-sm font-medium text-gray-300 mb-2">
+              Danh sách loại sản phẩm
+            </h4>
+            <ul id="categoryList" class="space-y-2">
+              <!-- Danh sách loại sản phẩm sẽ được thêm vào đây -->
+            </ul>
+          </div>
+        </div>
+        <div class="flex justify-end space-x-3 p-6 border-t border-gray-700">
+          <button
+            onclick="closeCategoryModal()"
+            class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition"
+          >
+            Đóng
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script>
       // Dữ liệu mẫu
+      let categories = ["Nhân ngọt", "Nhân mặn", "Đặc biệt"];
+
       let products = [
         {
           id: 1,
@@ -321,6 +437,9 @@
           name: "Trung Thu Mãng Cầu Xiêm Sen",
           price: 55000,
           stock: 50,
+          unit: "Cái",
+          profit: 30,
+          supplier: "Nhà cung cấp A",
           image: "",
           description:
             "Nhân chua thanh nhẹ, quyện vị béo dịu, mang hương sen tao nhã và độc đáo.",
@@ -333,6 +452,9 @@
           name: "Trung Thu Sữa Dừa Cafe",
           price: 55000,
           stock: 45,
+          unit: "Cái",
+          profit: 30,
+          supplier: "Nhà cung cấp A",
           image: "",
           description:
             "Nhân sữa dừa hòa quyện cà phê, béo ngậy, thơm dịu và ngọt vừa phải.",
@@ -345,6 +467,9 @@
           name: "Trung Thu Khế Bưởi Quế Hoa",
           price: 55000,
           stock: 30,
+          unit: "Cái",
+          profit: 30,
+          supplier: "Nhà cung cấp B",
           image: "",
           description:
             "Nhân sữa béo nhẹ, ngọt dịu, hòa quyện hương thơm thanh mát và tinh tế.",
@@ -357,6 +482,9 @@
           name: "Trung Thu Vải Hồng Cánh Sen",
           price: 55000,
           stock: 25,
+          unit: "Cái",
+          profit: 30,
+          supplier: "Nhà cung cấp B",
           image: "",
           description:
             "Bánh ngọt thanh hòa quyện hạt sen bùi và hương hoa hồng tinh tế",
@@ -369,6 +497,9 @@
           name: "Trung Thu Bò Sốt Tiêu Đen",
           price: 55000,
           stock: 40,
+          unit: "Cái",
+          profit: 30,
+          supplier: "Nhà cung cấp C",
           image: "",
           description:
             "Nhân sốt tiêu đen đậm đà cay nhẹ kết hợp mứt và hạt tạo hương vị khó quên.",
@@ -381,6 +512,9 @@
           name: "Trung Thu Nấm Truffle",
           price: 55000,
           stock: 15,
+          unit: "Cái",
+          profit: 30,
+          supplier: "Nhà cung cấp D",
           image: "",
           description:
             "Nhân nấm truffle cao cấp – đại diện cho tinh thần sáng tạo và tay nghề thủ công",
@@ -393,6 +527,9 @@
           name: "Trung Thu Tomyum Hải Sản",
           price: 55000,
           stock: 35,
+          unit: "Cái",
+          profit: 30,
+          supplier: "Nhà cung cấp C",
           image: "",
           description:
             "Tomyum hải sản đem đến trải nghiệm Trung thu đầy thú vị và bổ dưỡng",
@@ -405,31 +542,38 @@
           name: "Trung Thu Sen Vàng Xoài Dẻo",
           price: 55000,
           stock: 40,
+          unit: "Cái",
+          profit: 30,
+          supplier: "Nhà cung cấp A",
           image: "",
           description:
             "Nhân ngọt thanh, dẻo mềm hòa quyện vị xoài chín và hương sen thuần khiết.",
           hidden: false,
         },
-        
-         {
+        {
           id: 9,
           type: "Nhân ngọt",
           code: "GDCD01",
           name: "Trung Thu Gạo Đỏ Cốm Dừa",
           price: 55000,
           stock: 40,
+          unit: "Cái",
+          profit: 30,
+          supplier: "Nhà cung cấp A",
           image: "",
-          description:
-            "Thơm béo vị sữa, quyện cùng dừa nạo mềm mại, ngọt dịu.",
+          description: "Thơm béo vị sữa, quyện cùng dừa nạo mềm mại, ngọt dịu.",
           hidden: false,
         },
-         {
+        {
           id: 10,
           type: "Nhân ngọt",
           code: "MT01",
           name: "Trung Thu Mơ Tây",
           price: 55000,
           stock: 40,
+          unit: "Cái",
+          profit: 30,
+          supplier: "Nhà cung cấp B",
           image: "",
           description:
             "Nhân Mơ Tây chua ngọt hài hòa, mang vị thu nhẹ nhàng và lạ miệng.",
@@ -442,33 +586,60 @@
           name: "Trung Thu Cafe",
           price: 55000,
           stock: 40,
+          unit: "Cái",
+          profit: 30,
+          supplier: "Nhà cung cấp A",
           image: "",
           description:
             "Nhân Cà Phê đậm đà, thơm ngậy như một tách cà phê tinh tế giữa mùa thu.",
           hidden: false,
         },
-          {
+        {
           id: 12,
           type: "Nhân ngọt",
           code: "VQ01",
           name: "Trung Thu Nam Việt Quất",
           price: 55000,
           stock: 40,
+          unit: "Cái",
+          profit: 30,
+          supplier: "Nhà cung cấp B",
           image: "",
           description:
             "Nhân Nam Việt Quốc chua ngọt thanh lịch, phảng phất vị Tây phương hiện đại.",
           hidden: false,
         },
-
       ];
+
       let currentEditId = null;
+      let currentPage = 1;
+      const itemsPerPage = 10;
 
       // Hiển thị danh sách sản phẩm
-      function renderProductList() {
+      function renderProductList(filteredProducts = products) {
         const productTableBody = document.getElementById("productTableBody");
         productTableBody.innerHTML = "";
 
-        products.forEach((product) => {
+        // Tính toán phân trang
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = Math.min(
+          startIndex + itemsPerPage,
+          filteredProducts.length
+        );
+        const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
+
+        // Cập nhật thông tin phân trang
+        document.getElementById("startItem").textContent = startIndex + 1;
+        document.getElementById("endItem").textContent = endIndex;
+        document.getElementById("totalItems").textContent =
+          filteredProducts.length;
+
+        // Cập nhật trạng thái nút phân trang
+        document.getElementById("prevPage").disabled = currentPage === 1;
+        document.getElementById("nextPage").disabled =
+          endIndex >= filteredProducts.length;
+
+        paginatedProducts.forEach((product) => {
           const row = document.createElement("tr");
           row.className = product.hidden ? "hidden-product" : "";
 
@@ -485,6 +656,9 @@
                             <div class="ml-4">
                                 <div class="text-sm font-medium text-white">${
                                   product.name
+                                }</div>
+                                <div class="text-xs text-gray-400">${
+                                  product.unit || "Cái"
                                 }</div>
                             </div>
                         </div>
@@ -541,6 +715,79 @@
         });
       }
 
+      // Lọc sản phẩm
+      function filterProducts() {
+        const searchTerm = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        const categoryFilter = document.getElementById("categoryFilter").value;
+        const statusFilter = document.getElementById("statusFilter").value;
+
+        const filteredProducts = products.filter((product) => {
+          const matchesSearch =
+            product.name.toLowerCase().includes(searchTerm) ||
+            product.code.toLowerCase().includes(searchTerm);
+          const matchesCategory =
+            !categoryFilter || product.type === categoryFilter;
+          const matchesStatus =
+            !statusFilter ||
+            (statusFilter === "active" && !product.hidden) ||
+            (statusFilter === "hidden" && product.hidden);
+
+          return matchesSearch && matchesCategory && matchesStatus;
+        });
+
+        currentPage = 1; // Reset về trang đầu khi lọc
+        renderProductList(filteredProducts);
+      }
+
+      // Cập nhật danh sách loại sản phẩm
+      function updateCategoryOptions() {
+        const productTypeSelect = document.getElementById("productType");
+        const categoryFilterSelect = document.getElementById("categoryFilter");
+
+        // Xóa các option hiện có (giữ option đầu tiên)
+        while (productTypeSelect.children.length > 1) {
+          productTypeSelect.removeChild(productTypeSelect.lastChild);
+        }
+
+        while (categoryFilterSelect.children.length > 1) {
+          categoryFilterSelect.removeChild(categoryFilterSelect.lastChild);
+        }
+
+        // Thêm các loại sản phẩm mới
+        categories.forEach((category) => {
+          const option = document.createElement("option");
+          option.value = category;
+          option.textContent = category;
+          productTypeSelect.appendChild(option);
+
+          const filterOption = document.createElement("option");
+          filterOption.value = category;
+          filterOption.textContent = category;
+          categoryFilterSelect.appendChild(filterOption);
+        });
+      }
+
+      // Hiển thị danh sách loại sản phẩm
+      function renderCategoryList() {
+        const categoryList = document.getElementById("categoryList");
+        categoryList.innerHTML = "";
+
+        categories.forEach((category, index) => {
+          const li = document.createElement("li");
+          li.className =
+            "flex justify-between items-center bg-gray-700 p-3 rounded-lg";
+          li.innerHTML = `
+            <span class="text-gray-300">${category}</span>
+            <button onclick="deleteCategory(${index})" class="text-red-400 hover:text-red-300">
+              <i class="fas fa-trash"></i>
+            </button>
+          `;
+          categoryList.appendChild(li);
+        });
+      }
+
       // Mở modal thêm sản phẩm
       function openAddModal() {
         document.getElementById("modalTitle").textContent = "Thêm sản phẩm mới";
@@ -550,9 +797,52 @@
         document.getElementById("productModal").classList.remove("hidden");
       }
 
+      // Mở modal quản lý loại sản phẩm
+      function openCategoryModal() {
+        renderCategoryList();
+        document.getElementById("categoryModal").classList.remove("hidden");
+      }
+
       // Đóng modal
       function closeModal() {
         document.getElementById("productModal").classList.add("hidden");
+      }
+
+      // Đóng modal quản lý loại
+      function closeCategoryModal() {
+        document.getElementById("categoryModal").classList.add("hidden");
+      }
+
+      // Thêm loại sản phẩm
+      function addCategory() {
+        const newCategoryName = document
+          .getElementById("newCategoryName")
+          .value.trim();
+        if (!newCategoryName) {
+          alert("Vui lòng nhập tên loại sản phẩm!");
+          return;
+        }
+
+        if (categories.includes(newCategoryName)) {
+          alert("Loại sản phẩm này đã tồn tại!");
+          return;
+        }
+
+        categories.push(newCategoryName);
+        document.getElementById("newCategoryName").value = "";
+        renderCategoryList();
+        updateCategoryOptions();
+        alert("Thêm loại sản phẩm thành công!");
+      }
+
+      // Xóa loại sản phẩm
+      function deleteCategory(index) {
+        if (confirm("Bạn có chắc chắn muốn xóa loại sản phẩm này?")) {
+          categories.splice(index, 1);
+          renderCategoryList();
+          updateCategoryOptions();
+          alert("Xóa loại sản phẩm thành công!");
+        }
       }
 
       // Lưu sản phẩm (thêm hoặc sửa)
@@ -562,10 +852,22 @@
         const name = document.getElementById("productName").value;
         const price = parseInt(document.getElementById("productPrice").value);
         const stock = parseInt(document.getElementById("productStock").value);
+        const unit = document.getElementById("productUnit").value;
+        const profit = parseInt(document.getElementById("productProfit").value);
+        const supplier = document.getElementById("productSupplier").value;
         const description = document.getElementById("productDescription").value;
         const hidden = document.getElementById("productHidden").checked;
 
-        if (!type || !code || !name || !price || !stock) {
+        if (
+          !type ||
+          !code ||
+          !name ||
+          !price ||
+          !stock ||
+          !unit ||
+          !profit ||
+          !supplier
+        ) {
           alert("Vui lòng điền đầy đủ thông tin bắt buộc!");
           return;
         }
@@ -581,6 +883,9 @@
               name,
               price,
               stock,
+              unit,
+              profit,
+              supplier,
               description,
               hidden,
             };
@@ -597,6 +902,9 @@
             name,
             price,
             stock,
+            unit,
+            profit,
+            supplier,
             image: "",
             description,
             hidden,
@@ -623,6 +931,10 @@
           document.getElementById("productName").value = product.name;
           document.getElementById("productPrice").value = product.price;
           document.getElementById("productStock").value = product.stock;
+          document.getElementById("productUnit").value = product.unit || "Cái";
+          document.getElementById("productProfit").value = product.profit || 30;
+          document.getElementById("productSupplier").value =
+            product.supplier || "";
           document.getElementById("productDescription").value =
             product.description;
           document.getElementById("productHidden").checked = product.hidden;
@@ -662,6 +974,22 @@
         }
       }
 
+      // Chuyển trang
+      function nextPage() {
+        const totalPages = Math.ceil(products.length / itemsPerPage);
+        if (currentPage < totalPages) {
+          currentPage++;
+          renderProductList();
+        }
+      }
+
+      function prevPage() {
+        if (currentPage > 1) {
+          currentPage--;
+          renderProductList();
+        }
+      }
+
       // Quay lại trang admin
       function goBack() {
         window.location.href = "daodienad.html";
@@ -695,16 +1023,12 @@
       // Khởi tạo
       document.addEventListener("DOMContentLoaded", function () {
         renderProductList();
+        updateCategoryOptions();
+
+        // Gán sự kiện cho nút phân trang
+        document.getElementById("prevPage").addEventListener("click", prevPage);
+        document.getElementById("nextPage").addEventListener("click", nextPage);
       });
-
-
-
-
-      
     </script>
-
-
-
-
   </body>
 </html>

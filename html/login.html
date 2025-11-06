@@ -13,6 +13,10 @@
     body {
       overflow: hidden;
     }
+    .required::after {
+      content: " *";
+      color: #ef4444;
+    }
   </style>
 </head>
 
@@ -39,21 +43,24 @@
   <!-- FORM ĐĂNG NHẬP -->
   <main class="flex-grow flex items-center justify-center">
     <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
-      <h2 class="text-2xl font-bold text-center text-[#8B0000] mb-6">ĐĂNG NHẬP </h2>
+      <h2 class="text-2xl font-bold text-center text-[#8B0000] mb-6">ĐĂNG NHẬP</h2>
+
+     
 
       <form id="loginForm" class="space-y-4">
         <div id="errorMsg" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-sm" role="alert">
           Email hoặc mật khẩu không chính xác. Vui lòng thử lại.
         </div>
+        
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-          <input type="email" id="email" placeholder="Nhập email"
+          <label class="block text-sm font-medium text-gray-700 mb-1 required">Email</label>
+          <input type="email" id="email" placeholder="Nhập email" required
             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#8B0000]" />
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Mật khẩu</label>
-          <input type="password" id="password" placeholder="Nhập mật khẩu"
+          <label class="block text-sm font-medium text-gray-700 mb-1 required">Mật khẩu</label>
+          <input type="password" id="password" placeholder="Nhập mật khẩu" required
             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#8B0000]" />
         </div>
 
@@ -129,10 +136,10 @@
   <!-- SCRIPT -->
   <script>
     // Khai báo người dùng mặc định
-    const defaultUsers = [
-  { email: "minh@gmail.com", password: "123456", name: "nhatminh" },
-  { email: "sang@gmail.com", password: "654321", name: "sangngu" },
-  { email: "hoangan@gmail.com", password: "abc123", name: "Nguyễn Hoàng Ân" }
+  //   const defaultUsers = [
+  // { email: "minh@gmail.com", password: "123456", name: "nhatminh" },
+  // { email: "sang@gmail.com", password: "654321", name: "sangngu" },
+  // { email: "hoangan@gmail.com", password: "abc123", name: "Nguyễn Hoàng Ân" }
 ];
   // Khai báo người dùng tự tạo
 const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
@@ -147,20 +154,45 @@ localStorage.setItem("users", JSON.stringify(users));
         const email = document.getElementById("email").value.trim();
         const password = document.getElementById("password").value.trim();
 
+        // Kiểm tra trường bắt buộc
+        if (!email || !password) {
+            errorMsg.textContent = "Vui lòng điền đầy đủ thông tin bắt buộc.";
+            errorMsg.classList.remove("hidden");
+            return;
+        }
+
         const foundUser = users.find(u => u.email === email && u.password === password);
 
         if (foundUser) {
             // SUCCESS
-            console.log("Đăng nhập thành công:", foundUser.name); // <--- Dòng xác nhận
+            console.log("Đăng nhập thành công:", foundUser.name);
             localStorage.setItem("currentUser", JSON.stringify(foundUser));
             errorMsg.classList.add("hidden"); 
             window.location.href = "pages.html"; 
         } else {
             // FAILURE
-            console.error("Đăng nhập thất bại: Sai thông tin."); // <--- Dòng xác nhận
-            errorMsg.classList.remove("hidden"); // Hiển thị thông báo lỗi
+            console.error("Đăng nhập thất bại: Sai thông tin.");
+            errorMsg.textContent = "Email hoặc mật khẩu không chính xác. Vui lòng thử lại.";
+            errorMsg.classList.remove("hidden");
         }
     });
-</script>
+
+    // Thêm validation real-time cho các trường bắt buộc
+    document.getElementById('email').addEventListener('input', function() {
+        if (this.value.trim()) {
+            this.classList.remove('border-red-300');
+        } else {
+            this.classList.add('border-red-300');
+        }
+    });
+
+    document.getElementById('password').addEventListener('input', function() {
+        if (this.value.trim()) {
+            this.classList.remove('border-red-300');
+        } else {
+            this.classList.add('border-red-300');
+        }
+    });
+  </script>
 </body>
 </html>

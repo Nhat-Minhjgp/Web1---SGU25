@@ -7,6 +7,12 @@
     <title>Thanh toán - MASH Bakery</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        .required::after {
+            content: " *";
+            color: #ef4444;
+        }
+    </style>
 </head>
 
 <body class="font-sans text-gray-800 bg-white">
@@ -62,6 +68,9 @@
     <div class="max-w-5xl mx-auto px-6 py-10">
         <h1 class="text-2xl font-bold text-[#8B0000] mb-6 text-center">Thông tin thanh toán</h1>
 
+        <!-- Thông báo trường bắt buộc -->
+       
+
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <!-- Chi tiết đơn hàng -->
             <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
@@ -95,19 +104,19 @@
                         <h2 class="text-xl font-semibold text-[#8B0000] mb-4">Thông tin nhận hàng</h2>
 
                         <div class="mb-4">
-                            <label for="fullName" class="block font-medium mb-2">Họ và tên:</label>
+                            <label for="fullName" class="block font-medium mb-2 required">Họ và tên:</label>
                             <input type="text" id="fullName" required
                                 class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#8B0000]" />
                         </div>
 
                         <div class="mb-4">
-                            <label for="phone" class="block font-medium mb-2">Số điện thoại:</label>
+                            <label for="phone" class="block font-medium mb-2 required">Số điện thoại:</label>
                             <input type="tel" id="phone" required
                                 class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#8B0000]" />
                         </div>
 
                         <div class="mb-4">
-                            <label for="address" class="block font-medium mb-2">Địa chỉ nhận hàng:</label>
+                            <label for="address" class="block font-medium mb-2 required">Địa chỉ nhận hàng:</label>
                             <textarea id="address" required rows="3"
                                 class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#8B0000]"></textarea>
                         </div>
@@ -122,7 +131,7 @@
 
                     <!-- Phương thức thanh toán -->
                     <div class="bg-white p-6 rounded-lg shadow-sm">
-                        <h2 class="text-xl font-semibold text-[#8B0000] mb-4">Phương thức thanh toán</h2>
+                        <h2 class="text-xl font-semibold text-[#8B0000] mb-4 required">Phương thức thanh toán</h2>
 
                         <div class="space-y-3">
                             <label
