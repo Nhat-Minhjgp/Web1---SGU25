@@ -63,9 +63,9 @@
 
   </header>
 
-<div class="w-full h-[300px] overflow-hidden">
-      <img src="/img/banner2.png" alt="Banner MASH" class= "w-full h-full object-cover" />
-    </div>
+  <div class="w-full h-[300px] overflow-hidden">
+    <img src="/img/banner2.png" alt="Banner MASH" class="w-full h-full object-cover" />
+  </div>
   <section class=" py-14 max-w-7xl mx-auto px-6 mb-10">
 
     <div class="flex justify-center py-5 mb-6">
@@ -73,7 +73,7 @@
         class="w-full max-w-md px-4 py-2 border border-[#8B0000] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B0000]"
         onkeyup="filterProducts()" />
     </div>
-    
+
     <!-- <h1 class=" mt-10 text-6xl font-bold text-center text-[#8B0000] mb-10">Danh Mục Sản Phẩm</h1> -->
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
@@ -387,7 +387,122 @@
       }
     });
   </script>
+  <script>
+    function filterProducts() {
+      // Lấy giá trị từ ô tìm kiếm và chuẩn hóa (bỏ dấu, chuyển thành chữ thường)
+      const searchTerm = document.getElementById('searchInput').value
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/đ/g, 'd')
+        .replace(/Đ/g, 'D');
 
+      // Lấy tất cả các sản phẩm
+      const products = document.querySelectorAll('.sp');
+      let visibleCount = 0;
+
+      // Duyệt qua từng sản phẩm và kiểm tra
+      products.forEach(product => {
+        // Lấy thông tin sản phẩm để tìm kiếm
+        const productName = product.querySelector('h4').textContent
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/đ/g, 'd')
+          .replace(/Đ/g, 'D');
+
+        const productDescription = product.querySelector('p').textContent
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/đ/g, 'd')
+          .replace(/Đ/g, 'D');
+
+        // Kiểm tra xem sản phẩm có khớp với từ khóa tìm kiếm không
+        const isVisible = productName.includes(searchTerm) ||
+          productDescription.includes(searchTerm);
+
+        // Hiển thị hoặc ẩn sản phẩm
+        if (isVisible) {
+          product.style.display = 'block';
+          visibleCount++;
+        } else {
+          product.style.display = 'none';
+        }
+      });
+
+      // Hiển thị thông báo nếu không tìm thấy sản phẩm nào
+      showNoResultsMessage(visibleCount === 0);
+    }
+
+    function showNoResultsMessage(show) {
+      // Kiểm tra xem đã có thông báo chưa
+      let messageElement = document.getElementById('noResultsMessage');
+
+      if (show) {
+        if (!messageElement) {
+          // Tạo thông báo nếu chưa có
+          messageElement = document.createElement('div');
+          messageElement.id = 'noResultsMessage';
+          messageElement.className = 'col-span-full text-center py-8';
+          messageElement.innerHTML = `
+        <p class="text-gray-500 text-lg mb-4">Không tìm thấy sản phẩm phù hợp</p>
+        <button onclick="clearSearch()" class="bg-[#8B0000] text-white px-6 py-2 rounded-full hover:bg-red-900 transition">
+          Hiển thị tất cả sản phẩm
+        </button>
+      `;
+
+          // Chèn thông báo vào grid
+          const grid = document.querySelector('.grid');
+          grid.appendChild(messageElement);
+        }
+      } else {
+        // Xóa thông báo nếu có
+        if (messageElement) {
+          messageElement.remove();
+        }
+      }
+    }
+
+    function clearSearch() {
+      // Xóa nội dung tìm kiếm
+      document.getElementById('searchInput').value = '';
+
+      // Hiển thị lại tất cả sản phẩm
+      const products = document.querySelectorAll('.sp');
+      products.forEach(product => {
+        product.style.display = 'block';
+      });
+
+      // Ẩn thông báo
+      showNoResultsMessage(false);
+
+      // Reset về trang đầu tiên
+      changePage(1);
+    }
+
+    // Thêm sự kiện cho ô tìm kiếm để tìm kiếm real-time
+    document.getElementById('searchInput').addEventListener('input', filterProducts);
+
+    // Cải tiến hàm changePage để hoạt động tốt với tính năng tìm kiếm
+    const originalChangePage = window.changePage;
+    window.changePage = function (page) {
+      // Lấy tất cả sản phẩm đang hiển thị (không phải đang bị ẩn)
+      const visibleProducts = Array.from(document.querySelectorAll('.sp'))
+        .filter(product => product.style.display !== 'none');
+
+      if (visibleProducts.length === 0) {
+        // Nếu không có sản phẩm nào hiển thị (do tìm kiếm), hiển thị tất cả
+        const allProducts = document.querySelectorAll('.sp');
+        allProducts.forEach(product => {
+          product.style.display = 'block';
+        });
+      }
+
+      // Gọi hàm phân trang gốc
+      originalChangePage(page);
+    }
+  </script>
 
 
 </body>
