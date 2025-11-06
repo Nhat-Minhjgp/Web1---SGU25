@@ -45,13 +45,7 @@
     <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
       <h2 class="text-2xl font-bold text-center text-[#8B0000] mb-6">ĐĂNG NHẬP</h2>
 
-     
-
       <form id="loginForm" class="space-y-4">
-        <div id="errorMsg" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-sm" role="alert">
-          Email hoặc mật khẩu không chính xác. Vui lòng thử lại.
-        </div>
-        
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1 required">Email</label>
           <input type="email" id="email" placeholder="Nhập email" required
@@ -70,7 +64,6 @@
         </button>
       </form>
 
-   
       <div class="text-center text-sm text-gray-600 mt-4">
         <a href="#" class="hover:underline">Quên mật khẩu</a>
         <span class="mx-1">|</span>
@@ -136,18 +129,18 @@
   <!-- SCRIPT -->
   <script>
     // Khai báo người dùng mặc định
-  //   const defaultUsers = [
-  // { email: "minh@gmail.com", password: "123456", name: "nhatminh" },
-  // { email: "sang@gmail.com", password: "654321", name: "sangngu" },
-  // { email: "hoangan@gmail.com", password: "abc123", name: "Nguyễn Hoàng Ân" }
-// ];
-  // Khai báo người dùng tự tạo
-const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
-const users = [...defaultUsers, ...storedUsers];
-localStorage.setItem("users", JSON.stringify(users));
+    const defaultUsers = [
+      // { email: "minh@gmail.com", password: "123456", name: "nhatminh" },
+      // { email: "sang@gmail.com", password: "654321", name: "sangngu" },
+      // { email: "hoangan@gmail.com", password: "abc123", name: "Nguyễn Hoàng Ân" }
+    ];
+
+    // Khai báo người dùng tự tạo
+    const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
+    const users = [...defaultUsers, ...storedUsers];
+    localStorage.setItem("users", JSON.stringify(users));
 
     const form = document.getElementById("loginForm");
-    const errorMsg = document.getElementById("errorMsg");
 
     form.addEventListener("submit", function (event) {
         event.preventDefault();
@@ -156,8 +149,7 @@ localStorage.setItem("users", JSON.stringify(users));
 
         // Kiểm tra trường bắt buộc
         if (!email || !password) {
-            errorMsg.textContent = "Vui lòng điền đầy đủ thông tin bắt buộc.";
-            errorMsg.classList.remove("hidden");
+            alert("Vui lòng điền đầy đủ thông tin bắt buộc.");
             return;
         }
 
@@ -165,15 +157,12 @@ localStorage.setItem("users", JSON.stringify(users));
 
         if (foundUser) {
             // SUCCESS
-            console.log("Đăng nhập thành công:", foundUser.name);
+            alert("Đăng nhập thành công! Chào mừng " + foundUser.name);
             localStorage.setItem("currentUser", JSON.stringify(foundUser));
-            errorMsg.classList.add("hidden"); 
             window.location.href = "pages.html"; 
         } else {
             // FAILURE
-            console.error("Đăng nhập thất bại: Sai thông tin.");
-            errorMsg.textContent = "Email hoặc mật khẩu không chính xác. Vui lòng thử lại.";
-            errorMsg.classList.remove("hidden");
+            alert("Email hoặc mật khẩu không chính xác. Vui lòng thử lại.");
         }
     });
 
