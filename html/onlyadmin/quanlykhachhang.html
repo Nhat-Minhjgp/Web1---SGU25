@@ -1,322 +1,237 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quản lý người dùng</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body class="bg-gray-900 text-white min-h-screen p-6">
-    <div class="flex justify-between items-center mb-6">
-      <h1 class="text-3xl font-bold text-cyan-400">Quản lý người dùng</h1>
-      <button
-        onclick="goBack()"
-        class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded"
-      >
-        ← Quay lại
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quản lý người dùng</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+</head>
+
+<body class="bg-gray-900 text-white min-h-screen p-6">
+  <header class="flex justify-between items-center px-6 py-4 bg-gray-800 shadow-md mb-6">
+    <div class="flex items-center space-x-4">
+      <button onclick="goBack()"
+        class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition flex items-center">
+        <i class="fas fa-arrow-left mr-2"></i>Quay lại
       </button>
+      <h1 class="text-2xl font-bold text-cyan-400">Quản lý Người dùng</h1>
     </div>
+    <button onclick="logout()"
+      class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-full text-sm transition">
+      Đăng xuất
+    </button>
+  </header>
 
-    <!-- Thanh công cụ -->
-    <div class="flex flex-col md:flex-row gap-4 mb-6">
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="🔍 Tìm theo tên hoặc email..."
-        class="bg-gray-700 text-white px-3 py-2 rounded flex-1"
-      />
-      <button
-        onclick="openAddModal()"
-        class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded font-semibold"
-      >
-        ➕ Thêm tài khoản
-      </button>
-    </div>
+  <!-- Thanh công cụ -->
+  <div class="flex flex-col md:flex-row gap-4 mb-6">
+    <input type="text" id="searchInput" placeholder="🔍 Tìm theo tên hoặc email..."
+      class="bg-gray-700 text-white px-3 py-2 rounded flex-1" />
+    <button onclick="openAddModal()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded font-semibold">
+      ➕ Thêm tài khoản
+    </button>
+  </div>
 
-    <!-- Bảng người dùng -->
-    <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
-      <table class="w-full table-auto">
-        <thead class="bg-gray-700 text-cyan-300">
-          <tr>
-            <th class="px-4 py-3 text-left">Họ tên</th>
-            <th class="px-4 py-3 text-left">Email</th>
-            <th class="px-4 py-3 text-left">SĐT</th>
-            <th class="px-4 py-3 text-left">Trạng thái</th>
-            <th class="px-4 py-3 text-left">Thao tác</th>
-          </tr>
-        </thead>
-        <tbody id="accountTable" class="text-gray-200"></tbody>
-      </table>
-    </div>
+  <!-- Bảng người dùng -->
+  <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+    <table class="w-full table-auto">
+      <thead class="bg-gray-700 text-cyan-300">
+        <tr>
+          <th class="px-4 py-3 text-left">Họ tên</th>
+          <th class="px-4 py-3 text-left">Email</th>
+          <th class="px-4 py-3 text-left">SĐT</th>
+          <th class="px-4 py-3 text-left">Trạng thái</th>
+          <th class="px-4 py-3 text-left">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody id="accountTable" class="text-gray-200"></tbody>
+    </table>
+  </div>
 
-    <!-- Modal thêm tài khoản -->
-    <div
-      id="addModal"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden"
-    >
-      <div class="bg-gray-800 p-6 rounded-lg w-full max-w-md">
-        <h2 class="text-xl font-bold text-cyan-400 mb-4">➕ Thêm tài khoản mới</h2>
-        <form id="addForm" class="space-y-4">
-          <div>
-            <label class="block text-sm text-gray-300 mb-1">Họ tên *</label>
-            <input
-              type="text"
-              id="addName"
-              class="bg-gray-700 text-white px-3 py-2 rounded w-full"
-              placeholder="Nhập họ tên"
-              required
-            />
-          </div>
-          <div>
-            <label class="block text-sm text-gray-300 mb-1">Email *</label>
-            <input
-              type="email"
-              id="addEmail"
-              class="bg-gray-700 text-white px-3 py-2 rounded w-full"
-              placeholder="Nhập email"
-              required
-            />
-          </div>
-          <div>
-            <label class="block text-sm text-gray-300 mb-1">Số điện thoại *</label>
-            <input
-              type="text"
-              id="addPhone"
-              class="bg-gray-700 text-white px-3 py-2 rounded w-full"
-              placeholder="Nhập số điện thoại"
-              required
-            />
-          </div>
-          <div>
-            <label class="block text-sm text-gray-300 mb-1">Tên đăng nhập *</label>
-            <input
-              type="text"
-              id="addUsername"
-              class="bg-gray-700 text-white px-3 py-2 rounded w-full"
-              placeholder="Nhập tên đăng nhập"
-              required
-            />
-          </div>
-          <div>
-            <label class="block text-sm text-gray-300 mb-1">Địa chỉ</label>
-            <textarea
-              id="addAddress"
-              class="bg-gray-700 text-white px-3 py-2 rounded w-full resize-none"
-              placeholder="Nhập địa chỉ"
-              rows="2"
-            ></textarea>
-          </div>
-          <div class="border-t border-gray-700 pt-4">
-            <h3 class="text-lg font-semibold text-cyan-300 mb-2">Mật khẩu</h3>
-            <div class="flex items-center space-x-2 mb-2">
-              <input
-                type="text"
-                id="addPassword"
-                class="bg-gray-700 text-white px-3 py-2 rounded flex-1"
-                placeholder="Mật khẩu mặc định"
-                value="123456"
-                readonly
-              />
-              <button
-                type="button"
-                onclick="generatePassword()"
-                class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded text-sm"
-              >
-                Tạo mới
-              </button>
-            </div>
-            <p class="text-xs text-gray-400">
-              Mật khẩu mặc định: <span class="font-mono">123456</span>
-            </p>
-          </div>
-          <div class="flex justify-end space-x-2 pt-4">
-            <button
-              type="button"
-              onclick="closeAddModal()"
-              class="bg-gray-600 px-4 py-2 rounded hover:bg-gray-500"
-            >
-              Hủy
-            </button>
-            <button
-              type="submit"
-              class="bg-green-500 text-white font-semibold px-4 py-2 rounded hover:bg-green-600"
-            >
-              Tạo tài khoản
+  <!-- Modal thêm tài khoản -->
+  <div id="addModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-gray-800 p-6 rounded-lg w-full max-w-md">
+      <h2 class="text-xl font-bold text-cyan-400 mb-4">➕ Thêm tài khoản mới</h2>
+      <form id="addForm" class="space-y-4">
+        <div>
+          <label class="block text-sm text-gray-300 mb-1">Họ tên *</label>
+          <input type="text" id="addName" class="bg-gray-700 text-white px-3 py-2 rounded w-full"
+            placeholder="Nhập họ tên" required />
+        </div>
+        <div>
+          <label class="block text-sm text-gray-300 mb-1">Email *</label>
+          <input type="email" id="addEmail" class="bg-gray-700 text-white px-3 py-2 rounded w-full"
+            placeholder="Nhập email" required />
+        </div>
+        <div>
+          <label class="block text-sm text-gray-300 mb-1">Số điện thoại *</label>
+          <input type="text" id="addPhone" class="bg-gray-700 text-white px-3 py-2 rounded w-full"
+            placeholder="Nhập số điện thoại" required />
+        </div>
+        <div>
+          <label class="block text-sm text-gray-300 mb-1">Tên đăng nhập *</label>
+          <input type="text" id="addUsername" class="bg-gray-700 text-white px-3 py-2 rounded w-full"
+            placeholder="Nhập tên đăng nhập" required />
+        </div>
+        <div>
+          <label class="block text-sm text-gray-300 mb-1">Địa chỉ</label>
+          <textarea id="addAddress" class="bg-gray-700 text-white px-3 py-2 rounded w-full resize-none"
+            placeholder="Nhập địa chỉ" rows="2"></textarea>
+        </div>
+        <div class="border-t border-gray-700 pt-4">
+          <h3 class="text-lg font-semibold text-cyan-300 mb-2">Mật khẩu</h3>
+          <div class="flex items-center space-x-2 mb-2">
+            <input type="text" id="addPassword" class="bg-gray-700 text-white px-3 py-2 rounded flex-1"
+              placeholder="Mật khẩu mặc định" value="123456" readonly />
+            <button type="button" onclick="generatePassword()"
+              class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded text-sm">
+              Tạo mới
             </button>
           </div>
-        </form>
-      </div>
+          <p class="text-xs text-gray-400">
+            Mật khẩu mặc định: <span class="font-mono">123456</span>
+          </p>
+        </div>
+        <div class="flex justify-end space-x-2 pt-4">
+          <button type="button" onclick="closeAddModal()" class="bg-gray-600 px-4 py-2 rounded hover:bg-gray-500">
+            Hủy
+          </button>
+          <button type="submit" class="bg-green-500 text-white font-semibold px-4 py-2 rounded hover:bg-green-600">
+            Tạo tài khoản
+          </button>
+        </div>
+      </form>
     </div>
+  </div>
 
-    <!-- Modal sửa tài khoản -->
-    <div
-      id="editModal"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden"
-    >
-      <div class="bg-gray-800 p-6 rounded-lg w-full max-w-md">
-        <h2 class="text-xl font-bold text-cyan-400 mb-4">📝 Sửa tài khoản</h2>
-        <form id="editForm" class="space-y-4">
-          <input type="hidden" id="editIndex">
-          <div>
-            <label class="block text-sm text-gray-300 mb-1">Họ tên *</label>
-            <input
-              type="text"
-              id="editName"
-              class="bg-gray-700 text-white px-3 py-2 rounded w-full"
-              placeholder="Họ tên"
-              required
-            />
-          </div>
-          <div>
-            <label class="block text-sm text-gray-300 mb-1">Email *</label>
-            <input
-              type="email"
-              id="editEmail"
-              class="bg-gray-700 text-white px-3 py-2 rounded w-full"
-              placeholder="Email"
-              required
-            />
-          </div>
-          <div>
-            <label class="block text-sm text-gray-300 mb-1">Số điện thoại *</label>
-            <input
-              type="text"
-              id="editPhone"
-              class="bg-gray-700 text-white px-3 py-2 rounded w-full"
-              placeholder="SĐT"
-              required
-            />
-          </div>
-          <div>
-            <label class="block text-sm text-gray-300 mb-1">Tên đăng nhập *</label>
-            <input
-              type="text"
-              id="editUsername"
-              class="bg-gray-700 text-white px-3 py-2 rounded w-full"
-              placeholder="Tên đăng nhập"
-              required
-            />
-          </div>
-          <div>
-            <label class="block text-sm text-gray-300 mb-1">Địa chỉ</label>
-            <textarea
-              id="editAddress"
-              class="bg-gray-700 text-white px-3 py-2 rounded w-full resize-none"
-              placeholder="Địa chỉ"
-              rows="2"
-            ></textarea>
-          </div>
-          <div class="border-t border-gray-700 pt-4">
-            <h3 class="text-lg font-semibold text-cyan-300 mb-2">Đổi mật khẩu</h3>
-            <div class="flex items-center space-x-2 mb-2">
-              <input
-                type="text"
-                id="editPassword"
-                class="bg-gray-700 text-white px-3 py-2 rounded flex-1"
-                placeholder="Mật khẩu mới (để trống nếu không đổi)"
-              />
-              <button
-                type="button"
-                onclick="generateEditPassword()"
-                class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded text-sm"
-              >
-                Tạo mới
-              </button>
-            </div>
-            <input
-              type="text"
-              id="editConfirmPassword"
-              class="bg-gray-700 text-white px-3 py-2 rounded w-full"
-              placeholder="Xác nhận mật khẩu mới"
-            />
-          </div>
-          <div class="flex justify-end space-x-2 pt-4">
-            <button
-              type="button"
-              onclick="closeEditModal()"
-              class="bg-gray-600 px-4 py-2 rounded hover:bg-gray-500"
-            >
-              Hủy
-            </button>
-            <button
-              type="submit"
-              class="bg-cyan-500 text-gray-900 font-semibold px-4 py-2 rounded hover:bg-cyan-600"
-            >
-              Lưu thay đổi
+  <!-- Modal sửa tài khoản -->
+  <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-gray-800 p-6 rounded-lg w-full max-w-md">
+      <h2 class="text-xl font-bold text-cyan-400 mb-4">📝 Sửa tài khoản</h2>
+      <form id="editForm" class="space-y-4">
+        <input type="hidden" id="editIndex">
+        <div>
+          <label class="block text-sm text-gray-300 mb-1">Họ tên *</label>
+          <input type="text" id="editName" class="bg-gray-700 text-white px-3 py-2 rounded w-full" placeholder="Họ tên"
+            required />
+        </div>
+        <div>
+          <label class="block text-sm text-gray-300 mb-1">Email *</label>
+          <input type="email" id="editEmail" class="bg-gray-700 text-white px-3 py-2 rounded w-full" placeholder="Email"
+            required />
+        </div>
+        <div>
+          <label class="block text-sm text-gray-300 mb-1">Số điện thoại *</label>
+          <input type="text" id="editPhone" class="bg-gray-700 text-white px-3 py-2 rounded w-full" placeholder="SĐT"
+            required />
+        </div>
+        <div>
+          <label class="block text-sm text-gray-300 mb-1">Tên đăng nhập *</label>
+          <input type="text" id="editUsername" class="bg-gray-700 text-white px-3 py-2 rounded w-full"
+            placeholder="Tên đăng nhập" required />
+        </div>
+        <div>
+          <label class="block text-sm text-gray-300 mb-1">Địa chỉ</label>
+          <textarea id="editAddress" class="bg-gray-700 text-white px-3 py-2 rounded w-full resize-none"
+            placeholder="Địa chỉ" rows="2"></textarea>
+        </div>
+        <div class="border-t border-gray-700 pt-4">
+          <h3 class="text-lg font-semibold text-cyan-300 mb-2">Đổi mật khẩu</h3>
+          <div class="flex items-center space-x-2 mb-2">
+            <input type="text" id="editPassword" class="bg-gray-700 text-white px-3 py-2 rounded flex-1"
+              placeholder="Mật khẩu mới (để trống nếu không đổi)" />
+            <button type="button" onclick="generateEditPassword()"
+              class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded text-sm">
+              Tạo mới
             </button>
           </div>
-        </form>
-      </div>
+          <input type="text" id="editConfirmPassword" class="bg-gray-700 text-white px-3 py-2 rounded w-full"
+            placeholder="Xác nhận mật khẩu mới" />
+        </div>
+        <div class="flex justify-end space-x-2 pt-4">
+          <button type="button" onclick="closeEditModal()" class="bg-gray-600 px-4 py-2 rounded hover:bg-gray-500">
+            Hủy
+          </button>
+          <button type="submit" class="bg-cyan-500 text-gray-900 font-semibold px-4 py-2 rounded hover:bg-cyan-600">
+            Lưu thay đổi
+          </button>
+        </div>
+      </form>
     </div>
+  </div>
 
-    <script>
+  <script>
 
-     
-      function goBack() {
-        window.location.href = "daodienad.html";
-      }
 
-      // Chỉ khởi tạo với tài khoản admin cơ bản
-      let users = JSON.parse(localStorage.getItem("users")) || [];
-      
-      // Nếu chưa có user nào, tạo một tài khoản admin mặc định
-      if (users.length === 0) {
-        users = [
-          {
-            fullName: "Quản trị viên",
-            email: "admin@mash.com",
-            phone: "0900000000",
-            username: "admin",
-            address: "273 An Dương Vương, Phường Chợ Quán, Hồ Chí Minh",
-            password: "admin123",
-            status: "active",
-            createdAt: new Date().toISOString(),
-            isAdmin: true
-          }
-        ];
-        localStorage.setItem("users", JSON.stringify(users));
-      }
+    function goBack() {
+      window.location.href = "daodienad.html";
+    }
 
-      // Khởi tạo mật khẩu và trạng thái cho các user chưa có
-      users.forEach(user => {
-        if (!user.password) {
-          user.password = "123456";
+    // Chỉ khởi tạo với tài khoản admin cơ bản
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Nếu chưa có user nào, tạo một tài khoản admin mặc định
+    if (users.length === 0) {
+      users = [
+        {
+          fullName: "Quản trị viên",
+          email: "admin@mash.com",
+          phone: "0900000000",
+          username: "admin",
+          address: "273 An Dương Vương, Phường Chợ Quán, Hồ Chí Minh",
+          password: "admin123",
+          status: "active",
+          createdAt: new Date().toISOString(),
+          isAdmin: true
         }
-        if (user.status === undefined) {
-          user.status = "active";
-        }
-      });
-      saveUsers();
+      ];
+      localStorage.setItem("users", JSON.stringify(users));
+    }
 
-      function renderUsers(filter = "") {
-        const table = document.getElementById("accountTable");
-        table.innerHTML = "";
+    // Khởi tạo mật khẩu và trạng thái cho các user chưa có
+    users.forEach(user => {
+      if (!user.password) {
+        user.password = "123456";
+      }
+      if (user.status === undefined) {
+        user.status = "active";
+      }
+    });
+    saveUsers();
 
-        const filteredUsers = users.filter(
-          (u) =>
-            (u.fullName && u.fullName.toLowerCase().includes(filter.toLowerCase())) ||
-            (u.email && u.email.toLowerCase().includes(filter.toLowerCase()))
-        );
+    function renderUsers(filter = "") {
+      const table = document.getElementById("accountTable");
+      table.innerHTML = "";
 
-        if (filteredUsers.length === 0) {
-          table.innerHTML = `
+      const filteredUsers = users.filter(
+        (u) =>
+          (u.fullName && u.fullName.toLowerCase().includes(filter.toLowerCase())) ||
+          (u.email && u.email.toLowerCase().includes(filter.toLowerCase()))
+      );
+
+      if (filteredUsers.length === 0) {
+        table.innerHTML = `
             <tr>
               <td colspan="5" class="px-4 py-8 text-center text-gray-400">
                 <p>Không tìm thấy người dùng nào</p>
               </td>
             </tr>
           `;
-          return;
-        }
+        return;
+      }
 
-        filteredUsers.forEach((u, i) => {
-          const originalIndex = users.findIndex(user => user.email === u.email);
-          const statusText = u.status === "active" ? "🟢 Hoạt động" : "🔴 Bị khóa";
-          const statusClass = u.status === "active" ? "text-green-400" : "text-red-400";
-          
-          const row = document.createElement("tr");
-          row.className = "border-b border-gray-700 hover:bg-gray-750";
-          row.innerHTML = `
+      filteredUsers.forEach((u, i) => {
+        const originalIndex = users.findIndex(user => user.email === u.email);
+        const statusText = u.status === "active" ? "🟢 Hoạt động" : "🔴 Bị khóa";
+        const statusClass = u.status === "active" ? "text-green-400" : "text-red-400";
+
+        const row = document.createElement("tr");
+        row.className = "border-b border-gray-700 hover:bg-gray-750";
+        row.innerHTML = `
             <td class="px-4 py-3">${u.fullName || 'Chưa cập nhật'}</td>
             <td class="px-4 py-3">${u.email || 'Chưa cập nhật'}</td>
             <td class="px-4 py-3">${u.phone || 'Chưa cập nhật'}</td>
@@ -329,157 +244,158 @@
               <button onclick="resetPassword(${originalIndex})" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-sm">Đặt lại MK</button>
             </td>
           `;
-          table.appendChild(row);
-        });
+        table.appendChild(row);
+      });
+    }
+
+    function saveUsers() {
+      localStorage.setItem("users", JSON.stringify(users));
+      renderUsers(document.getElementById("searchInput").value);
+    }
+
+    function toggleUserStatus(index) {
+      if (index < 0 || index >= users.length) return;
+
+      const user = users[index];
+      // Không cho phép khóa tài khoản admin
+      if (user.isAdmin) {
+        alert("Không thể khóa tài khoản quản trị viên!");
+        return;
       }
 
-      function saveUsers() {
-        localStorage.setItem("users", JSON.stringify(users));
-        renderUsers(document.getElementById("searchInput").value);
-      }
+      const newStatus = user.status === "active" ? "locked" : "active";
+      const action = newStatus === "locked" ? "khóa" : "mở khóa";
 
-      function toggleUserStatus(index) {
-        if (index < 0 || index >= users.length) return;
-        
-        const user = users[index];
-        // Không cho phép khóa tài khoản admin
-        if (user.isAdmin) {
-          alert("Không thể khóa tài khoản quản trị viên!");
-          return;
-        }
-        
-        const newStatus = user.status === "active" ? "locked" : "active";
-        const action = newStatus === "locked" ? "khóa" : "mở khóa";
-        
-        if (confirm(`Bạn có chắc chắn muốn ${action} tài khoản "${user.fullName || user.email}"?`)) {
-          users[index].status = newStatus;
-          saveUsers();
-          alert(`Đã ${action} tài khoản thành công!`);
-        }
-      }
-
-      function resetPassword(index) {
-        if (index < 0 || index >= users.length) return;
-        
-        const user = users[index];
-        if (confirm(`Bạn có chắc chắn muốn đặt lại mật khẩu cho "${user.fullName || user.email}" về mật khẩu mặc định (123456)?`)) {
-          users[index].password = "123456";
-          saveUsers();
-          alert("Đã đặt lại mật khẩu thành công! Mật khẩu mới: 123456");
-        }
-      }
-
-      function editUser(index) {
-        if (index < 0 || index >= users.length) return;
-
-        editIndex = index;
-        const u = users[index];
-        document.getElementById("editIndex").value = index;
-        document.getElementById("editName").value = u.fullName || '';
-        document.getElementById("editEmail").value = u.email || '';
-        document.getElementById("editPhone").value = u.phone || '';
-        document.getElementById("editUsername").value = u.username || '';
-        document.getElementById("editAddress").value = u.address || '';
-        document.getElementById("editPassword").value = '';
-        document.getElementById("editConfirmPassword").value = '';
-        document.getElementById("editModal").classList.remove("hidden");
-      }
-
-      function closeEditModal() {
-        document.getElementById("editModal").classList.add("hidden");
-      }
-
-      function openAddModal() {
-        document.getElementById("addModal").classList.remove("hidden");
-      }
-
-      function closeAddModal() {
-        document.getElementById("addModal").classList.add("hidden");
-        document.getElementById("addForm").reset();
-        document.getElementById("addPassword").value = "123456";
-      }
-
-      function generatePassword() {
-        const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        let password = "";
-        for (let i = 0; i < 8; i++) {
-          password += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        document.getElementById("addPassword").value = password;
-      }
-
-      function generateEditPassword() {
-        const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        let password = "";
-        for (let i = 0; i < 8; i++) {
-          password += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        document.getElementById("editPassword").value = password;
-        document.getElementById("editConfirmPassword").value = password;
-      }
-
-      // Xử lý form thêm tài khoản
-      document.getElementById("addForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-        
-        const newUser = {
-          fullName: document.getElementById("addName").value.trim(),
-          email: document.getElementById("addEmail").value.trim(),
-          phone: document.getElementById("addPhone").value.trim(),
-          username: document.getElementById("addUsername").value.trim(),
-          address: document.getElementById("addAddress").value.trim(),
-          password: document.getElementById("addPassword").value,
-          status: "active",
-          createdAt: new Date().toISOString()
-        };
-
-        // Kiểm tra email trùng
-        if (users.some(u => u.email === newUser.email)) {
-          alert("Email đã tồn tại trong hệ thống!");
-          return;
-        }
-
-        users.push(newUser);
+      if (confirm(`Bạn có chắc chắn muốn ${action} tài khoản "${user.fullName || user.email}"?`)) {
+        users[index].status = newStatus;
         saveUsers();
-        closeAddModal();
-        alert("Tạo tài khoản thành công!\nMật khẩu: " + newUser.password);
-      });
+        alert(`Đã ${action} tài khoản thành công!`);
+      }
+    }
 
-      // Xử lý form sửa tài khoản
-      document.getElementById("editForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-        
-        const index = parseInt(document.getElementById("editIndex").value);
-        const newPassword = document.getElementById("editPassword").value.trim();
-        const confirmPassword = document.getElementById("editConfirmPassword").value.trim();
-        
-        if (newPassword && newPassword !== confirmPassword) {
-          alert("Mật khẩu mới không khớp!");
-          return;
-        }
-        
-        // Cập nhật thông tin
-        users[index].fullName = document.getElementById("editName").value.trim();
-        users[index].email = document.getElementById("editEmail").value.trim();
-        users[index].phone = document.getElementById("editPhone").value.trim();
-        users[index].username = document.getElementById("editUsername").value.trim();
-        users[index].address = document.getElementById("editAddress").value.trim();
-        
-        if (newPassword) {
-          users[index].password = newPassword;
-        }
-        
+    function resetPassword(index) {
+      if (index < 0 || index >= users.length) return;
+
+      const user = users[index];
+      if (confirm(`Bạn có chắc chắn muốn đặt lại mật khẩu cho "${user.fullName || user.email}" về mật khẩu mặc định (123456)?`)) {
+        users[index].password = "123456";
         saveUsers();
-        closeEditModal();
-        alert("Cập nhật thông tin thành công!");
-      });
+        alert("Đã đặt lại mật khẩu thành công! Mật khẩu mới: 123456");
+      }
+    }
 
-      document.getElementById("searchInput").addEventListener("input", function () {
-        renderUsers(this.value);
-      });
+    function editUser(index) {
+      if (index < 0 || index >= users.length) return;
 
-      // Khởi tạo trang
-      renderUsers();
-    </script>
-  </body>
+      editIndex = index;
+      const u = users[index];
+      document.getElementById("editIndex").value = index;
+      document.getElementById("editName").value = u.fullName || '';
+      document.getElementById("editEmail").value = u.email || '';
+      document.getElementById("editPhone").value = u.phone || '';
+      document.getElementById("editUsername").value = u.username || '';
+      document.getElementById("editAddress").value = u.address || '';
+      document.getElementById("editPassword").value = '';
+      document.getElementById("editConfirmPassword").value = '';
+      document.getElementById("editModal").classList.remove("hidden");
+    }
+
+    function closeEditModal() {
+      document.getElementById("editModal").classList.add("hidden");
+    }
+
+    function openAddModal() {
+      document.getElementById("addModal").classList.remove("hidden");
+    }
+
+    function closeAddModal() {
+      document.getElementById("addModal").classList.add("hidden");
+      document.getElementById("addForm").reset();
+      document.getElementById("addPassword").value = "123456";
+    }
+
+    function generatePassword() {
+      const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      let password = "";
+      for (let i = 0; i < 8; i++) {
+        password += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      document.getElementById("addPassword").value = password;
+    }
+
+    function generateEditPassword() {
+      const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      let password = "";
+      for (let i = 0; i < 8; i++) {
+        password += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      document.getElementById("editPassword").value = password;
+      document.getElementById("editConfirmPassword").value = password;
+    }
+
+    // Xử lý form thêm tài khoản
+    document.getElementById("addForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const newUser = {
+        fullName: document.getElementById("addName").value.trim(),
+        email: document.getElementById("addEmail").value.trim(),
+        phone: document.getElementById("addPhone").value.trim(),
+        username: document.getElementById("addUsername").value.trim(),
+        address: document.getElementById("addAddress").value.trim(),
+        password: document.getElementById("addPassword").value,
+        status: "active",
+        createdAt: new Date().toISOString()
+      };
+
+      // Kiểm tra email trùng
+      if (users.some(u => u.email === newUser.email)) {
+        alert("Email đã tồn tại trong hệ thống!");
+        return;
+      }
+
+      users.push(newUser);
+      saveUsers();
+      closeAddModal();
+      alert("Tạo tài khoản thành công!\nMật khẩu: " + newUser.password);
+    });
+
+    // Xử lý form sửa tài khoản
+    document.getElementById("editForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const index = parseInt(document.getElementById("editIndex").value);
+      const newPassword = document.getElementById("editPassword").value.trim();
+      const confirmPassword = document.getElementById("editConfirmPassword").value.trim();
+
+      if (newPassword && newPassword !== confirmPassword) {
+        alert("Mật khẩu mới không khớp!");
+        return;
+      }
+
+      // Cập nhật thông tin
+      users[index].fullName = document.getElementById("editName").value.trim();
+      users[index].email = document.getElementById("editEmail").value.trim();
+      users[index].phone = document.getElementById("editPhone").value.trim();
+      users[index].username = document.getElementById("editUsername").value.trim();
+      users[index].address = document.getElementById("editAddress").value.trim();
+
+      if (newPassword) {
+        users[index].password = newPassword;
+      }
+
+      saveUsers();
+      closeEditModal();
+      alert("Cập nhật thông tin thành công!");
+    });
+
+    document.getElementById("searchInput").addEventListener("input", function () {
+      renderUsers(this.value);
+    });
+
+    // Khởi tạo trang
+    renderUsers();
+  </script>
+</body>
+
 </html>
