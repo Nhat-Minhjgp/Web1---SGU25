@@ -98,14 +98,8 @@
             return;
         }
         
-        // Lấy lịch sử mua hàng từ localStorage
-        // Sử dụng "orders" thay vì "orderHistory" để đồng bộ với trang thanh toán
-        const orders = JSON.parse(localStorage.getItem("orders")) || [];
-        
-        // Lọc đơn hàng theo người dùng hiện tại (nếu cần)
-        const userOrders = orders.filter(order => 
-            order.customer && order.customer.name === currentUser.fullName
-        );
+        // Lấy lịch sử mua hàng theo tài khoản
+        const userOrders = getUserOrders(currentUser.email);
         
         if (userOrders.length === 0) {
             // Ẩn bảng và hiển thị thông báo không có đơn hàng
@@ -128,7 +122,7 @@
                                 <span class="ml-4 text-sm text-gray-600">${formatDate(order.date)}</span>
                             </div>
                             <div class="mt-1 md:mt-0">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusClass(order.status)}">
                                     ${getStatusText(order.status)}
                                 </span>
                             </div>
@@ -192,6 +186,17 @@
             });
         }
         
+        // Hàm lấy đơn hàng theo tài khoản
+        function getUserOrders(userEmail) {
+            // Lấy tất cả đơn hàng từ localStorage
+            const allOrders = JSON.parse(localStorage.getItem("orders")) || [];
+            
+            // Lọc đơn hàng theo email của người dùng hiện tại
+            return allOrders.filter(order => 
+                order.customer && order.customer.email === userEmail
+            );
+        }
+        
         // Hàm định dạng ngày
         function formatDate(dateString) {
             const date = new Date(dateString);
@@ -204,16 +209,28 @@
             });
         }
         
+        // Hàm lấy class CSS cho trạng thái
+        function getStatusClass(status) {
+            const statusClassMap = {
+                'pending': 'bg-yellow-100 text-yellow-800',
+                'confirmed': 'bg-blue-100 text-blue-800',
+                'shipping': 'bg-purple-100 text-purple-800',
+                'completed': 'bg-green-100 text-green-800',
+                'cancelled': 'bg-red-100 text-red-800'
+            };
+            return statusClassMap[status] || 'bg-yellow-100 text-yellow-800';
+        }
+        
         // Hàm lấy trạng thái đơn hàng
         function getStatusText(status) {
             const statusMap = {
-                'pending': 'Đã xác nhận',
+                'pending': 'Chờ xác nhận',
                 'confirmed': 'Đã xác nhận',
                 'shipping': 'Đang giao hàng',
                 'completed': 'Đã hoàn thành',
                 'cancelled': 'Đã hủy'
             };
-            return statusMap[status] || 'Đã xác nhận';
+            return statusMap[status] || 'Chờ xác nhận';
         }
     });
   </script>
