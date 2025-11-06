@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin - Giao diện tối</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   </head>
   <body class="bg-gray-900 text-white min-h-screen overflow-hidden">
     <!-- HEADER -->
@@ -12,71 +13,102 @@
       class="flex justify-between items-center px-6 py-4 bg-gray-800 shadow-md sticky top-0 z-50"
     >
       <h1 class="text-2xl font-bold text-cyan-400">Admin Panel</h1>
-      <button
-        onclick="logout()"
-        class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-full text-sm transition"
-      >
-        Đăng xuất
-      </button>
+      <div class="flex items-center space-x-4">
+        <!-- Thông tin tài khoản admin -->
+        <div class="flex items-center space-x-3 bg-gray-700 px-4 py-2 rounded-lg">
+          <div class="w-10 h-10 rounded-full bg-cyan-500 flex items-center justify-center">
+            <i class="fas fa-user text-white"></i>
+          </div>
+          <div>
+            <p class="font-semibold text-sm" id="adminName">MASH</p>
+            <p class="text-xs text-gray-300" id="adminRole">Quản trị viên</p>
+          </div>
+        </div>
+        <button
+          onclick="logout()"
+          class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-full text-sm transition"
+        >
+          Đăng xuất
+        </button>
+      </div>
     </header>
 
     <div class="flex h-[calc(100vh-64px)]">
       <!-- SIDEBAR -->
       <aside class="w-64 bg-gray-800 p-6 space-y-4 overflow-y-auto">
-        <nav class="space-y-2">
+        <div class="pb-4 border-b border-gray-700">
+          <h3 class="text-lg font-semibold text-cyan-400 mb-2">Thông tin tài khoản</h3>
+          <div class="space-y-2 text-sm">
+            <div class="flex justify-between">
+              <span class="text-gray-400">Email:</span>
+              <span id="adminEmail">admin@mash.com</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-400">Đăng nhập lúc:</span>
+              <span id="loginTime">10:30, 15/06/2023</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-400">Trạng thái:</span>
+              <span class="text-green-400">Đang hoạt động</span>
+            </div>
+          </div>
+        </div>
+        
+        <nav class="space-y-2 pt-2">
           <button
             onclick="loadPage('dashboard')"
             class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
           >
-             Thống kê
+            <i class="fas fa-chart-line mr-2"></i> Thống kê
           </button>
           <button
             onclick="window.location.href='quanlykhachhang.html'"
             class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700"
->
-             Quản lý khách hàng
+          >
+            <i class="fas fa-users mr-2"></i> Quản lý khách hàng
+          </button>
           <button
             onclick="window.location.href='quanlyloaisanpham.html'"
             class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
           >
-             Loại sản phẩm
+            <i class="fas fa-tags mr-2"></i> Loại sản phẩm
           </button>
          
           <button
           onclick="window.location.href='danhmucsanpham.html'"
             class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
           >
-             Danh mục sản phẩm
+            <i class="fas fa-boxes mr-2"></i>  Danh mục sản phẩm
           </button>
           <button
           onclick="window.location.href='quanlyhangnhap.html'"
           class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
         >
-           Quản lý hàng nhập
+          <i class="fas fa-arrow-down mr-2"></i> Quản lý hàng nhập
         </button>
           <button
           onclick="window.location.href='hoadon.html'"
             class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
           >
-             Hóa đơn
+            <i class="fas fa-receipt mr-2"></i> Hóa đơn
           </button>
           <button
           onclick="window.location.href='giaban.html'"
             class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
           >
-             Giá bán
+            <i class="fas fa-tag mr-2"></i> Giá bán
           </button>
           <button
           onclick="window.location.href='khuyenmai.html'"
             class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
           >
-             Khuyến mãi
+            <i class="fas fa-percent mr-2"></i> Khuyến mãi
           </button>
           <button
           onclick="window.location.href='hangtonkho.html'"
             class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
           >
-             Tồn kho
+            <i class="fas fa-warehouse mr-2"></i> Tồn kho
           </button>
         </nav>
       </aside>
@@ -90,12 +122,89 @@
           <p class="text-gray-300">
             Chọn chức năng từ menu bên trái để bắt đầu quản lý.
           </p>
+          
+          <!-- Thông tin tài khoản chi tiết -->
+          <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-gray-700 p-6 rounded-lg">
+              <h3 class="text-xl font-semibold text-cyan-400 mb-4">Thông tin tài khoản</h3>
+              <div class="space-y-3">
+                <div class="flex items-center">
+                  <i class="fas fa-user text-cyan-400 w-6"></i>
+                  <span class="ml-2">Họ tên: <span id="detailAdminName">Admin</span></span>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-envelope text-cyan-400 w-6"></i>
+                  <span class="ml-2">Email: <span id="detailAdminEmail">admin@mash.com</span></span>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-user-tag text-cyan-400 w-6"></i>
+                  <span class="ml-2">Vai trò: <span id="detailAdminRole">Quản trị viên</span></span>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-calendar text-cyan-400 w-6"></i>
+                  <span class="ml-2">Ngày tạo: <span id="accountCreated">01/01/2023</span></span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-gray-700 p-6 rounded-lg">
+              <h3 class="text-xl font-semibold text-cyan-400 mb-4">Hoạt động gần đây</h3>
+              <div class="space-y-3">
+                <div class="flex items-start">
+                  <i class="fas fa-check-circle text-green-400 mt-1 mr-2"></i>
+                  <div>
+                    <p class="font-medium">Đăng nhập thành công</p>
+                    <p class="text-sm text-gray-400">10:30, 15/06/2023</p>
+                  </div>
+                </div>
+                <div class="flex items-start">
+                  <i class="fas fa-edit text-blue-400 mt-1 mr-2"></i>
+                  <div>
+                    <p class="font-medium">Cập nhật sản phẩm</p>
+                    <p class="text-sm text-gray-400">09:15, 15/06/2023</p>
+                  </div>
+                </div>
+                <div class="flex items-start">
+                  <i class="fas fa-plus-circle text-green-400 mt-1 mr-2"></i>
+                  <div>
+                    <p class="font-medium">Thêm khách hàng mới</p>
+                    <p class="text-sm text-gray-400">14:20, 14/06/2023</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
       </main>
     </div>
 
     <!-- SCRIPT -->
     <script>
+      // Dữ liệu mẫu cho tài khoản admin
+      const adminData = {
+        name: "MASH",
+        email: "admin@mash.com",
+        role: "Quản trị viên",
+        createdDate: "01/01/2023",
+        loginTime: new Date().toLocaleString('vi-VN')
+      };
+
+      // Hàm cập nhật thông tin admin lên giao diện
+      function updateAdminInfo() {
+        document.getElementById('adminName').textContent = adminData.name;
+        document.getElementById('adminRole').textContent = adminData.role;
+        document.getElementById('adminEmail').textContent = adminData.email;
+        document.getElementById('loginTime').textContent = adminData.loginTime;
+        
+        document.getElementById('detailAdminName').textContent = adminData.name;
+        document.getElementById('detailAdminEmail').textContent = adminData.email;
+        document.getElementById('detailAdminRole').textContent = adminData.role;
+        document.getElementById('accountCreated').textContent = adminData.createdDate;
+      }
+
+      // Gọi hàm khi trang tải
+      document.addEventListener('DOMContentLoaded', updateAdminInfo);
+
       function loadPage(page) {
         const content = document.getElementById("content");
         let title = "";
@@ -116,6 +225,57 @@
         content.innerHTML = `
         <h2 class="text-2xl font-bold text-cyan-400 mb-2">${title}</h2>
         <p class="text-gray-300">${description}</p>
+        
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-gray-700 p-6 rounded-lg">
+            <h3 class="text-xl font-semibold text-cyan-400 mb-4">Thông tin tài khoản</h3>
+            <div class="space-y-3">
+              <div class="flex items-center">
+                <i class="fas fa-user text-cyan-400 w-6"></i>
+                <span class="ml-2">Họ tên: <span id="detailAdminName">${adminData.name}</span></span>
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-envelope text-cyan-400 w-6"></i>
+                <span class="ml-2">Email: <span id="detailAdminEmail">${adminData.email}</span></span>
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-user-tag text-cyan-400 w-6"></i>
+                <span class="ml-2">Vai trò: <span id="detailAdminRole">${adminData.role}</span></span>
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-calendar text-cyan-400 w-6"></i>
+                <span class="ml-2">Ngày tạo: <span id="accountCreated">${adminData.createdDate}</span></span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-gray-700 p-6 rounded-lg">
+            <h3 class="text-xl font-semibold text-cyan-400 mb-4">Hoạt động gần đây</h3>
+            <div class="space-y-3">
+              <div class="flex items-start">
+                <i class="fas fa-check-circle text-green-400 mt-1 mr-2"></i>
+                <div>
+                  <p class="font-medium">Đăng nhập thành công</p>
+                  <p class="text-sm text-gray-400">${adminData.loginTime}</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-edit text-blue-400 mt-1 mr-2"></i>
+                <div>
+                  <p class="font-medium">Cập nhật sản phẩm</p>
+                  <p class="text-sm text-gray-400">09:15, 15/06/2023</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-plus-circle text-green-400 mt-1 mr-2"></i>
+                <div>
+                  <p class="font-medium">Thêm khách hàng mới</p>
+                  <p class="text-sm text-gray-400">14:20, 14/06/2023</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       `;
       }
 
