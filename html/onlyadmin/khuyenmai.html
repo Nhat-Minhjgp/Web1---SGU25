@@ -43,6 +43,19 @@
         color: #000;
         font-weight: bold;
       }
+      .fade-in {
+        animation: fadeIn 0.5s ease-in;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
     </style>
   </head>
   <body class="bg-gray-900 text-white min-h-screen">
@@ -75,7 +88,7 @@
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm text-gray-400">Đang diễn ra</p>
-              <p class="text-2xl font-bold text-cyan-400">3</p>
+              <p class="text-2xl font-bold text-cyan-400" id="activeCount">3</p>
             </div>
             <div class="p-3 bg-cyan-500 rounded-lg">
               <i class="fas fa-rocket text-white"></i>
@@ -86,7 +99,9 @@
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm text-gray-400">Sắp diễn ra</p>
-              <p class="text-2xl font-bold text-blue-400">2</p>
+              <p class="text-2xl font-bold text-blue-400" id="upcomingCount">
+                2
+              </p>
             </div>
             <div class="p-3 bg-blue-500 rounded-lg">
               <i class="fas fa-clock text-white"></i>
@@ -97,7 +112,9 @@
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm text-gray-400">Đã kết thúc</p>
-              <p class="text-2xl font-bold text-gray-400">5</p>
+              <p class="text-2xl font-bold text-gray-400" id="expiredCount">
+                5
+              </p>
             </div>
             <div class="p-3 bg-gray-500 rounded-lg">
               <i class="fas fa-calendar-times text-white"></i>
@@ -108,7 +125,9 @@
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm text-gray-400">Tổng KM</p>
-              <p class="text-2xl font-bold text-purple-400">10</p>
+              <p class="text-2xl font-bold text-purple-400" id="totalCount">
+                10
+              </p>
             </div>
             <div class="p-3 bg-purple-500 rounded-lg">
               <i class="fas fa-tags text-white"></i>
@@ -123,15 +142,17 @@
           <h2 class="text-xl font-bold text-cyan-400 mb-4">
             Thêm khuyến mãi mới
           </h2>
-          <form class="space-y-4">
+          <form id="promotionForm" class="space-y-4">
             <div>
               <label class="block text-sm font-medium text-gray-300 mb-2"
                 >Tên chương trình</label
               >
               <input
                 type="text"
+                id="promotionName"
                 class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 placeholder="Nhập tên chương trình"
+                required
               />
             </div>
 
@@ -142,8 +163,11 @@
                 >
                 <input
                   type="number"
+                  id="discountPercent"
                   class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
                   placeholder="10%"
+                  min="0"
+                  max="100"
                 />
               </div>
               <div>
@@ -152,8 +176,10 @@
                 >
                 <input
                   type="number"
+                  id="discountAmount"
                   class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
                   placeholder="50,000"
+                  min="0"
                 />
               </div>
             </div>
@@ -163,9 +189,10 @@
                 >Áp dụng cho</label
               >
               <select
+                id="applyFor"
                 class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
               >
-                <option value="">Tất cả sản phẩm</option>
+                <option value="all">Tất cả sản phẩm</option>
                 <option value="category">Theo loại sản phẩm</option>
                 <option value="product">Sản phẩm cụ thể</option>
                 <option value="order">Đơn hàng từ số tiền</option>
@@ -179,7 +206,9 @@
                 >
                 <input
                   type="datetime-local"
+                  id="startDate"
                   class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  required
                 />
               </div>
               <div>
@@ -188,7 +217,9 @@
                 >
                 <input
                   type="datetime-local"
+                  id="endDate"
                   class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  required
                 />
               </div>
             </div>
@@ -198,6 +229,7 @@
                 >Mô tả</label
               >
               <textarea
+                id="description"
                 rows="3"
                 class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 placeholder="Mô tả chương trình khuyến mãi"
@@ -222,9 +254,11 @@
             </h2>
             <div class="flex space-x-2">
               <select
+                id="statusFilter"
                 class="px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-sm"
+                onchange="filterPromotions()"
               >
-                <option value="">Tất cả trạng thái</option>
+                <option value="all">Tất cả trạng thái</option>
                 <option value="active">Đang diễn ra</option>
                 <option value="upcoming">Sắp diễn ra</option>
                 <option value="expired">Đã kết thúc</option>
@@ -232,156 +266,8 @@
             </div>
           </div>
 
-          <div class="space-y-4">
-            <!-- Khuyến mãi 1 -->
-            <div class="p-4 rounded-lg status-active">
-              <div class="flex justify-between items-start mb-2">
-                <div>
-                  <h3 class="font-semibold text-white">
-                    Giảm 20% Tết Trung Thu
-                  </h3>
-                  <p class="text-sm text-gray-400">
-                    Áp dụng cho tất cả sản phẩm nhân ngọt
-                  </p>
-                </div>
-                <span class="discount-badge px-3 py-1 rounded-full text-sm"
-                  >20% OFF</span
-                >
-              </div>
-              <div class="flex justify-between items-center text-sm">
-                <div>
-                  <span class="text-gray-400">15/08 - 30/09/2024</span>
-                  <span class="ml-4 text-green-400"
-                    ><i class="fas fa-users mr-1"></i> 156 lượt dùng</span
-                  >
-                </div>
-                <div class="flex space-x-2">
-                  <button
-                    onclick="editPromotion(1)"
-                    class="text-cyan-400 hover:text-cyan-300"
-                  >
-                    <i class="fas fa-edit"></i>
-                  </button>
-                  <button
-                    onclick="deletePromotion(1)"
-                    class="text-red-400 hover:text-red-300"
-                  >
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Khuyến mãi 2 -->
-            <div class="p-4 rounded-lg status-upcoming">
-              <div class="flex justify-between items-start mb-2">
-                <div>
-                  <h3 class="font-semibold text-white">Mua 5 tặng 1</h3>
-                  <p class="text-sm text-gray-400">
-                    Mua 5 bánh bất kỳ tặng 1 bánh nhân ngọt
-                  </p>
-                </div>
-                <span class="discount-badge px-3 py-1 rounded-full text-sm"
-                  >BUY 5 GET 1</span
-                >
-              </div>
-              <div class="flex justify-between items-center text-sm">
-                <div>
-                  <span class="text-gray-400">01/10 - 15/10/2024</span>
-                  <span class="ml-4 text-blue-400"
-                    ><i class="fas fa-clock mr-1"></i> Sắp diễn ra</span
-                  >
-                </div>
-                <div class="flex space-x-2">
-                  <button
-                    onclick="editPromotion(2)"
-                    class="text-cyan-400 hover:text-cyan-300"
-                  >
-                    <i class="fas fa-edit"></i>
-                  </button>
-                  <button
-                    onclick="deletePromotion(2)"
-                    class="text-red-400 hover:text-red-300"
-                  >
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Khuyến mãi 3 -->
-            <div class="p-4 rounded-lg status-active">
-              <div class="flex justify-between items-start mb-2">
-                <div>
-                  <h3 class="font-semibold text-white">Freeship toàn quốc</h3>
-                  <p class="text-sm text-gray-400">Đơn hàng từ 500.000đ</p>
-                </div>
-                <span
-                  class="bg-gradient-to-r from-green-400 to-blue-500 px-3 py-1 rounded-full text-sm text-white"
-                  >FREESHIP</span
-                >
-              </div>
-              <div class="flex justify-between items-center text-sm">
-                <div>
-                  <span class="text-gray-400">01/09 - 31/12/2024</span>
-                  <span class="ml-4 text-green-400"
-                    ><i class="fas fa-users mr-1"></i> 892 lượt dùng</span
-                  >
-                </div>
-                <div class="flex space-x-2">
-                  <button
-                    onclick="editPromotion(3)"
-                    class="text-cyan-400 hover:text-cyan-300"
-                  >
-                    <i class="fas fa-edit"></i>
-                  </button>
-                  <button
-                    onclick="deletePromotion(3)"
-                    class="text-red-400 hover:text-red-300"
-                  >
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Khuyến mãi 4 -->
-            <div class="p-4 rounded-lg status-expired">
-              <div class="flex justify-between items-start mb-2">
-                <div>
-                  <h3 class="font-semibold text-white">Giảm 50K đơn 300K</h3>
-                  <p class="text-sm text-gray-400">
-                    Áp dụng cho tất cả đơn hàng
-                  </p>
-                </div>
-                <span class="discount-badge px-3 py-1 rounded-full text-sm"
-                  >50K OFF</span
-                >
-              </div>
-              <div class="flex justify-between items-center text-sm">
-                <div>
-                  <span class="text-gray-400">01/08 - 31/08/2024</span>
-                  <span class="ml-4 text-gray-400"
-                    ><i class="fas fa-calendar-times mr-1"></i> Đã kết
-                    thúc</span
-                  >
-                </div>
-                <div class="flex space-x-2">
-                  <button
-                    onclick="editPromotion(4)"
-                    class="text-cyan-400 hover:text-cyan-300"
-                  >
-                    <i class="fas fa-edit"></i>
-                  </button>
-                  <button
-                    onclick="deletePromotion(4)"
-                    class="text-red-400 hover:text-red-300"
-                  >
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
+          <div class="space-y-4" id="promotionsList">
+            <!-- Khuyến mãi sẽ được thêm bằng JavaScript -->
           </div>
         </div>
       </div>
@@ -417,6 +303,60 @@
     </main>
 
     <script>
+      // Dữ liệu khuyến mãi mẫu
+      let promotions = [
+        {
+          id: 1,
+          name: "Giảm 20% Tết Trung Thu",
+          description: "Áp dụng cho tất cả sản phẩm nhân ngọt",
+          discountPercent: 20,
+          discountAmount: 0,
+          applyFor: "category",
+          startDate: "2024-08-15T00:00",
+          endDate: "2024-09-30T23:59",
+          status: "active",
+          usageCount: 156,
+        },
+        {
+          id: 2,
+          name: "Mua 5 tặng 1",
+          description: "Mua 5 bánh bất kỳ tặng 1 bánh nhân ngọt",
+          discountPercent: 0,
+          discountAmount: 0,
+          applyFor: "all",
+          startDate: "2024-10-01T00:00",
+          endDate: "2024-10-15T23:59",
+          status: "upcoming",
+          usageCount: 0,
+        },
+        {
+          id: 3,
+          name: "Freeship toàn quốc",
+          description: "Đơn hàng từ 500.000đ",
+          discountPercent: 0,
+          discountAmount: 0,
+          applyFor: "order",
+          startDate: "2024-09-01T00:00",
+          endDate: "2024-12-31T23:59",
+          status: "active",
+          usageCount: 892,
+        },
+        {
+          id: 4,
+          name: "Giảm 50K đơn 300K",
+          description: "Áp dụng cho tất cả đơn hàng",
+          discountPercent: 0,
+          discountAmount: 50000,
+          applyFor: "all",
+          startDate: "2024-08-01T00:00",
+          endDate: "2024-08-31T23:59",
+          status: "expired",
+          usageCount: 324,
+        },
+      ];
+
+      let nextId = 5;
+
       function goBack() {
         window.location.href = "daodienad.html";
       }
@@ -428,46 +368,297 @@
         }
       }
 
+      // Thêm khuyến mãi mới
       function addPromotion() {
+        const name = document.getElementById("promotionName").value;
+        const description = document.getElementById("description").value;
+        const discountPercent =
+          parseInt(document.getElementById("discountPercent").value) || 0;
+        const discountAmount =
+          parseInt(document.getElementById("discountAmount").value) || 0;
+        const applyFor = document.getElementById("applyFor").value;
+        const startDate = document.getElementById("startDate").value;
+        const endDate = document.getElementById("endDate").value;
+
+        // Kiểm tra dữ liệu
+        if (!name || !startDate || !endDate) {
+          alert("Vui lòng điền đầy đủ thông tin bắt buộc!");
+          return;
+        }
+
+        if (new Date(startDate) >= new Date(endDate)) {
+          alert("Ngày kết thúc phải sau ngày bắt đầu!");
+          return;
+        }
+
+        // Tạo khuyến mãi mới
+        const newPromotion = {
+          id: nextId++,
+          name: name,
+          description: description,
+          discountPercent: discountPercent,
+          discountAmount: discountAmount,
+          applyFor: applyFor,
+          startDate: startDate,
+          endDate: endDate,
+          status: getPromotionStatus(startDate, endDate),
+          usageCount: 0,
+        };
+
+        // Thêm vào mảng
+        promotions.unshift(newPromotion);
+
+        // Cập nhật giao diện
+        renderPromotions();
+        updateStats();
+        resetForm();
+
         alert("Đã thêm khuyến mãi mới thành công!");
-        // Thực tế sẽ gửi dữ liệu form đến server
+      }
+
+      // Reset form
+      function resetForm() {
+        document.getElementById("promotionForm").reset();
+      }
+
+      // Lấy trạng thái khuyến mãi
+      function getPromotionStatus(startDate, endDate) {
+        const now = new Date();
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
+        if (now < start) return "upcoming";
+        if (now > end) return "expired";
+        return "active";
+      }
+
+      // Hiển thị danh sách khuyến mãi
+      function renderPromotions() {
+        const promotionsList = document.getElementById("promotionsList");
+        const statusFilter = document.getElementById("statusFilter").value;
+
+        // Lọc khuyến mãi theo trạng thái
+        let filteredPromotions = promotions;
+        if (statusFilter !== "all") {
+          filteredPromotions = promotions.filter(
+            (promo) => promo.status === statusFilter
+          );
+        }
+
+        promotionsList.innerHTML = "";
+
+        filteredPromotions.forEach((promotion) => {
+          const promotionElement = document.createElement("div");
+          promotionElement.className = `p-4 rounded-lg status-${promotion.status} fade-in promotion-item`;
+          promotionElement.setAttribute("data-start", promotion.startDate);
+          promotionElement.setAttribute("data-end", promotion.endDate);
+
+          // Tạo badge hiển thị
+          let badgeText = "";
+          if (promotion.discountPercent > 0) {
+            badgeText = `${promotion.discountPercent}% OFF`;
+          } else if (promotion.discountAmount > 0) {
+            badgeText = `${formatCurrency(promotion.discountAmount)} OFF`;
+          } else if (promotion.name.includes("Freeship")) {
+            badgeText = "FREESHIP";
+          } else {
+            badgeText = "BUY 5 GET 1";
+          }
+
+          // Tạo class badge
+          let badgeClass = "px-3 py-1 rounded-full text-sm font-bold";
+          if (promotion.name.includes("Freeship")) {
+            badgeClass +=
+              " bg-gradient-to-r from-green-400 to-blue-500 text-white";
+          } else {
+            badgeClass += " discount-badge";
+          }
+
+          promotionElement.innerHTML = `
+            <div class="flex justify-between items-start mb-2">
+              <div>
+                <h3 class="font-semibold text-white">${promotion.name}</h3>
+                <p class="text-sm text-gray-400">${promotion.description}</p>
+              </div>
+              <span class="${badgeClass}">${badgeText}</span>
+            </div>
+            <div class="flex justify-between items-center text-sm">
+              <div>
+                <span class="text-gray-400">${formatDate(
+                  promotion.startDate
+                )} - ${formatDate(promotion.endDate)}</span>
+                <span class="ml-4 ${getStatusColor(promotion.status)}">
+                  <i class="fas ${getStatusIcon(promotion.status)} mr-1"></i> 
+                  ${getStatusText(promotion.status, promotion.usageCount)}
+                </span>
+              </div>
+              <div class="flex space-x-2">
+                <button
+                  onclick="editPromotion(${promotion.id})"
+                  class="text-cyan-400 hover:text-cyan-300"
+                >
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button
+                  onclick="deletePromotion(${promotion.id})"
+                  class="text-red-400 hover:text-red-300"
+                >
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          `;
+
+          promotionsList.appendChild(promotionElement);
+        });
+      }
+
+      // Lọc khuyến mãi
+      function filterPromotions() {
+        renderPromotions();
+      }
+
+      // Cập nhật thống kê
+      function updateStats() {
+        const activeCount = promotions.filter(
+          (p) => p.status === "active"
+        ).length;
+        const upcomingCount = promotions.filter(
+          (p) => p.status === "upcoming"
+        ).length;
+        const expiredCount = promotions.filter(
+          (p) => p.status === "expired"
+        ).length;
+        const totalCount = promotions.length;
+
+        document.getElementById("activeCount").textContent = activeCount;
+        document.getElementById("upcomingCount").textContent = upcomingCount;
+        document.getElementById("expiredCount").textContent = expiredCount;
+        document.getElementById("totalCount").textContent = totalCount;
+      }
+
+      // Hàm hỗ trợ
+      function getStatusColor(status) {
+        switch (status) {
+          case "active":
+            return "text-green-400";
+          case "upcoming":
+            return "text-blue-400";
+          case "expired":
+            return "text-gray-400";
+          default:
+            return "text-gray-400";
+        }
+      }
+
+      function getStatusIcon(status) {
+        switch (status) {
+          case "active":
+            return "fa-users";
+          case "upcoming":
+            return "fa-clock";
+          case "expired":
+            return "fa-calendar-times";
+          default:
+            return "fa-info-circle";
+        }
+      }
+
+      function getStatusText(status, usageCount) {
+        switch (status) {
+          case "active":
+            return `${usageCount} lượt dùng`;
+          case "upcoming":
+            return "Sắp diễn ra";
+          case "expired":
+            return "Đã kết thúc";
+          default:
+            return "Không xác định";
+        }
+      }
+
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString("vi-VN");
+      }
+
+      function formatCurrency(amount) {
+        return new Intl.NumberFormat("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        }).format(amount);
       }
 
       function editPromotion(id) {
-        alert(`Chỉnh sửa khuyến mãi #${id}`);
-        // Thực tế sẽ mở modal chỉnh sửa với dữ liệu của khuyến mãi
+        const promotion = promotions.find((p) => p.id === id);
+        if (promotion) {
+          // Điền dữ liệu vào form
+          document.getElementById("promotionName").value = promotion.name;
+          document.getElementById("description").value = promotion.description;
+          document.getElementById("discountPercent").value =
+            promotion.discountPercent;
+          document.getElementById("discountAmount").value =
+            promotion.discountAmount;
+          document.getElementById("applyFor").value = promotion.applyFor;
+          document.getElementById("startDate").value = promotion.startDate;
+          document.getElementById("endDate").value = promotion.endDate;
+
+          alert(`Đang chỉnh sửa khuyến mãi: ${promotion.name}`);
+          // Trong thực tế, bạn có thể thêm logic để cập nhật thay vì thêm mới
+        }
       }
 
       function deletePromotion(id) {
-        if (confirm(`Bạn có chắc chắn muốn xóa khuyến mãi #${id}?`)) {
-          alert(`Đã xóa khuyến mãi #${id}`);
-          // Thực tế sẽ gửi yêu cầu xóa đến server
+        if (confirm(`Bạn có chắc chắn muốn xóa khuyến mãi này?`)) {
+          promotions = promotions.filter((p) => p.id !== id);
+          renderPromotions();
+          updateStats();
+          alert(`Đã xóa khuyến mãi thành công!`);
         }
       }
 
       // Tự động cập nhật trạng thái khuyến mãi theo thời gian
       function updatePromotionStatus() {
         const now = new Date();
-        document.querySelectorAll(".promotion-item").forEach((item) => {
-          const startDate = new Date(item.dataset.start);
-          const endDate = new Date(item.dataset.end);
+        let needsUpdate = false;
 
-          if (now < startDate) {
-            item.classList.add("status-upcoming");
-            item.classList.remove("status-active", "status-expired");
-          } else if (now <= endDate) {
-            item.classList.add("status-active");
-            item.classList.remove("status-upcoming", "status-expired");
-          } else {
-            item.classList.add("status-expired");
-            item.classList.remove("status-active", "status-upcoming");
+        promotions.forEach((promotion) => {
+          const newStatus = getPromotionStatus(
+            promotion.startDate,
+            promotion.endDate
+          );
+          if (promotion.status !== newStatus) {
+            promotion.status = newStatus;
+            needsUpdate = true;
           }
         });
+
+        if (needsUpdate) {
+          renderPromotions();
+          updateStats();
+        }
       }
+
+      // Khởi tạo
+      document.addEventListener("DOMContentLoaded", function () {
+        renderPromotions();
+        updateStats();
+
+        // Đặt ngày mặc định cho form
+        const now = new Date();
+        const tomorrow = new Date(now);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        document.getElementById("startDate").value = now
+          .toISOString()
+          .slice(0, 16);
+        document.getElementById("endDate").value = tomorrow
+          .toISOString()
+          .slice(0, 16);
+      });
 
       // Cập nhật mỗi phút
       setInterval(updatePromotionStatus, 60000);
-      updatePromotionStatus();
     </script>
   </body>
 </html>
