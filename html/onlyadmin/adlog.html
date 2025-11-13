@@ -20,17 +20,17 @@
           id="errorMsg"
           class="hidden bg-red-100 text-red-700 px-4 py-3 rounded text-sm"
         >
-          Email hoặc mật khẩu không chính xác.
+          Tên tài khoản hoặc mật khẩu không chính xác.
         </div>
 
         <div>
           <label class="block text-sm font-medium text-gray-300 mb-1"
-            >Email</label
+            >Tên tài khoản</label
           >
           <input
-            type="email"
-            id="email"
-            placeholder="Nhập email"
+            type="text"
+            id="username"
+            placeholder="Nhập tên tài khoản"
             class="w-full bg-gray-700 text-white border border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-500"
           />
         </div>
@@ -54,15 +54,14 @@
           Đăng nhập
         </button>
       </form>
-
-     
+    </div>
 
     <!-- SCRIPT -->
     <script>
       const defaultAdmins = [
         {
-          email: "admin@mash.com",
-          password: "admin123",
+          username: "quanly1",
+          password: "abcd1234",
           name: "Quản trị viên",
         },
       ];
@@ -72,11 +71,11 @@
 
       form.addEventListener("submit", function (event) {
         event.preventDefault();
-        const email = document.getElementById("email").value.trim();
+        const username = document.getElementById("username").value.trim();
         const password = document.getElementById("password").value.trim();
 
         const foundAdmin = defaultAdmins.find(
-          (u) => u.email === email && u.password === password
+          (u) => u.username === username && u.password === password
         );
 
         if (foundAdmin) {
@@ -86,9 +85,7 @@
         } else {
           errorMsg.classList.remove("hidden");
         }
-        
       });
-</script>
     </script>
   </body>
 </html>
