@@ -12,39 +12,64 @@
   <!-- HEADER -->
   <header class="flex justify-between items-center px-8 py-4 bg-white shadow-md">
     <h2 class="text-2xl font-bold text-[#8B0000]">
-        <a href="../index.html" class="hover:text-[#8B0000]">MASH</a>
-      </h2>
-      <nav class="hidden md:flex space-x-6 text-sm font-medium absolute left-1/2 transform -translate-x-1/2">
-        <a href="../index.html" class="hover:text-[#8B0000]">Trang chủ</a>
-        <a href="./sanpham.html" class="hover:text-[#8B0000]">Sản phẩm</a>
-        <a href="./gioithieu.html" class="hover:text-[#8B0000]">Giới thiệu</a>
-        <a href="./lienhe.html" class="hover:text-[#8B0000]">Liên hệ</a>
-      </nav>
-  
-    <button id="logoutBtn" class="bg-[#8B0000] text-white px-4 py-2 rounded-full hover:bg-red-900 transition">
-      Đăng xuất
-    </button>
+      <a href="../index.html" class="hover:text-[#8B0000]">MASH</a>
+    </h2>
+    <nav class="hidden md:flex space-x-6 text-sm font-medium absolute left-1/2 transform -translate-x-1/2">
+      <a href="../index.html" class="hover:text-[#8B0000]">Trang chủ</a>
+      <a href="./sanpham.html" class="hover:text-[#8B0000]">Sản phẩm</a>
+      <a href="./gioithieu.html" class="hover:text-[#8B0000]">Giới thiệu</a>
+      <a href="./lienhe.html" class="hover:text-[#8B0000]">Liên hệ</a>
+    </nav>
+    <div class="flex items-center space-x-4">
+      <!-- Đăng nhập + Giỏ hàng khi chưa đăng nhập -->
+      <div id="loginSection" class="flex items-center space-x-2">
+        <a href="./login.html" class="flex items-center text-[#8B0000] hover:text-red-900 transition">
+          <img src="../icon/iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain rounded-full" />
+        </a>
+        <a href="./giohang.html">
+          <img src="../icon/giohang.png" alt="Giỏ hàng" class="w-5 h-5 hover:scale-110 transition" />
+        </a>
+      </div>
+
+      <!-- Profile + Giỏ hàng khi đã đăng nhập -->
+      <div id="userProfile" class="hidden flex items-center space-x-2">
+        <a href="./thongtinKH.html" title="Trang tài khoản">
+          <img src="../img/iconafterlogin.jpg" alt="User"
+            class="w-7 h-7 rounded-full object-cover border border-gray-300 hover:scale-110 transition" />
+        </a>
+
+        <span id="userName" class="text-sm font-medium text-[#8B0000]"></span>
+
+        <!-- Nút đăng xuất -->
+        <button id="logoutBtn" class="text-xs text-gray-500 hover:text-red-700 ml-2">(Đăng xuất)</button>
+
+        <!-- Nút giỏ hàng -->
+        <a href="./giohang.html">
+          <img src="../icon/giohang.png" alt="Giỏ hàng" class="w-5 h-5 hover:scale-110 transition" />
+        </a>
+      </div>
+    </div>
   </header>
 
   <div class="flex flex-col md:flex-row flex-1">
     
     <!-- SIDEBAR -->
-    <div class="w-full md:w-1/4 p-6 border-r border-gray-200 bg-white">
-        <h2 class="text-xl font-bold mb-6 text-red-700">Tài khoản của tôi</h2>
+    <div class="w-64  p-5 shadow-md bg-white">
+        <h2 class="text-lg font-semibold mb-4 text-[#8B0000]">Tài khoản của tôi</h2>
         <nav>
             <ul>
                 <li class="mb-3">
-                    <a href="./thongtinKH.html" class="text-gray-700 hover:text-red-700">Thông tin cá nhân</a>
+                    <a href="./thongtinKH.html" class="block hover:text-[#8B0000]">Thông tin cá nhân</a>
                 </li>
                 <li class="mb-3">
-                    <a href="#" class="font-bold text-red-700 border-l-4 border-red-700 pl-2">Lịch sử mua hàng</a>
+                    <a href="#" class="block hover:text-[#8B0000]">Lịch sử mua hàng</a>
                 </li>
             </ul>
         </nav>
     </div>
 
     <!-- MAIN CONTENT -->
-    <div class="w-full md:w-3/4 p-4 md:p-8">
+    <div class="w-full  p-4 md:p-8">
         <h1 class="text-2xl font-extrabold mb-6 md:mb-8">Lịch sử mua hàng</h1>
 
         <div class="bg-white shadow-lg rounded-lg overflow-hidden border border-gray-200">
@@ -98,6 +123,19 @@
             alert("Bạn cần đăng nhập để xem lịch sử mua hàng.");
             window.location.href = "./login.html";
             return;
+        }
+
+        // Xử lý hiển thị header
+        const loginSection = document.getElementById("loginSection");
+        const userProfile = document.getElementById("userProfile");
+        const userName = document.getElementById("userName");
+        
+        if (currentUser) {
+            // Hiển thị profile khi đã đăng nhập
+            loginSection.classList.add("hidden");
+            userProfile.classList.remove("hidden");
+            userProfile.classList.add("flex");
+            userName.textContent = currentUser.fullName || currentUser.username || currentUser.email;
         }
         
         // Lấy lịch sử mua hàng theo tài khoản
@@ -170,7 +208,7 @@
         if (logoutBtn) {
             logoutBtn.addEventListener("click", () => {
                 localStorage.removeItem("currentUser");
-                window.location.href = "./pages.html"; // Chuyển hướng về trang chủ sau đăng xuất
+                window.location.href = "../index.html"; // Chuyển hướng về trang chủ sau đăng xuất
             });
         }
         

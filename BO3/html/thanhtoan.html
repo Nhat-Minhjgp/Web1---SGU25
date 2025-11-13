@@ -12,6 +12,31 @@
             content: " *";
             color: #ef4444;
         }
+        
+        .bank-info {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.3s ease-out;
+        }
+        
+        .bank-info.show {
+            max-height: 500px;
+            opacity: 1;
+        }
+        
+        .copy-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .copy-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .copy-btn.copied {
+            background-color: #10B981;
+            color: white;
+        }
     </style>
 </head>
 
@@ -84,7 +109,7 @@
                     </div>
                     <div class="flex justify-between mb-2">
                         <span class="text-gray-600">Phí vận chuyển:</span>
-                        <span id="shipping" class="font-medium">30,000₫</span>
+                        <span id="shipping" class="font-medium">0₫</span>
                     </div>
                     <div class="flex justify-between text-lg font-semibold border-t pt-2">
                         <span>Tổng cộng:</span>
@@ -115,7 +140,8 @@
                         <div class="mb-4">
                             <label for="address" class="block font-medium mb-2 required">Địa chỉ nhận hàng:</label>
                             <textarea id="address" required rows="3"
-                                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#8B0000]"></textarea>
+                                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#8B0000]"
+                                placeholder="Nhập địa chỉ nhận hàng để tính phí vận chuyển"></textarea>
                         </div>
 
                         <div>
@@ -143,17 +169,58 @@
 
                             <label
                                 class="flex items-start space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
-                                <input type="radio" name="payment" value="momo" class="form-radio text-[#8B0000] mt-1"
-                                    onclick="alert('Tính năng đang được phát triển')" />
-                                <div>
-                                    <span class="font-medium">Ví MoMo</span>
-                                    <p class="text-sm text-gray-600 mt-1">Thanh toán nhanh chóng qua ứng dụng MoMo</p>
+                                <input type="radio" name="payment" value="bank" class="form-radio text-[#8B0000] mt-1" />
+                                <div class="w-full">
+                                    <div class="flex items-start justify-between">
+                                        <div>
+                                            <span class="font-medium">Chuyển khoản ngân hàng</span>
+                                            <p class="text-sm text-gray-600 mt-1">Thanh toán nhanh chóng qua ứng dụng ngân hàng</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </label>
 
-
-
-                            </label>
+                            <!-- Thông tin chuyển khoản ngân hàng -->
+                            <div id="bankInfo" class="bank-info mt-2 ml-6 p-4 bg-gray-50 rounded-lg border">
+                                <h3 class="font-semibold text-[#8B0000] mb-3 text-lg">Thông tin chuyển khoản</h3>
+                                
+                                <div class="space-y-3">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="text-sm text-gray-600">Ngân hàng</p>
+                                            <p class="font-medium">Ngân hàng TMCP Ngoại thương Việt Nam (Vietcombank)</p>
+                                        </div>
+                                        <button type="button" class="copy-btn bg-[#8B0000] text-white px-3 py-1 rounded text-sm hover:bg-red-900 transition">
+                                            Sao chép
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="text-sm text-gray-600">Tên tài khoản</p>
+                                            <p class="font-medium">MASH BAKERY</p>
+                                        </div>
+                                        <button type="button" class="copy-btn bg-[#8B0000] text-white px-3 py-1 rounded text-sm hover:bg-red-900 transition">
+                                            Sao chép
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="text-sm text-gray-600">Số tài khoản</p>
+                                            <p class="font-medium text-lg">1030506778</p>
+                                        </div>
+                                        <button type="button" class="copy-btn bg-[#8B0000] text-white px-3 py-1 rounded text-sm hover:bg-red-900 transition">
+                                            Sao chép
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded">
+                                        <p class="text-sm text-yellow-800 font-medium">Lưu ý quan trọng:</p>
+                                        <p class="text-sm text-yellow-700 mt-1">Vui lòng chuyển khoản chính xác số tiền và ghi rõ nội dung chuyển khoản theo mẫu: <span class="font-bold">[Mã đơn hàng] + [Tên người đặt]</span></p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -264,6 +331,7 @@
             const orderItems = document.getElementById("orderItems");
             const subtotalEl = document.getElementById("subtotal");
             const totalAmountEl = document.getElementById("totalAmount");
+            const shippingEl = document.getElementById("shipping");
 
             let subtotal = 0;
             const shippingFee = 30000;
@@ -299,10 +367,90 @@
                 orderItems.appendChild(div);
             });
 
-            // Cập nhật tổng tiền
-            const total = subtotal + shippingFee;
-            subtotalEl.textContent = `${subtotal.toLocaleString("vi-VN")}₫`;
-            totalAmountEl.textContent = `${total.toLocaleString("vi-VN")}₫`;
+            // Hàm cập nhật tổng tiền
+            function updateTotalAmount() {
+                const address = document.getElementById("address").value.trim();
+                let shipping = 0;
+                
+                if (address) {
+                    // Có địa chỉ - tính phí vận chuyển
+                    shipping = shippingFee;
+                }
+                
+                const total = subtotal + shipping;
+                
+                subtotalEl.textContent = `${subtotal.toLocaleString("vi-VN")}₫`;
+                shippingEl.textContent = `${shipping.toLocaleString("vi-VN")}₫`;
+                totalAmountEl.textContent = `${total.toLocaleString("vi-VN")}₫`;
+            }
+
+            // Cập nhật tổng tiền ban đầu
+            updateTotalAmount();
+
+            // Theo dõi sự thay đổi của ô địa chỉ
+            document.getElementById("address").addEventListener("input", updateTotalAmount);
+
+            // Xử lý hiển thị thông tin chuyển khoản ngân hàng
+            const bankRadio = document.querySelector('input[name="payment"][value="bank"]');
+            const bankInfo = document.getElementById("bankInfo");
+            
+            // Xử lý sự kiện khi chọn phương thức thanh toán
+            document.querySelectorAll('input[name="payment"]').forEach(radio => {
+                radio.addEventListener("change", function() {
+                    if (this.value === "bank") {
+                        bankInfo.classList.add("show");
+                    } else {
+                        bankInfo.classList.remove("show");
+                    }
+                });
+            });
+
+            // Xử lý sao chép thông tin ngân hàng
+            document.querySelectorAll('.copy-btn').forEach((btn, index) => {
+                btn.addEventListener('click', function() {
+                    let textToCopy = '';
+                    switch(index) {
+                        case 0:
+                            textToCopy = 'Ngân hàng TMCP Ngoại thương Việt Nam (Vietcombank)';
+                            break;
+                        case 1:
+                            textToCopy = 'MASH BAKERY';
+                            break;
+                        case 2:
+                            textToCopy = '1030506778';
+                            break;
+                    }
+                    
+                    // Sao chép vào clipboard
+                    navigator.clipboard.writeText(textToCopy).then(() => {
+                        // Hiệu ứng sao chép thành công
+                        const originalText = btn.textContent;
+                        btn.textContent = 'Đã sao chép!';
+                        btn.classList.add('copied');
+                        
+                        setTimeout(() => {
+                            btn.textContent = originalText;
+                            btn.classList.remove('copied');
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Lỗi sao chép: ', err);
+                        // Fallback cho trình duyệt cũ
+                        const textArea = document.createElement('textarea');
+                        textArea.value = textToCopy;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        
+                        btn.textContent = 'Đã sao chép!';
+                        btn.classList.add('copied');
+                        setTimeout(() => {
+                            btn.textContent = originalText;
+                            btn.classList.remove('copied');
+                        }, 2000);
+                    });
+                });
+            });
 
             // Hàm tạo mã đơn hàng
             function generateOrderId() {
@@ -313,8 +461,7 @@
             function getPaymentMethodName(value) {
                 switch (value) {
                     case 'cod': return 'Thanh toán khi nhận hàng (COD)';
-                    case 'momo': return 'Ví MoMo';
-                    case 'visa': return 'Thẻ Visa/Mastercard';
+                    case 'bank': return 'Chuyển khoản ngân hàng';
                     default: return value;
                 }
             }
@@ -382,6 +529,10 @@
                     return;
                 }
 
+                // Tính toán tổng tiền cuối cùng
+                const finalShipping = address ? shippingFee : 0;
+                const finalTotal = subtotal + finalShipping;
+
                 // Tạo đơn hàng với thông tin tài khoản
                 const order = {
                     id: generateOrderId(),
@@ -400,8 +551,8 @@
                     })),
                     payment: payment,
                     subtotal: subtotal,
-                    shipping: shippingFee,
-                    total: total,
+                    shipping: finalShipping,
+                    total: finalTotal,
                     status: "pending",
                     note: note || ""
                 };

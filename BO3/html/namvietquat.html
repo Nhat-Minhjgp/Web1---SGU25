@@ -10,6 +10,39 @@
   <link href="./output.css" rel="stylesheet">
 </head>
 
+
+  <style>
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: white;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1000;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    
+    .dropdown-content a {
+      color: #8B0000;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      transition: background-color 0.3s;
+    }
+    
+    .dropdown-content a:hover {
+      background-color: #f8f5ec;
+    }
+  </style>
+</head>
+
 <body class="font-sans text-gray-800 bg-white">
 
   <!-- HEADER -->
@@ -21,7 +54,7 @@
 
     <!-- NAVIGATION -->
     <nav class="hidden md:flex space-x-6 text-sm font-medium absolute left-1/2 transform -translate-x-1/2">
-      <a href="../pages.html" class="hover:text-[#8B0000]">Trang chủ</a>
+      <a href="../index.html" class="hover:text-[#8B0000]">Trang chủ</a>
       <a href="./sanpham.html" class="hover:text-[#8B0000]">Sản phẩm</a>
       <a href="./gioithieu.html" class="hover:text-[#8B0000]">Giới thiệu</a>
       <a href="./lienhe.html" class="hover:text-[#8B0000]">Liên hệ</a>
@@ -31,9 +64,17 @@
     <div class="flex items-center space-x-4">
       <!-- Đăng nhập + Giỏ hàng khi chưa đăng nhập -->
       <div id="loginSection" class="flex items-center space-x-2">
-        <a href="./login.html" class="flex items-center text-[#8B0000] hover:text-red-900 transition">
-          <img src="../icon/iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain rounded-full" />
-        </a>
+        <!-- Dropdown đăng nhập/đăng ký -->
+        <div class="dropdown relative">
+          <a href="#" class="flex items-center text-[#8B0000] hover:text-red-900 transition">
+            <img src="../icon/iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain rounded-full" />
+          </a>
+          <div class="dropdown-content">
+            <a href="./login.html">Đăng nhập</a>
+            <a href="./Dangky.html">Đăng ký</a>
+          </div>
+        </div>
+        
         <a href="./giohang.html">
           <img src="../icon/giohang.png" alt="Giỏ hàng" class="w-5 h-5 hover:scale-110 transition" />
         </a>
@@ -56,11 +97,9 @@
           <img src="../icon/giohang.png" alt="Giỏ hàng" class="w-5 h-5 hover:scale-110 transition" />
         </a>
       </div>
-
-
-
-
+    </div>
   </header>
+
 
 
   <!-- Khung nền xám bao quanh -->

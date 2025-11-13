@@ -8,6 +8,36 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <link href="./output.css" rel="stylesheet">
+  <style>
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: white;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1000;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    
+    .dropdown-content a {
+      color: #8B0000;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      transition: background-color 0.3s;
+    }
+    
+    .dropdown-content a:hover {
+      background-color: #f8f5ec;
+    }
+  </style>
 </head>
 
 <body class="font-sans text-gray-800 bg-white">
@@ -24,16 +54,24 @@
       <a href="./index.html" class="hover:text-[#8B0000]">Trang chủ</a>
       <a href="./html/sanpham.html" class="hover:text-[#8B0000]">Sản phẩm</a>
       <a href="./html/gioithieu.html" class="hover:text-[#8B0000]">Giới thiệu</a>
-      <a href="./html/lienhe.html" class="hover:te xt-[#8B0000]">Liên hệ</a>
+      <a href="./html/lienhe.html" class="hover:text-[#8B0000]">Liên hệ</a>
     </nav>
 
     <!-- USER ACTIONS -->
     <div class="flex items-center space-x-4">
       <!-- Đăng nhập + Giỏ hàng khi chưa đăng nhập -->
       <div id="loginSection" class="flex items-center space-x-2">
-        <a href="./html/login.html" class="flex items-center text-[#8B0000] hover:text-red-900 transition">
-          <img src="./icon/iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain rounded-full" />
-        </a>
+        <!-- Dropdown đăng nhập/đăng ký -->
+        <div class="dropdown relative">
+          <a href="#" class="flex items-center text-[#8B0000] hover:text-red-900 transition">
+            <img src="./icon/iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain rounded-full" />
+          </a>
+          <div class="dropdown-content">
+            <a href="./html/login.html">Đăng nhập</a>
+            <a href="./html/Dangky.html">Đăng ký</a>
+          </div>
+        </div>
+        
         <a href="./html/giohang.html">
           <img src="./icon/giohang.png" alt="Giỏ hàng" class="w-5 h-5 hover:scale-110 transition" />
         </a>
@@ -56,13 +94,8 @@
           <img src="./icon/giohang.png" alt="Giỏ hàng" class="w-5 h-5 hover:scale-110 transition" />
         </a>
       </div>
-
-
-
-
+    </div>
   </header>
-
-
 
   <!-- BANNER -->
   <section class="relative w-full h-[600px] overflow-hidden">
@@ -87,9 +120,10 @@
       </p>
 
       <p class="mb-3 italic text-[#8B0000]">
-        “Chúng tôi trân trọng truyền thống,<br>
+        "Chúng tôi trân trọng truyền thống,<br>
         Chúng tôi lấy tinh hoa làm gốc phát triển những nhân tố mới<br>
-        Và chúng tôi gửi gắm yêu thương trong từng chiếc bánh đến tay khách hàng.”</p>
+        Và chúng tôi gửi gắm yêu thương trong từng chiếc bánh đến tay khách hàng."
+      </p>
 
       <p>
         Mỗi chiếc bánh trung thu MASH là sự hòa quyện giữa truyền thống và hiện đại, giữa vị ngọt tinh tế
@@ -97,15 +131,12 @@
       </p>
     </div>
 
-
     <!-- Ảnh bên phải -->
     <div class="md:w-1/2 mt-10 md:mt-0 flex justify-center">
       <img src="./img/story.jpg" alt="Câu chuyện MASH"
         class="w-[400px] h-[400px] object-cover rounded-2xl shadow-lg border-4 border-[#8B0000]">
     </div>
   </section>
-
-
 
   <!--DANH MỤC SẢN PHẨM-->
   <section class="relative bg-[url('./img/bg-bread.jpg')] bg-cover bg-center py-16">
@@ -115,10 +146,6 @@
       <h2 class="text-3xl font-bold mb-10 uppercase tracking-widest">DANH MỤC SẢN PHẨM</h2>
 
       <div class="flex flex-wrap justify-center gap-10 px-4">
-
-
-
-
         <!-- Sản phẩm 3 -->
         <div class="flex flex-col items-center">
           <img src="./img/banhin.png" alt="Sản phẩm 3"
@@ -126,26 +153,29 @@
           <h3 class="text-lg font-semibold uppercase">Bánh In</h3>
         </div>
 
-
         <!-- Sản phẩm 4 -->
         <div class="flex flex-col items-center">
           <img src="./img/tradao.png" alt="Sản phẩm 4"
             class="w-40 h-40 object-contain mb-4 transition-transform hover:scale-105" />
           <h3 class="text-lg font-semibold uppercase">Trà Đạo</h3>
         </div>
+        
         <!-- Sản phẩm 1 -->
         <div class="flex flex-col items-center">
           <a href="./html/sanpham.html">
             <img src="./img/banhtrungthu.png" alt="Sản phẩm 1"
-              class="w-40 h-40 object-contain mb-4 transition-transform hover:scale-105" /></a>
-          <h3 class="text-lg font-semibold uppercase">Bánh Trung Thu </h3>
+              class="w-40 h-40 object-contain mb-4 transition-transform hover:scale-105" />
+          </a>
+          <h3 class="text-lg font-semibold uppercase">Bánh Trung Thu</h3>
         </div>
+        
         <!-- Sản phẩm 5 -->
         <div class="flex flex-col items-center">
           <img src="./img/longden.png" alt="Sản phẩm 5"
             class="w-40 h-40 object-contain mb-4 transition-transform hover:scale-105" />
           <h3 class="text-lg font-semibold uppercase">Lồng đèn</h3>
         </div>
+        
         <!-- Sản phẩm 2 -->
         <div class="flex flex-col items-center">
           <img src="./img/banhdeo.png" alt="Sản phẩm 2"
@@ -161,17 +191,14 @@
     <h3 class="text-2xl font-bold text-center text-[#8B0000] mb-10">Sản Phẩm Nổi Bật</h3>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-
       <!-- Mãng cầu xiêm sen -->
       <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
         <img src="./img/mangcauxiemsen.jpg" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover"
           alt="Bánh Trung Thu Mãng Cầu Xiêm Sen">
         <h4 class="font-semibold mb-2">Trung Thu Mãng Cầu Xiêm Sen</h4>
-        <p class="text-sm text-gray-600 mb-3">Nhân chua thanh nhẹ, quyện vị béo dịu, mang hương sen tao nhã và độc đáo.
-        </p>
-        <a href="./html/mangcauxiemsen.html"> <button
-            class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi
-            tiết</button>
+        <p class="text-sm text-gray-600 mb-3">Nhân chua thanh nhẹ, quyện vị béo dịu, mang hương sen tao nhã và độc đáo.</p>
+        <a href="./html/mangcauxiemsen.html">
+          <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
         </a>
       </div>
 
@@ -182,8 +209,7 @@
         <h4 class="font-semibold mb-2">Trung Thu Sữa Dừa Cafe</h4>
         <p class="text-sm text-gray-600 mb-3">Nhân sữa dừa hòa quyện cà phê, béo ngậy, thơm dịu và ngọt vừa phải.</p>
         <a href="./html/suaduacafe.html">
-          <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết
-          </button>
+          <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
         </a>
       </div>
 
@@ -194,9 +220,7 @@
         <h4 class="font-semibold mb-2">Trung Thu Sen Khế Bưởi Quế Hoa</h4>
         <p class="text-sm text-gray-600 mb-3">Nhân sữa béo nhẹ, ngọt dịu, hòa quyện hương thơm thanh mát và tinh tế.</p>
         <a href="./html/khebuoiquehoa.html">
-          <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi
-            tiết
-          </button>
+          <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
         </a>
       </div>
 
@@ -204,22 +228,18 @@
       <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
         <img src="./img/vaihongcanhsen.jpg" class="rounded-lg mb-4 mx-auto h-48 w-full object-cover"
           alt="Bánh Trung Thu Vải Hồng Cánh Sen">
-
-        <h4 class="font-semibold mb-2">Trung Thu Vải Hồng Cánh Sen </h4>
+        <h4 class="font-semibold mb-2">Trung Thu Vải Hồng Cánh Sen</h4>
         <p class="text-sm text-gray-600 mb-3">Bánh ngọt thanh hòa quyện hạt sen bùi và hương hoa hồng tinh tế</p>
         <a href="./html/vaihongcanhsen.html">
-          <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi
-            tiết</button>
+          <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
         </a>
       </div>
     </div>
   </section>
 
-
   <!-- FOOTER -->
   <footer class="bg-[#811621] text-[#FFECDC] border-t-4 border-white">
     <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-
       <!-- Logo -->
       <div class="text-center ">
         <h2 class="text-3xl font-bold text-white">MASH</h2>
@@ -229,7 +249,6 @@
       <!-- Form -->
       <div class="text-center">
         <h3 class="text-lg font-semibold text-white mb-4">ĐĂNG KÝ NHẬN TIN</h3>
-
         <form class="flex justify-center mb-4 w-full max-w-lg mx-auto">
           <input type="email" placeholder="Email của bạn..."
             class="flex-1 px-4 py-2.5 rounded-l-full text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#FFD7C2]" />
@@ -269,19 +288,12 @@
     </div>
   </footer>
 
-
-
-
   <!-- Nút lăn lên -->
   <a href="#" aria-label="Cuộn lên đầu trang"
     class="fixed bottom-6 right-6 bg-white bold text-[#8B0000] p-3 rounded-full shadow-lg border hover:border-[#8B0000] hover:text-white transition-opacity opacity-0 invisible"
     id="scrollToTopBtn">
-
-    <img src="./icon/Up.png" alt="up" class="flex w-4 h-4 ">
-
-
+    <img src="./icon/Up.png" alt="up" class="flex w-4 h-4">
   </a>
-
 
   <!-- script nút lăn lên -->
   <script>
@@ -299,11 +311,9 @@
 
     scrollBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'sqmooth' });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   </script>
-
-
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -337,7 +347,6 @@
         userProfile.classList.remove("flex");
       }
     });
-  </script>
   </script>
 </body>
 
