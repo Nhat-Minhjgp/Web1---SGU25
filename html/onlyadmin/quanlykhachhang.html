@@ -21,19 +21,46 @@
       </button>
       <h1 class="text-2xl font-bold text-cyan-400">Quản lý Người dùng</h1>
     </div>
-    <button onclick="logout()"
-      class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-full text-sm transition">
-      Đăng xuất
-    </button>
+    <div class="flex items-center space-x-2">
+      <button onclick="logout()"
+        class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-full text-sm transition">
+        Đăng xuất
+      </button>
+    </div>
   </header>
+
+  <!-- Thông báo -->
+  <div id="notification" class="fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 hidden"></div>
 
   <!-- Thanh công cụ -->
   <div class="flex flex-col md:flex-row gap-4 mb-6">
     <input type="text" id="searchInput" placeholder="🔍 Tìm theo tên hoặc email..."
       class="bg-gray-700 text-white px-3 py-2 rounded flex-1" />
-    <button onclick="openAddModal()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded font-semibold">
-      ➕ Thêm tài khoản
-    </button>
+    <div class="flex gap-2">
+      <button onclick="openAddModal()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded font-semibold">
+        ➕ Thêm tài khoản
+      </button>
+    </div>
+  </div>
+
+  <!-- Thống kê -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+    <div class="bg-gray-800 p-4 rounded-lg text-center">
+      <div class="text-2xl font-bold text-cyan-400">${users.length}</div>
+      <div class="text-sm text-gray-400">Tổng người dùng</div>
+    </div>
+    <div class="bg-gray-800 p-4 rounded-lg text-center">
+      <div class="text-2xl font-bold text-green-400">${users.filter(u => u.status === 'active').length}</div>
+      <div class="text-sm text-gray-400">Đang hoạt động</div>
+    </div>
+    <div class="bg-gray-800 p-4 rounded-lg text-center">
+      <div class="text-2xl font-bold text-red-400">${users.filter(u => u.status === 'locked').length}</div>
+      <div class="text-sm text-gray-400">Bị khóa</div>
+    </div>
+    <div class="bg-gray-800 p-4 rounded-lg text-center">
+      <div class="text-2xl font-bold text-purple-400">${users.filter(u => u.isAdmin).length}</div>
+      <div class="text-sm text-gray-400">Quản trị viên</div>
+    </div>
   </div>
 
   <!-- Bảng người dùng -->
@@ -43,7 +70,9 @@
         <tr>
           <th class="px-4 py-3 text-left">Họ tên</th>
           <th class="px-4 py-3 text-left">Email</th>
+          <th class="px-4 py-3 text-left">Tên đăng nhập</th>
           <th class="px-4 py-3 text-left">SĐT</th>
+          <th class="px-4 py-3 text-left">Vai trò</th>
           <th class="px-4 py-3 text-left">Trạng thái</th>
           <th class="px-4 py-3 text-left">Thao tác</th>
         </tr>
@@ -53,7 +82,7 @@
   </div>
 
   <!-- Modal thêm tài khoản -->
-  <div id="addModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+  <div id="addModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-40">
     <div class="bg-gray-800 p-6 rounded-lg w-full max-w-md">
       <h2 class="text-xl font-bold text-cyan-400 mb-4">➕ Thêm tài khoản mới</h2>
       <form id="addForm" class="space-y-4">
@@ -109,7 +138,7 @@
   </div>
 
   <!-- Modal sửa tài khoản -->
-  <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+  <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-40">
     <div class="bg-gray-800 p-6 rounded-lg w-full max-w-md">
       <h2 class="text-xl font-bold text-cyan-400 mb-4">📝 Sửa tài khoản</h2>
       <form id="editForm" class="space-y-4">
@@ -165,16 +194,98 @@
   </div>
 
   <script>
+    // localStorage.removeItem("users");
 
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Khách hàng mặc định
+    const defaultCustomers = [
+      {
+        fullName: "Nguyễn Văn An",
+        email: "nguyenvanan@gmail.com",
+        phone: "0901111111",
+        username: "nguyenvanan",
+        address: "123 Nguyễn Văn Cừ, Quận 1, TP.HCM",
+        password: "123456",
+        status: "active",
+        createdAt: new Date().toISOString(),
+        isAdmin: false
+      },
+      {
+        fullName: "Trần Thị Bình",
+        email: "tranthibinh@gmail.com",
+        phone: "0902222222",
+        username: "tranthibinh",
+        address: "456 Lê Lợi, Quận 3, TP.HCM",
+        password: "123456",
+        status: "active",
+        createdAt: new Date().toISOString(),
+        isAdmin: false
+      },
+      {
+        fullName: "Lê Văn Cường",
+        email: "levancuong@gmail.com",
+        phone: "0903333333",
+        username: "levancuong",
+        address: "789 Hai Bà Trưng, Quận 1, TP.HCM",
+        password: "123456",
+        status: "active",
+        createdAt: new Date().toISOString(),
+        isAdmin: false
+      },
+      {
+        fullName: "Phạm Thị Dung",
+        email: "phamthidung@gmail.com",
+        phone: "0904444444",
+        username: "phamthidung",
+        address: "321 Cách Mạng Tháng 8, Quận 10, TP.HCM",
+        password: "123456",
+        status: "active",
+        createdAt: new Date().toISOString(),
+        isAdmin: false
+      },
+      {
+        fullName: "Hoàng Văn Em",
+        email: "hoanganem@gmail.com",
+        phone: "0905555555",
+        username: "hoanganem",
+        address: "654 Nguyễn Trãi, Quận 5, TP.HCM",
+        password: "123456",
+        status: "active",
+        createdAt: new Date().toISOString(),
+        isAdmin: false
+      }
+    ];
 
     function goBack() {
       window.location.href = "daodienad.html";
     }
 
-    // Chỉ khởi tạo với tài khoản admin cơ bản
-    let users = JSON.parse(localStorage.getItem("users")) || [];
+    function logout() {
+      localStorage.removeItem("currentAdmin");
+      window.location.href = "admin.html";
+    }
 
-    // Nếu chưa có user nào, tạo một tài khoản admin mặc định
+    // Hàm tự động thêm khách hàng mặc định
+    function autoAddDefaultCustomers() {
+      let addedCount = 0;
+      
+      defaultCustomers.forEach(customer => {
+        // Kiểm tra xem email đã tồn tại chưa
+        const exists = users.some(u => u.email === customer.email);
+        if (!exists) {
+          users.push(customer);
+          addedCount++;
+        }
+      });
+
+      if (addedCount > 0) {
+        console.log(`Đã tự động thêm ${addedCount} khách hàng mặc định vào hệ thống!`);
+        saveUsers();
+      }
+    }
+
+    // Khởi tạo tài khoản admin và khách hàng mặc định nếu chưa có
     if (users.length === 0) {
       users = [
         {
@@ -187,9 +298,29 @@
           status: "active",
           createdAt: new Date().toISOString(),
           isAdmin: true
+        },
+        {
+          fullName: "Quản lý 1",
+          email: "tyler@gmail.com",
+          phone: "0900000000",
+          username: "quanly1",
+          address: "273 An Dương Vương, Phường Chợ Quán, Hồ Chí Minh",
+          password: "abcd1234",
+          status: "active",
+          createdAt: new Date().toISOString(),
+          isAdmin: true
         }
       ];
       localStorage.setItem("users", JSON.stringify(users));
+      
+      // Tự động thêm khách hàng mặc định sau khi tạo admin
+      setTimeout(() => {
+        autoAddDefaultCustomers();
+        showNotification(`Đã tự động thêm ${defaultCustomers.length} khách hàng mặc định vào hệ thống!`);
+      }, 100);
+    } else {
+      // Nếu đã có dữ liệu, kiểm tra và thêm khách hàng mặc định nếu còn thiếu
+      autoAddDefaultCustomers();
     }
 
     // Khởi tạo mật khẩu và trạng thái cho các user chưa có
@@ -203,6 +334,20 @@
     });
     saveUsers();
 
+    // Hiển thị thông báo
+    function showNotification(message, type = 'success') {
+      const notification = document.getElementById('notification');
+      notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
+        type === 'success' ? 'bg-green-500' : 'bg-red-500'
+      }`;
+      notification.textContent = message;
+      notification.classList.remove('hidden');
+      
+      setTimeout(() => {
+        notification.classList.add('hidden');
+      }, 3000);
+    }
+
     function renderUsers(filter = "") {
       const table = document.getElementById("accountTable");
       table.innerHTML = "";
@@ -210,13 +355,14 @@
       const filteredUsers = users.filter(
         (u) =>
           (u.fullName && u.fullName.toLowerCase().includes(filter.toLowerCase())) ||
-          (u.email && u.email.toLowerCase().includes(filter.toLowerCase()))
+          (u.email && u.email.toLowerCase().includes(filter.toLowerCase())) ||
+          (u.username && u.username.toLowerCase().includes(filter.toLowerCase()))
       );
 
       if (filteredUsers.length === 0) {
         table.innerHTML = `
             <tr>
-              <td colspan="5" class="px-4 py-8 text-center text-gray-400">
+              <td colspan="7" class="px-4 py-8 text-center text-gray-400">
                 <p>Không tìm thấy người dùng nào</p>
               </td>
             </tr>
@@ -228,13 +374,17 @@
         const originalIndex = users.findIndex(user => user.email === u.email);
         const statusText = u.status === "active" ? "🟢 Hoạt động" : "🔴 Bị khóa";
         const statusClass = u.status === "active" ? "text-green-400" : "text-red-400";
+        const roleText = u.isAdmin ? "👑 Quản trị" : "👤 Khách hàng";
+        const roleClass = u.isAdmin ? "text-yellow-400" : "text-blue-400";
 
         const row = document.createElement("tr");
         row.className = "border-b border-gray-700 hover:bg-gray-750";
         row.innerHTML = `
             <td class="px-4 py-3">${u.fullName || 'Chưa cập nhật'}</td>
             <td class="px-4 py-3">${u.email || 'Chưa cập nhật'}</td>
+            <td class="px-4 py-3">${u.username || 'Chưa cập nhật'}</td>
             <td class="px-4 py-3">${u.phone || 'Chưa cập nhật'}</td>
+            <td class="px-4 py-3 ${roleClass} font-semibold">${roleText}</td>
             <td class="px-4 py-3 ${statusClass} font-semibold">${statusText}</td>
             <td class="px-4 py-3 space-x-2">
               <button onclick="editUser(${originalIndex})" class="bg-yellow-500 text-gray-900 px-3 py-1 rounded hover:bg-yellow-600 text-sm">Sửa</button>
@@ -242,10 +392,24 @@
                 ${u.status === "active" ? 'Khóa' : 'Mở khóa'}
               </button>
               <button onclick="resetPassword(${originalIndex})" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-sm">Đặt lại MK</button>
+              ${!u.isAdmin ? `` : ''}
             </td>
           `;
         table.appendChild(row);
       });
+
+      // Cập nhật thống kê
+      updateStatistics();
+    }
+
+    function updateStatistics() {
+      const stats = document.querySelectorAll('.grid div div:first-child');
+      if (stats.length === 4) {
+        stats[0].textContent = users.length;
+        stats[1].textContent = users.filter(u => u.status === 'active').length;
+        stats[2].textContent = users.filter(u => u.status === 'locked').length;
+        stats[3].textContent = users.filter(u => u.isAdmin).length;
+      }
     }
 
     function saveUsers() {
@@ -259,7 +423,7 @@
       const user = users[index];
       // Không cho phép khóa tài khoản admin
       if (user.isAdmin) {
-        alert("Không thể khóa tài khoản quản trị viên!");
+        showNotification("Không thể khóa tài khoản quản trị viên!", 'error');
         return;
       }
 
@@ -269,7 +433,7 @@
       if (confirm(`Bạn có chắc chắn muốn ${action} tài khoản "${user.fullName || user.email}"?`)) {
         users[index].status = newStatus;
         saveUsers();
-        alert(`Đã ${action} tài khoản thành công!`);
+        showNotification(`Đã ${action} tài khoản thành công!`);
       }
     }
 
@@ -280,14 +444,31 @@
       if (confirm(`Bạn có chắc chắn muốn đặt lại mật khẩu cho "${user.fullName || user.email}" về mật khẩu mặc định (123456)?`)) {
         users[index].password = "123456";
         saveUsers();
-        alert("Đã đặt lại mật khẩu thành công! Mật khẩu mới: 123456");
+        showNotification("Đã đặt lại mật khẩu thành công! Mật khẩu mới: 123456");
+      }
+    }
+
+    function deleteUser(index) {
+      if (index < 0 || index >= users.length) return;
+
+      const user = users[index];
+      
+      // Không cho phép xóa tài khoản admin
+      if (user.isAdmin) {
+        showNotification("Không thể xóa tài khoản quản trị viên!", 'error');
+        return;
+      }
+
+      if (confirm(`Bạn có chắc chắn muốn xóa tài khoản "${user.fullName || user.email}"?`)) {
+        users.splice(index, 1);
+        saveUsers();
+        showNotification("Đã xóa tài khoản thành công!");
       }
     }
 
     function editUser(index) {
       if (index < 0 || index >= users.length) return;
 
-      editIndex = index;
       const u = users[index];
       document.getElementById("editIndex").value = index;
       document.getElementById("editName").value = u.fullName || '';
@@ -345,19 +526,26 @@
         address: document.getElementById("addAddress").value.trim(),
         password: document.getElementById("addPassword").value,
         status: "active",
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        isAdmin: false
       };
 
       // Kiểm tra email trùng
       if (users.some(u => u.email === newUser.email)) {
-        alert("Email đã tồn tại trong hệ thống!");
+        showNotification("Email đã tồn tại trong hệ thống!", 'error');
+        return;
+      }
+
+      // Kiểm tra username trùng
+      if (users.some(u => u.username === newUser.username)) {
+        showNotification("Tên đăng nhập đã tồn tại trong hệ thống!", 'error');
         return;
       }
 
       users.push(newUser);
       saveUsers();
       closeAddModal();
-      alert("Tạo tài khoản thành công!\nMật khẩu: " + newUser.password);
+      showNotification("Tạo tài khoản thành công!\nMật khẩu: " + newUser.password);
     });
 
     // Xử lý form sửa tài khoản
@@ -369,15 +557,31 @@
       const confirmPassword = document.getElementById("editConfirmPassword").value.trim();
 
       if (newPassword && newPassword !== confirmPassword) {
-        alert("Mật khẩu mới không khớp!");
+        showNotification("Mật khẩu mới không khớp!", 'error');
+        return;
+      }
+
+      // Kiểm tra email trùng (trừ chính nó)
+      const currentEmail = users[index].email;
+      const newEmail = document.getElementById("editEmail").value.trim();
+      if (newEmail !== currentEmail && users.some((u, i) => i !== index && u.email === newEmail)) {
+        showNotification("Email đã tồn tại trong hệ thống!", 'error');
+        return;
+      }
+
+      // Kiểm tra username trùng (trừ chính nó)
+      const currentUsername = users[index].username;
+      const newUsername = document.getElementById("editUsername").value.trim();
+      if (newUsername !== currentUsername && users.some((u, i) => i !== index && u.username === newUsername)) {
+        showNotification("Tên đăng nhập đã tồn tại trong hệ thống!", 'error');
         return;
       }
 
       // Cập nhật thông tin
       users[index].fullName = document.getElementById("editName").value.trim();
-      users[index].email = document.getElementById("editEmail").value.trim();
+      users[index].email = newEmail;
       users[index].phone = document.getElementById("editPhone").value.trim();
-      users[index].username = document.getElementById("editUsername").value.trim();
+      users[index].username = newUsername;
       users[index].address = document.getElementById("editAddress").value.trim();
 
       if (newPassword) {
@@ -386,7 +590,7 @@
 
       saveUsers();
       closeEditModal();
-      alert("Cập nhật thông tin thành công!");
+      showNotification("Cập nhật thông tin thành công!");
     });
 
     document.getElementById("searchInput").addEventListener("input", function () {
