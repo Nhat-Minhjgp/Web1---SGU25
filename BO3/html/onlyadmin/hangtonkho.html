@@ -38,210 +38,263 @@
   <!-- HEADER -->
   <header class="flex justify-between items-center px-6 py-4 bg-gray-800 shadow-md">
     <div class="flex items-center space-x-4">
-      <button
-          onclick="goBack()"
-          class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition flex items-center"
-        >
-          <i class="fas fa-arrow-left mr-2"></i> Quay lại
-        </button>
+      <button onclick="goBack()"
+        class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition flex items-center">
+        <i class="fas fa-arrow-left mr-2"></i> Quay lại
+      </button>
       <h1 class="text-2xl font-bold text-cyan-400">Quản lý Tồn Kho</h1>
     </div>
-  
   </header>
 
-  <!-- MAIN CONTENT -->
-  <main class="p-4 md:p-8">
-    <!-- Thống kê nhanh -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-      <div class="bg-gray-800 p-4 rounded-lg card-hover">
-        <div class="flex justify-between items-center">
-          <div>
-            <p class="text-gray-400 text-sm">Tổng sản phẩm</p>
-            <h3 class="text-2xl font-bold text-white" id="totalProductsCount">0</h3>
+  <div class="flex h-[calc(100vh-64px)]">
+    <!-- SIDEBAR -->
+    <aside class="w-80 bg-gray-800 p-6 space-y-4 overflow-y-auto flex-shrink-0">
+      <div class="pb-4 border-b border-gray-700">
+        <h3 class="text-lg font-semibold text-cyan-400 mb-2">Thông tin tài khoản</h3>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between">
+            <span class="text-gray-400">Tên đăng nhập:</span>
+            <span id="adminEmail">quanly1</span>
           </div>
-          <div class="bg-cyan-500 p-3 rounded-full">
-            <i class="fas fa-box text-white"></i>
+          <div class="flex justify-between">
+            <span class="text-gray-400">Đăng nhập lúc:</span>
+            <span id="loginTime">10:30, 15/06/2023</span>
           </div>
-        </div>
-      </div>
-      <div class="bg-gray-800 p-4 rounded-lg card-hover">
-        <div class="flex justify-between items-center">
-          <div>
-            <p class="text-gray-400 text-sm">Tổng tồn kho</p>
-            <h3 class="text-2xl font-bold text-green-400" id="totalStock">0</h3>
-          </div>
-          <div class="bg-green-500 p-3 rounded-full">
-            <i class="fas fa-boxes text-white"></i>
+          <div class="flex justify-between">
+            <span class="text-gray-400">Trạng thái:</span>
+            <span class="text-green-400">Đang hoạt động</span>
           </div>
         </div>
       </div>
-      <div class="bg-gray-800 p-4 rounded-lg card-hover">
-        <div class="flex justify-between items-center">
-          <div>
-            <p class="text-gray-400 text-sm">Sản phẩm sắp hết</p>
-            <h3 class="text-2xl font-bold text-red-400" id="lowStockCount">0</h3>
-          </div>
-          <div class="bg-red-500 p-3 rounded-full">
-            <i class="fas fa-exclamation-triangle text-white"></i>
-          </div>
-        </div>
-      </div>
-      <div class="bg-gray-800 p-4 rounded-lg card-hover">
-        <div class="flex justify-between items-center">
-          <div>
-            <p class="text-gray-400 text-sm">Sản phẩm tìm thấy</p>
-            <h3 class="text-2xl font-bold text-purple-400" id="filteredProductsCount">0</h3>
-          </div>
-          <div class="bg-purple-500 p-3 rounded-full">
-            <i class="fas fa-filter text-white"></i>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Bộ lọc sản phẩm -->
-    <div class="bg-gray-800 p-4 rounded-lg mb-6">
-      <h2 class="text-xl font-bold text-cyan-400 mb-4">
-        <i class="fas fa-search mr-2"></i>Tra cứu tồn kho
-      </h2>
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div>
-          <label class="block text-sm font-medium text-gray-300 mb-2">Tìm kiếm sản phẩm</label>
-          <input type="text" id="productSearch" placeholder="Nhập tên sản phẩm..."
-            class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 transition" />
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-300 mb-2">Loại sản phẩm</label>
-          <select id="inventoryCategorySelect"
-            class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 transition">
-            <option value="">Tất cả loại</option>
-            <option value="ngot">Nhân ngọt</option>
-            <option value="man">Nhân mặn</option>
-            <option value="dacbiet">Đặc biệt</option>
-            <option value="chay">Chay</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-300 mb-2">Tình trạng tồn kho</label>
-          <select id="stockStatusSelect"
-            class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 transition">
-            <option value="">Tất cả</option>
-            <option value="low">Sắp hết hàng</option>
-            <option value="medium">Tồn kho trung bình</option>
-            <option value="high">Tồn kho cao</option>
-          </select>
-        </div>
-        <div class="flex items-end">
-          <button onclick="searchInventory()"
-            class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-6 py-2 rounded-lg transition w-full card-hover">
-            <i class="fas fa-search mr-2"></i> Tìm kiếm
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bảng tồn kho -->
-    <div class="bg-gray-800 p-4 rounded-lg mb-6">
-      <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-bold text-cyan-400">
-          <i class="fas fa-boxes mr-2"></i>Danh sách tồn kho
-        </h2>
-        <button onclick="openStockAdjustmentModal()"
-          class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition flex items-center card-hover">
-          <i class="fas fa-plus mr-2"></i> Điều chỉnh tồn kho
+      <nav class="space-y-2 pt-2">
+        <button onclick="window.location.href='quanlykhachhang.html'"
+          class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
+          <i class="fas fa-users mr-2"></i> Quản lý người dùng
         </button>
+        <button onclick="window.location.href='quanlyloaisanpham.html'"
+          class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
+          <i class="fas fa-tags mr-2"></i> Loại sản phẩm
+        </button>
+        <button onclick="window.location.href='danhmucsanpham.html'"
+          class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
+          <i class="fas fa-boxes mr-2"></i> Danh mục sản phẩm
+        </button>
+        <button onclick="window.location.href='quanlyhangnhap.html'"
+          class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
+          <i class="fas fa-arrow-down mr-2"></i> Quản lý hàng nhập
+        </button>
+        <button onclick="window.location.href='quanlydondathang.html'"
+          class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
+          <i class="fas fa-receipt mr-2"></i> Quản lý đơn đặt hàng
+        </button>
+        <button onclick="window.location.href='giaban.html'"
+          class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
+          <i class="fas fa-tag mr-2"></i> Giá bán
+        </button>
+        <button onclick="window.location.href='hangtonkho.html'"
+          class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
+          <i class="fas fa-warehouse mr-2"></i> Tồn kho
+        </button>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 p-4 md:p-8 overflow-y-auto">
+      <!-- Thống kê nhanh -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div class="bg-gray-800 p-4 rounded-lg card-hover">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-gray-400 text-sm">Tổng sản phẩm</p>
+              <h3 class="text-2xl font-bold text-white" id="totalProductsCount">0</h3>
+            </div>
+            <div class="bg-cyan-500 p-3 rounded-full">
+              <i class="fas fa-box text-white"></i>
+            </div>
+          </div>
+        </div>
+        <div class="bg-gray-800 p-4 rounded-lg card-hover">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-gray-400 text-sm">Tổng tồn kho</p>
+              <h3 class="text-2xl font-bold text-green-400" id="totalStock">0</h3>
+            </div>
+            <div class="bg-green-500 p-3 rounded-full">
+              <i class="fas fa-boxes text-white"></i>
+            </div>
+          </div>
+        </div>
+        <div class="bg-gray-800 p-4 rounded-lg card-hover">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-gray-400 text-sm">Sản phẩm sắp hết</p>
+              <h3 class="text-2xl font-bold text-red-400" id="lowStockCount">0</h3>
+            </div>
+            <div class="bg-red-500 p-3 rounded-full">
+              <i class="fas fa-exclamation-triangle text-white"></i>
+            </div>
+          </div>
+        </div>
+        <div class="bg-gray-800 p-4 rounded-lg card-hover">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-gray-400 text-sm">Sản phẩm tìm thấy</p>
+              <h3 class="text-2xl font-bold text-purple-400" id="filteredProductsCount">0</h3>
+            </div>
+            <div class="bg-purple-500 p-3 rounded-full">
+              <i class="fas fa-filter text-white"></i>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="overflow-x-auto rounded-lg">
-        <table class="min-w-full divide-y divide-gray-700">
-          <thead class="bg-gray-750">
-            <tr>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer"
-                onclick="sortInventory('name')">
-                Sản phẩm <i class="fas fa-sort ml-1"></i>
-              </th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer"
-                onclick="sortInventory('currentStock')">
-                Tồn kho <i class="fas fa-sort ml-1"></i>
-              </th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                Tồn tối thiểu
-              </th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                Tình trạng
-              </th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                Hành động
-              </th>
-            </tr>
-          </thead>
-          <tbody class="bg-gray-800 divide-y divide-gray-700" id="inventoryTable">
-            <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
-          </tbody>
-        </table>
+      <!-- Bộ lọc sản phẩm -->
+      <div class="bg-gray-800 p-4 rounded-lg mb-6">
+        <h2 class="text-xl font-bold text-cyan-400 mb-4">
+          <i class="fas fa-search mr-2"></i>Tra cứu tồn kho
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Tìm kiếm sản phẩm</label>
+            <input type="text" id="productSearch" placeholder="Nhập tên sản phẩm..."
+              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 transition" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Loại sản phẩm</label>
+            <select id="inventoryCategorySelect"
+              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 transition">
+              <option value="">Tất cả loại</option>
+              <option value="ngot">Nhân ngọt</option>
+              <option value="man">Nhân mặn</option>
+              <option value="dacbiet">Đặc biệt</option>
+              <option value="chay">Chay</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Tình trạng tồn kho</label>
+            <select id="stockStatusSelect"
+              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 transition">
+              <option value="">Tất cả</option>
+              <option value="low">Sắp hết hàng</option>
+              <option value="medium">Tồn kho trung bình</option>
+              <option value="high">Tồn kho cao</option>
+            </select>
+          </div>
+          <div class="flex items-end">
+            <button onclick="searchInventory()"
+              class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-6 py-2 rounded-lg transition w-full card-hover">
+              <i class="fas fa-search mr-2"></i> Tìm kiếm
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <!-- Báo cáo nhập - xuất - tồn -->
-    <div class="bg-gray-800 p-4 rounded-lg">
-      <h2 class="text-xl font-bold text-cyan-400 mb-4">
-        <i class="fas fa-chart-line mr-2"></i>Báo cáo Nhập - Xuất - Tồn
-      </h2>
-
-      <!-- Bộ lọc thời gian -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div>
-          <label class="block text-sm font-medium text-gray-300 mb-2">Từ ngày</label>
-          <input type="date" id="startDate"
-            class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 transition" />
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-300 mb-2">Đến ngày</label>
-          <input type="date" id="endDate"
-            class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 transition" />
-        </div>
-        <div class="flex items-end">
-          <button onclick="generateStockReport()"
-            class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-6 py-2 rounded-lg transition w-full card-hover">
-            <i class="fas fa-chart-bar mr-2"></i> Tạo báo cáo
+      <!-- Bảng tồn kho -->
+      <div class="bg-gray-800 p-4 rounded-lg mb-6">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
+          <h2 class="text-xl font-bold text-cyan-400">
+            <i class="fas fa-boxes mr-2"></i>Danh sách tồn kho
+          </h2>
+          <button onclick="openStockAdjustmentModal()"
+            class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition flex items-center card-hover">
+            <i class="fas fa-plus mr-2"></i> Điều chỉnh tồn kho
           </button>
         </div>
+
+        <div class="overflow-x-auto rounded-lg">
+          <table class="min-w-full divide-y divide-gray-700">
+            <thead class="bg-gray-750">
+              <tr>
+                <th
+                  class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer"
+                  onclick="sortInventory('name')">
+                  Sản phẩm <i class="fas fa-sort ml-1"></i>
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer"
+                  onclick="sortInventory('currentStock')">
+                  Tồn kho <i class="fas fa-sort ml-1"></i>
+                </th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  Tồn tối thiểu
+                </th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  Tình trạng
+                </th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  Hành động
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-gray-800 divide-y divide-gray-700" id="inventoryTable">
+              <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <!-- Kết quả báo cáo -->
-      <div class="overflow-x-auto rounded-lg">
-        <table class="min-w-full divide-y divide-gray-700">
-          <thead class="bg-gray-750">
-            <tr>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                Sản phẩm
-              </th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                Tồn đầu kỳ
-              </th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                Nhập
-              </th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                Xuất
-              </th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                Tồn cuối kỳ
-              </th>
-            </tr>
-          </thead>
-          <tbody class="bg-gray-800 divide-y divide-gray-700" id="stockReportTable">
-            <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
-          </tbody>
-        </table>
+      <!-- Báo cáo nhập - xuất - tồn -->
+      <div class="bg-gray-800 p-4 rounded-lg">
+        <h2 class="text-xl font-bold text-cyan-400 mb-4">
+          <i class="fas fa-chart-line mr-2"></i>Báo cáo Nhập - Xuất - Tồn
+        </h2>
+
+        <!-- Bộ lọc thời gian -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Từ ngày</label>
+            <input type="date" id="startDate"
+              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 transition" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Đến ngày</label>
+            <input type="date" id="endDate"
+              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 transition" />
+          </div>
+          <div class="flex items-end">
+            <button onclick="generateStockReport()"
+              class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-6 py-2 rounded-lg transition w-full card-hover">
+              <i class="fas fa-chart-bar mr-2"></i> Tạo báo cáo
+            </button>
+          </div>
+        </div>
+
+        <!-- Kết quả báo cáo -->
+        <div class="overflow-x-auto rounded-lg">
+          <table class="min-w-full divide-y divide-gray-700">
+            <thead class="bg-gray-750">
+              <tr>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  Sản phẩm
+                </th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  Tồn đầu kỳ
+                </th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  Nhập
+                </th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  Xuất
+                </th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  Tồn cuối kỳ
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-gray-800 divide-y divide-gray-700" id="stockReportTable">
+              <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-  </main>
+    </main>
+  </div>
 
   <!-- Modal điều chỉnh tồn kho -->
   <div id="stockAdjustmentModal"
     class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
-    <div class="bg-gray-800 rounded-lg p-6 w-full max-w-md">
+    <div class="bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
       <div class="flex justify-between items-center mb-4">
         <h3 class="text-xl font-bold text-cyan-400">Điều chỉnh tồn kho</h3>
         <button onclick="closeStockAdjustmentModal()" class="text-gray-400 hover:text-white">
@@ -382,12 +435,12 @@
 
       filteredInventory.forEach((product) => {
         const row = document.createElement("tr");
-        
+
         // Xác định tình trạng tồn kho
         let stockStatus = "high";
         let statusClass = "high-stock";
         let statusText = "Tồn kho cao";
-        
+
         if (product.currentStock <= product.minStock) {
           stockStatus = "low";
           statusClass = "low-stock";
@@ -401,28 +454,28 @@
         row.className = `hover:bg-gray-750 transition ${statusClass}`;
 
         row.innerHTML = `
-          <td class="px-4 py-4 whitespace-nowrap">
-            <div class="text-sm font-medium text-white">${product.name}</div>
-            <div class="text-sm text-gray-400">${getCategoryName(product.category)}</div>
-          </td>
-          <td class="px-4 py-4 whitespace-nowrap text-sm text-white">
-            ${product.currentStock}
-          </td>
-          <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-300">
-            ${product.minStock}
-          </td>
-          <td class="px-4 py-4 whitespace-nowrap text-sm font-medium ${stockStatus === 'low' ? 'text-red-400' : stockStatus === 'medium' ? 'text-yellow-400' : 'text-green-400'}">
-            ${statusText}
-          </td>
-          <td class="px-4 py-4 whitespace-nowrap">
-            <button onclick="adjustStock(${product.id})" class="text-xs bg-cyan-500 hover:bg-cyan-600 text-white px-3 py-1 rounded transition mr-2">
-              <i class="fas fa-edit mr-1"></i>Điều chỉnh
-            </button>
-            <button onclick="viewStockHistory(${product.id})" class="text-xs bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 rounded transition">
-              <i class="fas fa-history mr-1"></i>Lịch sử
-            </button>
-          </td>
-        `;
+        <td class="px-4 py-4 whitespace-nowrap">
+          <div class="text-sm font-medium text-white">${product.name}</div>
+          <div class="text-sm text-gray-400">${getCategoryName(product.category)}</div>
+        </td>
+        <td class="px-4 py-4 whitespace-nowrap text-sm text-white">
+          ${product.currentStock}
+        </td>
+        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-300">
+          ${product.minStock}
+        </td>
+        <td class="px-4 py-4 whitespace-nowrap text-sm font-medium ${stockStatus === 'low' ? 'text-red-400' : stockStatus === 'medium' ? 'text-yellow-400' : 'text-green-400'}">
+          ${statusText}
+        </td>
+        <td class="px-4 py-4 whitespace-nowrap">
+          <button onclick="adjustStock(${product.id})" class="text-xs bg-cyan-500 hover:bg-cyan-600 text-white px-3 py-1 rounded transition mr-2">
+            <i class="fas fa-edit mr-1"></i>Điều chỉnh
+          </button>
+          <button onclick="viewStockHistory(${product.id})" class="text-xs bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 rounded transition">
+            <i class="fas fa-history mr-1"></i>Lịch sử
+          </button>
+        </td>
+      `;
 
         tableBody.appendChild(row);
       });
@@ -450,14 +503,14 @@
       let filteredInventory = inventory.filter((product) => {
         const matchesSearch = product.name.toLowerCase().includes(searchTerm);
         const matchesCategory = !category || product.category === category;
-        
+
         let matchesStockStatus = true;
         if (stockStatus) {
           if (stockStatus === "low") {
             matchesStockStatus = product.currentStock <= product.minStock;
           } else if (stockStatus === "medium") {
-            matchesStockStatus = product.currentStock > product.minStock && 
-                                product.currentStock <= product.minStock * 1.5;
+            matchesStockStatus = product.currentStock > product.minStock &&
+              product.currentStock <= product.minStock * 1.5;
           } else if (stockStatus === "high") {
             matchesStockStatus = product.currentStock > product.minStock * 1.5;
           }
@@ -526,7 +579,7 @@
 
       // Reset các trường nhập liệu
       adjustmentQuantity.value = "";
-      
+
       // Thêm sự kiện kiểm tra số lượng khi thay đổi
       adjustmentType.addEventListener("change", checkExportQuantity);
       adjustmentQuantity.addEventListener("input", checkExportQuantity);
@@ -619,15 +672,15 @@
       const product = inventory.find((p) => p.id === productId);
       if (product) {
         let historyText = `Lịch sử tồn kho: ${product.name}\n\n`;
-        
+
         product.stockHistory.forEach(record => {
-          const typeText = record.type === 'import' ? 'Nhập' : 
-                          record.type === 'export' ? 'Xuất' : 'Điều chỉnh';
+          const typeText = record.type === 'import' ? 'Nhập' :
+            record.type === 'export' ? 'Xuất' : 'Điều chỉnh';
           historyText += `${record.date}: ${typeText} ${record.quantity} - ${record.reason}\n`;
         });
-        
+
         historyText += `\nTồn kho hiện tại: ${product.currentStock}`;
-        
+
         alert(historyText);
       }
     }
@@ -636,40 +689,40 @@
     function generateStockReport() {
       const startDate = document.getElementById("startDate").value;
       const endDate = document.getElementById("endDate").value;
-      
+
       if (!startDate || !endDate) {
         alert("Vui lòng chọn khoảng thời gian");
         return;
       }
-      
+
       const tableBody = document.getElementById("stockReportTable");
       tableBody.innerHTML = "";
-      
+
       inventory.forEach(product => {
         // Tính toán số liệu trong khoảng thời gian
         const periodData = calculatePeriodStock(product, startDate, endDate);
-        
+
         const row = document.createElement("tr");
         row.className = "hover:bg-gray-750 transition";
-        
+
         row.innerHTML = `
-          <td class="px-4 py-4 whitespace-nowrap text-sm text-white">${product.name}</td>
-          <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-300">${periodData.openingStock}</td>
-          <td class="px-4 py-4 whitespace-nowrap text-sm text-green-400">${periodData.totalImport}</td>
-          <td class="px-4 py-4 whitespace-nowrap text-sm text-red-400">${periodData.totalExport}</td>
-          <td class="px-4 py-4 whitespace-nowrap text-sm text-white">${periodData.closingStock}</td>
-        `;
-        
+        <td class="px-4 py-4 whitespace-nowrap text-sm text-white">${product.name}</td>
+        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-300">${periodData.openingStock}</td>
+        <td class="px-4 py-4 whitespace-nowrap text-sm text-green-400">${periodData.totalImport}</td>
+        <td class="px-4 py-4 whitespace-nowrap text-sm text-red-400">${periodData.totalExport}</td>
+        <td class="px-4 py-4 whitespace-nowrap text-sm text-white">${periodData.closingStock}</td>
+      `;
+
         tableBody.appendChild(row);
       });
     }
-    
+
     // Tính toán số liệu tồn kho trong khoảng thời gian
     function calculatePeriodStock(product, startDate, endDate) {
       let openingStock = product.currentStock;
       let totalImport = 0;
       let totalExport = 0;
-      
+
       // Tính toán dựa trên lịch sử tồn kho
       product.stockHistory.forEach(record => {
         if (record.date < startDate) {
@@ -688,9 +741,9 @@
           }
         }
       });
-      
+
       const closingStock = openingStock + totalImport - totalExport;
-      
+
       return {
         openingStock,
         totalImport,
@@ -710,11 +763,11 @@
       return categories[category] || "Không xác định";
     }
     function logout() {
-        if (confirm("Bạn có chắc chắn muốn đăng xuất?")) {
-          alert("Đã đăng xuất!");
-          window.location.href = "adlog.html";
-        }
+      if (confirm("Bạn có chắc chắn muốn đăng xuất?")) {
+        alert("Đã đăng xuất!");
+        window.location.href = "adlog.html";
       }
+    }
     function goBack() {
       window.location.href = "daodienad.html";
     }
@@ -722,15 +775,15 @@
     // Khởi tạo trang
     document.addEventListener("DOMContentLoaded", function () {
       renderInventoryTable();
-      
+
       // Đặt ngày mặc định cho báo cáo (tháng hiện tại)
       const today = new Date();
       const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
       const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-      
+
       document.getElementById("startDate").value = firstDay.toISOString().split('T')[0];
       document.getElementById("endDate").value = lastDay.toISOString().split('T')[0];
-      
+
       // Tạo báo cáo mặc định
       generateStockReport();
     });

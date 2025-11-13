@@ -1,106 +1,145 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quản lý Đơn đặt hàng - Admin</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              gray: {
-                750: "#2d3748",
-              },
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quản lý Đơn đặt hàng - Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gray: {
+              750: "#2d3748",
             },
           },
         },
-      };
-    </script>
-    <style>
-      .status-pending {
-        background-color: #6b7280;
-        color: white;
-      }
-      .status-confirmed {
-        background-color: #3b82f6;
-        color: white;
-      }
-      .status-shipping {
-        background-color: #f59e0b;
-        color: white;
-      }
-      .status-delivered {
-        background-color: #10b981;
-        color: white;
-      }
-      .status-cancelled {
-        background-color: #ef4444;
-        color: white;
-      }
-    </style>
-  </head>
-  <body class="bg-gray-900 text-white min-h-screen">
-    <!-- HEADER -->
-    <header
-      class="flex justify-between items-center px-6 py-4 bg-gray-800 shadow-md"
-    >
-      <div class="flex items-center space-x-4">
-        <button
-          onclick="goBack()"
-          class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition flex items-center"
-        >
-          <i class="fas fa-arrow-left mr-2"></i> Quay lại
-        </button>
-        <h1 class="text-2xl font-bold text-cyan-400">Quản lý Đơn đặt hàng</h1>
-      </div>
-      <button
-        onclick="logout()"
-        class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-full text-sm transition"
-      >
-        Đăng xuất
+      },
+    };
+  </script>
+  <style>
+    .status-pending {
+      background-color: #6b7280;
+      color: white;
+    }
+
+    .status-confirmed {
+      background-color: #3b82f6;
+      color: white;
+    }
+
+    .status-shipping {
+      background-color: #f59e0b;
+      color: white;
+    }
+
+    .status-delivered {
+      background-color: #10b981;
+      color: white;
+    }
+
+    .status-cancelled {
+      background-color: #ef4444;
+      color: white;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-900 text-white min-h-screen">
+  <!-- HEADER -->
+  <header class="flex justify-between items-center px-6 py-4 bg-gray-800 shadow-md">
+    <div class="flex items-center space-x-4">
+      <button onclick="goBack()"
+        class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition flex items-center">
+        <i class="fas fa-arrow-left mr-2"></i> Quay lại
       </button>
-    </header>
+      <h1 class="text-2xl font-bold text-cyan-400">Quản lý Đơn đặt hàng</h1>
+    </div>
+    <button onclick="logout()"
+      class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-full text-sm transition">
+      Đăng xuất
+    </button>
+  </header>
+  <div class="flex h-[calc(100vh-64px)] mr-12">
+    <!-- SIDEBAR -->
+    <aside class="w-80 bg-gray-800 p-6 space-y-4 overflow-y-auto">
+      <div class="pb-4 border-b border-gray-700">
+        <h3 class="text-lg font-semibold text-cyan-400 mb-2">Thông tin tài khoản</h3>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between">
+            <span class="text-gray-400">Tên đăng nhập:</span>
+            <span id="adminEmail">quanly1</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-400">Đăng nhập lúc:</span>
+            <span id="loginTime">10:30, 15/06/2023</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-400">Trạng thái:</span>
+            <span class="text-green-400">Đang hoạt động</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="space-y-2 pt-2">
+
+
+        <button onclick="window.location.href='quanlykhachhang.html'"
+          class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700">
+          <i class="fas fa-users mr-2"></i> Quản lý người dùng
+        </button>
+        <button onclick="window.location.href='quanlyloaisanpham.html'"
+          class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
+          <i class="fas fa-tags mr-2"></i> Loại sản phẩm
+        </button>
+
+        <button onclick="window.location.href='danhmucsanpham.html'"
+          class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
+          <i class="fas fa-boxes mr-2"></i> Danh mục sản phẩm
+        </button>
+        <button onclick="window.location.href='quanlyhangnhap.html'"
+          class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
+          <i class="fas fa-arrow-down mr-2"></i> Quản lý hàng nhập
+        </button>
+        <button onclick="window.location.href='quanlydondathang.html'"
+          class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
+          <i class="fas fa-receipt mr-2"></i> Quản lý đơn đặt hàng
+        </button>
+        <button onclick="window.location.href='giaban.html'"
+          class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
+          <i class="fas fa-tag mr-2"></i> Giá bán
+        </button>
+
+        <button onclick="window.location.href='hangtonkho.html'"
+          class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
+          <i class="fas fa-warehouse mr-2"></i> Tồn kho
+        </button>
+      </nav>
+    </aside>
+
 
     <!-- MAIN CONTENT -->
-    <main class="p-8">
-      <div class="bg-gray-800 p-6 rounded-xl shadow-lg">
+    <main class="p-8 mx-auto ">
+      <div class="items-center bg-gray-800 p-6 rounded-xl shadow-lg">
         <!-- Bộ lọc và sắp xếp -->
         <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
           <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2"
-              >Từ ngày</label
-            >
-            <input
-              type="date"
-              id="fromDate"
-              onchange="filterOrders()"
-              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-            />
+            <label class="block text-sm font-medium text-gray-300 mb-2">Từ ngày</label>
+            <input type="date" id="fromDate" onchange="filterOrders()"
+              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2"
-              >Đến ngày</label
-            >
-            <input
-              type="date"
-              id="toDate"
-              onchange="filterOrders()"
-              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-            />
+            <label class="block text-sm font-medium text-gray-300 mb-2">Đến ngày</label>
+            <input type="date" id="toDate" onchange="filterOrders()"
+              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2"
-              >Tình trạng</label
-            >
+            <label class="block text-sm font-medium text-gray-300 mb-2">Tình trạng</label>
             <select id="statusFilter" onchange="filterOrders()"
-              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-            >
+              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
               <option value="">Tất cả</option>
               <option value="pending">Chưa xử lý</option>
               <option value="confirmed">Đã xác nhận</option>
@@ -110,12 +149,9 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2"
-              >Sắp xếp theo Quận</label
-            >
+            <label class="block text-sm font-medium text-gray-300 mb-2">Sắp xếp theo Quận</label>
             <select id="districtSort" onchange="filterOrders()"
-              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-            >
+              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
               <option value="">Tất cả Quận</option>
               <option value="quan1">Quận 1</option>
               <option value="quan2">Quận 2</option>
@@ -138,10 +174,8 @@
             </select>
           </div>
           <div class="flex items-end">
-            <button
-              onclick="resetFilters()"
-              class="w-full px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-500 transition flex items-center justify-center"
-            >
+            <button onclick="resetFilters()"
+              class="w-full px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-500 transition flex items-center justify-center">
               <i class="fas fa-refresh mr-2"></i> Đặt lại
             </button>
           </div>
@@ -176,39 +210,25 @@
           <table class="min-w-full divide-y divide-gray-700">
             <thead class="bg-gray-750">
               <tr>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                >
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                   Mã đơn
                 </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                >
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                   Khách hàng
                 </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                >
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                   Ngày đặt
                 </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                >
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                   Địa chỉ giao hàng
                 </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                >
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                   Tổng tiền
                 </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                >
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                   Tình trạng
                 </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                >
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                   Thao tác
                 </th>
               </tr>
@@ -222,16 +242,10 @@
     </main>
 
     <!-- Modal chi tiết đơn hàng -->
-    <div
-      id="orderDetailModal"
-      class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden"
-    >
-      <div
-        class="bg-gray-800 rounded-xl shadow-2xl w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto"
-      >
-        <div
-          class="flex justify-between items-center p-6 border-b border-gray-700"
-        >
+    <div id="orderDetailModal"
+      class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+      <div class="bg-gray-800 rounded-xl shadow-2xl w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center p-6 border-b border-gray-700">
           <h3 class="text-xl font-bold text-cyan-400">
             Chi tiết đơn hàng <span id="orderId"></span>
           </h3>
@@ -248,14 +262,10 @@
     </div>
 
     <!-- Modal cập nhật trạng thái -->
-    <div
-      id="statusUpdateModal"
-      class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden"
-    >
+    <div id="statusUpdateModal"
+      class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
       <div class="bg-gray-800 rounded-xl shadow-2xl w-full max-w-md mx-4">
-        <div
-          class="flex justify-between items-center p-6 border-b border-gray-700"
-        >
+        <div class="flex justify-between items-center p-6 border-b border-gray-700">
           <h3 class="text-xl font-bold text-cyan-400">
             Cập nhật trạng thái
           </h3>
@@ -276,7 +286,8 @@
               <label class="block text-sm font-medium text-gray-300 mb-2">
                 Chọn trạng thái mới:
               </label>
-              <select id="newStatusSelect" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
+              <select id="newStatusSelect"
+                class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
                 <option value="pending">Chưa xử lý</option>
                 <option value="confirmed">Đã xác nhận</option>
                 <option value="shipping">Đang giao hàng</option>
@@ -286,16 +297,12 @@
             </div>
           </div>
           <div class="flex justify-end space-x-3 mt-6">
-            <button
-              onclick="closeStatusModal()"
-              class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-500 transition"
-            >
+            <button onclick="closeStatusModal()"
+              class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-500 transition">
               Hủy
             </button>
-            <button
-              onclick="confirmStatusUpdate()"
-              class="px-4 py-2 bg-cyan-500 text-gray-900 font-semibold rounded-lg hover:bg-cyan-600 transition"
-            >
+            <button onclick="confirmStatusUpdate()"
+              class="px-4 py-2 bg-cyan-500 text-gray-900 font-semibold rounded-lg hover:bg-cyan-600 transition">
               Cập nhật
             </button>
           </div>
@@ -548,7 +555,7 @@
 
         ordersToRender.forEach(order => {
           const fullAddress = `${order.address.street}, ${order.address.ward}, ${order.address.districtName}, ${order.address.province}`;
-          
+
           const row = document.createElement('tr');
           row.className = 'hover:bg-gray-750 transition-colors';
           row.innerHTML = `
@@ -603,7 +610,7 @@
         if (!order) return;
 
         document.getElementById("orderId").textContent = orderId;
-        
+
         let itemsHtml = '';
         let totalItems = 0;
         order.items.forEach(item => {
@@ -669,7 +676,7 @@
         document.getElementById('currentStatus').textContent = getStatusText(order.status);
         document.getElementById('currentStatus').className = `px-3 py-1 text-sm rounded-full font-medium ${getStatusClass(order.status)}`;
         document.getElementById('newStatusSelect').value = order.status;
-        
+
         document.getElementById("statusUpdateModal").classList.remove("hidden");
       }
 
@@ -680,7 +687,7 @@
       function confirmStatusUpdate() {
         const orderId = document.getElementById('currentOrderId').value;
         const newStatus = document.getElementById('newStatusSelect').value;
-        
+
         const orderIndex = orders.findIndex(o => o.id === orderId);
         if (orderIndex !== -1) {
           orders[orderIndex].status = newStatus;
@@ -695,9 +702,10 @@
       }
 
       // Khởi tạo trang
-      document.addEventListener('DOMContentLoaded', function() {
+      document.addEventListener('DOMContentLoaded', function () {
         renderOrders();
       });
     </script>
-  </body>
+</body>
+
 </html>

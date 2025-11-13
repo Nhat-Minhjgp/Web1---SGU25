@@ -53,140 +53,143 @@
       </button>
     </header>
 
-    <!-- MAIN CONTENT -->
-    <main class="p-8">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Tỷ lệ lợi nhuận theo loại -->
-        <div class="bg-gray-800 p-6 rounded-xl shadow-lg">
-          <h2 class="text-xl font-bold text-cyan-400 mb-4">
-            Tỷ lệ lợi nhuận theo loại sản phẩm
-          </h2>
-          <div class="space-y-4">
-            <div
-              class="flex justify-between items-center p-3 bg-gray-750 rounded-lg"
-            >
-              <span>Nhân ngọt</span>
-              <div class="flex items-center space-x-2">
-                <input
-                  type="number"
-                  value="37.5"
-                  class="w-20 px-2 py-1 bg-gray-700 border border-gray-600 rounded text-right profit-input"
-                  data-type="ngot"
-                />
-                <span>%</span>
-                <button class="text-cyan-400 hover:text-cyan-300" onclick="saveProfitRate('ngot')">
-                  <i class="fas fa-save"></i>
-                </button>
-              </div>
+    <div class="flex h-[calc(100vh-80px)]">
+      <!-- SIDEBAR -->
+      <aside class="w-80 bg-gray-800 p-6 space-y-4 overflow-y-auto">
+        <div class="pb-4 border-b border-gray-700">
+          <h3 class="text-lg font-semibold text-cyan-400 mb-2">Thông tin tài khoản</h3>
+          <div class="space-y-2 text-sm">
+            <div class="flex justify-between">
+              <span class="text-gray-400">Tên đăng nhập:</span>
+              <span id="adminEmail">quanly1</span>
             </div>
-            <div
-              class="flex justify-between items-center p-3 bg-gray-750 rounded-lg"
-            >
-              <span>Nhân mặn</span>
-              <div class="flex items-center space-x-2">
-                <input
-                  type="number"
-                  value="37.5"
-                  class="w-20 px-2 py-1 bg-gray-700 border border-gray-600 rounded text-right profit-input"
-                  data-type="man"
-                />
-                <span>%</span>
-                <button class="text-cyan-400 hover:text-cyan-300" onclick="saveProfitRate('man')">
-                  <i class="fas fa-save"></i>
-                </button>
-              </div>
+            <div class="flex justify-between">
+              <span class="text-gray-400">Đăng nhập lúc:</span>
+              <span id="loginTime">10:30, 15/06/2023</span>
             </div>
-            <div
-              class="flex justify-between items-center p-3 bg-gray-750 rounded-lg"
-            >
-              <span>Đặc biệt</span>
-              <div class="flex items-center space-x-2">
-                <input
-                  type="number"
-                  value="37.5"
-                  class="w-20 px-2 py-1 bg-gray-700 border border-gray-600 rounded text-right profit-input"
-                  data-type="dacbiet"
-                />
-                <span>%</span>
-                <button class="text-cyan-400 hover:text-cyan-300" onclick="saveProfitRate('dacbiet')">
-                  <i class="fas fa-save"></i>
-                </button>
-              </div>
+            <div class="flex justify-between">
+              <span class="text-gray-400">Trạng thái:</span>
+              <span class="text-green-400">Đang hoạt động</span>
             </div>
           </div>
         </div>
-
-        <!-- Tỷ lệ lợi nhuận theo sản phẩm -->
-        <div class="bg-gray-800 p-6 rounded-xl shadow-lg">
-          <h2 class="text-xl font-bold text-cyan-400 mb-4">
-            Tỷ lệ lợi nhuận theo sản phẩm
-          </h2>
-          <div class="space-y-3 max-h-96 overflow-y-auto" id="productProfitRates">
-            <!-- Sẽ được tạo động bằng JavaScript -->
-          </div>
-        </div>
-      </div>
-
-      <!-- Bảng giá sản phẩm -->
-      <div class="bg-gray-800 p-6 rounded-xl shadow-lg mt-6">
-        <h2 class="text-xl font-bold text-cyan-400 mb-4">
-          Tra cứu giá sản phẩm
-        </h2>
-
-        <!-- Bộ lọc -->
-        <div class="flex gap-4 mb-4">
-          <input
-            type="text"
-            id="searchProduct"
-            placeholder="Tìm kiếm sản phẩm..."
-            class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 flex-1"
-            onkeyup="filterProductTable()"
-          />
-          <select
-            id="categoryFilter"
-            class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-            onchange="filterProductTable()"
+        
+        <nav class="space-y-2 pt-2">
+          <button
+            onclick="window.location.href='quanlykhachhang.html'"
+            class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
           >
-            <option value="">Tất cả loại</option>
-            <option value="ngot">Nhân ngọt</option>
-            <option value="man">Nhân mặn</option>
-            <option value="dacbiet">Đặc biệt</option>
-          </select>
+            <i class="fas fa-users mr-2"></i> Quản lý người dùng
+          </button>
+          <button
+            onclick="window.location.href='quanlyloaisanpham.html'"
+            class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
+          >
+            <i class="fas fa-tags mr-2"></i> Loại sản phẩm
+          </button>
+          <button
+            onclick="window.location.href='danhmucsanpham.html'"
+            class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
+          >
+            <i class="fas fa-boxes mr-2"></i> Danh mục sản phẩm
+          </button>
+          <button
+            onclick="window.location.href='quanlyhangnhap.html'"
+            class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
+          >
+            <i class="fas fa-arrow-down mr-2"></i> Quản lý hàng nhập
+          </button>
+          <button
+            onclick="window.location.href='quanlydondathang.html'"
+            class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
+          >
+            <i class="fas fa-receipt mr-2"></i> Quản lý đơn đặt hàng
+          </button>
+          <button
+            onclick="window.location.href='giaban.html'"
+            class="block w-full text-left px-4 py-2 rounded-lg bg-cyan-600 text-white transition"
+          >
+            <i class="fas fa-tag mr-2"></i> Giá bán
+          </button>
+          <button
+            onclick="window.location.href='hangtonkho.html'"
+            class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
+          >
+            <i class="fas fa-warehouse mr-2"></i> Tồn kho
+          </button>
+        </nav>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="flex-1 p-6 overflow-y-auto">
+        <div class="grid grid-cols-1 gap-6">
+          <!-- Tỷ lệ lợi nhuận theo sản phẩm -->
+          <div class="bg-gray-800 p-6 rounded-xl shadow-lg">
+            <h2 class="text-xl font-bold text-cyan-400 mb-4">
+              Tỷ lệ lợi nhuận theo sản phẩm
+            </h2>
+            <div class="space-y-3 max-h-96 overflow-y-auto" id="productProfitRates">
+              <!-- Sẽ được tạo động bằng JavaScript -->
+            </div>
+          </div>
         </div>
 
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-700">
-            <thead class="bg-gray-750">
-              <tr>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                >
-                  Sản phẩm
-                </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                >
-                  Giá vốn
-                </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                >
-                  Lợi nhuận
-                </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                >
-                  Giá bán
-                </th>
-              </tr>
-            </thead>
-            <tbody class="bg-gray-800 divide-y divide-gray-700" id="productTableBody">
-              <!-- Sẽ được tạo động bằng JavaScript -->
-            </tbody>
-          </table>
+        <!-- Bảng giá sản phẩm -->
+        <div class="bg-gray-800 p-6 rounded-xl shadow-lg mt-6">
+          <h2 class="text-xl font-bold text-cyan-400 mb-4">
+            Tra cứu giá sản phẩm
+          </h2>
+
+          <!-- Bộ lọc -->
+          <div class="flex gap-4 mb-4">
+            <input
+              type="text"
+              id="searchProduct"
+              placeholder="Tìm kiếm sản phẩm..."
+              class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 flex-1"
+              onkeyup="filterProductTable()"
+            />
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-700">
+              <thead class="bg-gray-750">
+                <tr>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
+                  >
+                    Sản phẩm
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
+                  >
+                    Loại
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
+                  >
+                    Giá vốn
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
+                  >
+                    Lợi nhuận
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
+                  >
+                    Giá bán
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-gray-800 divide-y divide-gray-700" id="productTableBody">
+                <!-- Sẽ được tạo động bằng JavaScript -->
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
 
     <script>
       // Dữ liệu sản phẩm từ trang sản phẩm
@@ -339,11 +342,12 @@
           const sellingPrice = Math.round(product.cost * (1 + product.profitRate / 100));
           const row = document.createElement('tr');
           row.className = 'product-row';
-          row.setAttribute('data-category', product.category);
           row.setAttribute('data-name', product.name.toLowerCase());
           row.innerHTML = `
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="text-sm font-medium text-white">${product.name}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
               <div class="text-sm text-gray-400">${categories[product.category]}</div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
@@ -363,40 +367,13 @@
       // Lọc bảng sản phẩm
       function filterProductTable() {
         const searchTerm = document.getElementById('searchProduct').value.toLowerCase();
-        const categoryFilter = document.getElementById('categoryFilter').value;
         const rows = document.querySelectorAll('.product-row');
 
         rows.forEach(row => {
           const productName = row.getAttribute('data-name');
-          const productCategory = row.getAttribute('data-category');
-          
           const matchesSearch = productName.includes(searchTerm);
-          const matchesCategory = !categoryFilter || productCategory === categoryFilter;
-          
-          row.style.display = (matchesSearch && matchesCategory) ? '' : 'none';
+          row.style.display = matchesSearch ? '' : 'none';
         });
-      }
-
-      // Lưu tỷ lệ lợi nhuận theo loại
-      function saveProfitRate(type) {
-        const input = document.querySelector(`.profit-input[data-type="${type}"]`);
-        const newRate = parseFloat(input.value);
-        
-        if (!isNaN(newRate)) {
-          // Cập nhật tất cả sản phẩm thuộc loại này
-          products.forEach(product => {
-            if (product.category === type) {
-              product.profitRate = newRate;
-            }
-          });
-          
-          // Cập nhật lại giao diện
-          loadProductProfitRates();
-          loadProductTable();
-          alert(`Đã cập nhật tỷ lệ lợi nhuận cho ${categories[type]} thành ${newRate}%`);
-        } else {
-          alert('Vui lòng nhập số hợp lệ');
-        }
       }
 
       // Lưu tỷ lệ lợi nhuận theo sản phẩm
