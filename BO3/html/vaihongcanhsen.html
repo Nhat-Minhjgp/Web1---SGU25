@@ -16,15 +16,15 @@
   <header class="flex justify-between items-center px-8 py-4 shadow-md bg-white sticky top-0 z-50">
     <!-- LOGO -->
     <h2 class="text-2xl font-bold text-[#8B0000]">
-      <a href="/index.html" class="hover:text-[#8B0000]">MASH</a>
+      <a href="../index.html" class="hover:text-[#8B0000]">MASH</a>
     </h2>
 
     <!-- NAVIGATION -->
     <nav class="hidden md:flex space-x-6 text-sm font-medium absolute left-1/2 transform -translate-x-1/2">
-      <a href="/index.html" class="hover:text-[#8B0000]">Trang chủ</a>
-      <a href="sanpham.html" class="hover:text-[#8B0000]">Sản phẩm</a>
-      <a href="gioithieu.html" class="hover:text-[#8B0000]">Giới thiệu</a>
-      <a href="lienhe.html" class="hover:text-[#8B0000]">Liên hệ</a>
+      <a href="../index.html" class="hover:text-[#8B0000]">Trang chủ</a>
+      <a href="./sanpham.html" class="hover:text-[#8B0000]">Sản phẩm</a>
+      <a href="./gioithieu.html" class="hover:text-[#8B0000]">Giới thiệu</a>
+      <a href="./lienhe.html" class="hover:text-[#8B0000]">Liên hệ</a>
     </nav>
 
     <!-- USER ACTIONS -->
@@ -32,17 +32,17 @@
       <!-- Đăng nhập + Giỏ hàng khi chưa đăng nhập -->
       <div id="loginSection" class="flex items-center space-x-2">
         <a href="./login.html" class="flex items-center text-[#8B0000] hover:text-red-900 transition">
-          <img src="/icon/iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain rounded-full" />
+          <img src="../icon/iconlogin.jpg" alt="Đăng nhập" class="w-6 h-6 object-contain rounded-full" />
         </a>
         <a href="./giohang.html">
-          <img src="/icon/giohang.png" alt="Giỏ hàng" class="w-5 h-5 hover:scale-110 transition" />
+          <img src="../icon/giohang.png" alt="Giỏ hàng" class="w-5 h-5 hover:scale-110 transition" />
         </a>
       </div>
 
       <!-- Profile + Giỏ hàng khi đã đăng nhập -->
       <div id="userProfile" class="hidden flex items-center space-x-2">
         <a href="./thongtinKH.html" title="Trang tài khoản">
-          <img src="/img/iconafterlogin.jpg" alt="User"
+          <img src="../img/iconafterlogin.jpg" alt="User"
             class="w-7 h-7 rounded-full object-cover border border-gray-300 hover:scale-110 transition" />
         </a>
 
@@ -53,7 +53,7 @@
 
         <!-- Nút giỏ hàng -->
         <a href="./giohang.html">
-          <img src="/icon/giohang.png" alt="Giỏ hàng" class="w-5 h-5 hover:scale-110 transition" />
+          <img src="../icon/giohang.png" alt="Giỏ hàng" class="w-5 h-5 hover:scale-110 transition" />
         </a>
       </div>
 
@@ -73,15 +73,15 @@
         <div class="space-y-4">
           <!-- Ảnh chính -->
           <div class="w-full max-w-[450px] mx-auto overflow-hidden rounded-xl shadow">
-            <img id="mainImage" src="/img/vaihongcanhsen.jpg" alt="Bánh Trung Thu vải hồng cánh sen"
+            <img id="mainImage" src="../img/vaihongcanhsen.jpg" alt="Bánh Trung Thu vải hồng cánh sen"
               class="w-full h-auto object-contain transition duration-300 ease-in-out" />
           </div>
 
           <!-- Thumbnail chọn ảnh -->
           <div class="flex ml-3 space-x-2" id="thumbnailContainer">
-            <img src="/img/vaihongcanhsen.jpg" alt="#" onclick="changeImage(this)"
+            <img src="../img/vaihongcanhsen.jpg" alt="#" onclick="changeImage(this)"
               class="thumbnail w-16 h-16 object-cover rounded cursor-pointer border-2 border-[#8B0000]" />
-            <img src="/img/vaihongcanhsen2.jpg" alt="#" onclick="changeImage(this)"
+            <img src="../img/vaihongcanhsen2.jpg" alt="#" onclick="changeImage(this)"
               class="thumbnail w-16 h-16 object-cover rounded cursor-pointer border-2 border-transparent hover:border-[#8B0000]" />
           </div>
         </div>
