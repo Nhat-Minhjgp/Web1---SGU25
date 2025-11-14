@@ -1,758 +1,625 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quản lý Nhập hàng - Admin</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              gray: {
-                750: "#2d3748",
-              },
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quản lý Nhập hàng - Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gray: {
+              750: "#2d3748",
             },
           },
         },
-      };
-    </script>
-    <style>
-      .product-image {
-        width: 60px;
-        height: 60px;
-        object-fit: cover;
-        border-radius: 8px;
-      }
-      .hidden-product {
-        opacity: 0.6;
-        background-color: rgba(75, 85, 99, 0.3);
-      }
-    </style>
-  </head>
-  <body class="bg-gray-900 text-white min-h-screen">
-    <!-- HEADER -->
-    <header
-      class="flex justify-between items-center px-6 py-4 bg-gray-800 shadow-md"
-    >
-      <div class="flex items-center space-x-4">
-        <button
-          onclick="goBack()"
-          class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition flex items-center"
-        >
-          <i class="fas fa-arrow-left mr-2"></i> Quay lại
-        </button>
-        <h1 class="text-2xl font-bold text-cyan-400">Quản lý Nhập hàng</h1>
-      </div>
-      <!-- Đã bỏ nút đăng xuất theo yêu cầu -->
-    </header>
+      },
+    };
+  </script>
+  <style>
+    .product-image {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
 
-    <div class="flex h-[calc(100vh-80px)]">
-      <!-- SIDEBAR -->
-      <aside class="w-80 bg-gray-800 p-6 space-y-4 overflow-y-auto">
-        <div class="pb-4 border-b border-gray-700">
-          <h3 class="text-lg font-semibold text-cyan-400 mb-2">Thông tin tài khoản</h3>
-          <div class="space-y-2 text-sm">
-            <div class="flex justify-between">
-              <span class="text-gray-400">Tên đăng nhập:</span>
-              <span id="adminEmail">quanly1</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-400">Đăng nhập lúc:</span>
-              <span id="loginTime">10:30, 15/06/2023</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-400">Trạng thái:</span>
-              <span class="text-green-400">Đang hoạt động</span>
-            </div>
-          </div>
-        </div>
-        
-        <nav class="space-y-2 pt-2">
-          <button
-            onclick="window.location.href='quanlykhachhang.html'"
-            class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
-          >
-            <i class="fas fa-users mr-2"></i> Quản lý người dùng
-          </button>
-          <button
-            onclick="window.location.href='quanlyloaisanpham.html'"
-            class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
-          >
-            <i class="fas fa-tags mr-2"></i> Loại sản phẩm
-          </button>
-          <button
-            onclick="window.location.href='danhmucsanpham.html'"
-            class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
-          >
-            <i class="fas fa-boxes mr-2"></i> Danh mục sản phẩm
-          </button>
-          <button
-            onclick="window.location.href='quanlyhangnhap.html'"
-            class="block w-full text-left px-4 py-2 rounded-lg bg-cyan-600 text-white transition"
-          >
-            <i class="fas fa-arrow-down mr-2"></i> Quản lý hàng nhập
-          </button>
-          <button
-            onclick="window.location.href='quanlydondathang.html'"
-            class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
-          >
-            <i class="fas fa-receipt mr-2"></i> Quản lý đơn đặt hàng
-          </button>
-          <button
-            onclick="window.location.href='giaban.html'"
-            class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
-          >
-            <i class="fas fa-tag mr-2"></i> Giá bán
-          </button>
-          <button
-            onclick="window.location.href='hangtonkho.html'"
-            class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition"
-          >
-            <i class="fas fa-warehouse mr-2"></i> Tồn kho
-          </button>
-        </nav>
-      </aside>
+    .hidden-product {
+      opacity: 0.6;
+      background-color: rgba(75, 85, 99, 0.3);
+    }
+  </style>
+</head>
 
-      <!-- MAIN CONTENT -->
-      <main class="flex-1 p-6 overflow-y-auto">
-        <div class="bg-gray-800 p-6 rounded-xl shadow-lg">
-          <div class="flex justify-between items-center mb-6">
-            <h2 class="text-xl font-bold text-cyan-400">
-              <i class="fas fa-arrow-down mr-2"></i> Quản lý Nhập hàng
-            </h2>
-            <div class="flex gap-2">
-              <button
-                onclick="openImportModal()"
-                class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition flex items-center"
-              >
-                <i class="fas fa-plus mr-2"></i> Tạo phiếu nhập
-              </button>
-              <button
-                onclick="openSearchImportModal()"
-                class="bg-purple-500 hover:bg-purple-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition flex items-center"
-              >
-                <i class="fas fa-search mr-2"></i> Tìm phiếu nhập
-              </button>
-            </div>
-          </div>
-
-          <!-- Thống kê nhanh -->
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <div class="bg-gray-750 rounded-lg p-4">
-              <div class="flex justify-between items-center">
-                <div>
-                  <p class="text-gray-400 text-sm">Tổng phiếu nhập</p>
-                  <p class="text-2xl font-bold text-white" id="totalImports">0</p>
-                </div>
-                <div class="bg-gray-700 p-3 rounded-full">
-                  <i class="fas fa-clipboard-list text-cyan-400"></i>
-                </div>
-              </div>
-            </div>
-            <div class="bg-gray-750 rounded-lg p-4">
-              <div class="flex justify-between items-center">
-                <div>
-                  <p class="text-gray-400 text-sm">Tổng giá trị nhập</p>
-                  <p class="text-2xl font-bold text-white" id="totalImportValue">
-                    0₫
-                  </p>
-                </div>
-                <div class="bg-gray-700 p-3 rounded-full">
-                  <i class="fas fa-coins text-cyan-400"></i>
-                </div>
-              </div>
-            </div>
-            <div class="bg-gray-750 rounded-lg p-4">
-              <div class="flex justify-between items-center">
-                <div>
-                  <p class="text-gray-400 text-sm">Phiếu chưa hoàn thành</p>
-                  <p class="text-2xl font-bold text-white" id="pendingImports">
-                    0
-                  </p>
-                </div>
-                <div class="bg-gray-700 p-3 rounded-full">
-                  <i class="fas fa-clock text-cyan-400"></i>
-                </div>
-              </div>
-            </div>
-            <div class="bg-gray-750 rounded-lg p-4">
-              <div class="flex justify-between items-center">
-                <div>
-                  <p class="text-gray-400 text-sm">Tổng sản phẩm nhập</p>
-                  <p class="text-2xl font-bold text-white" id="totalProducts">
-                    0
-                  </p>
-                </div>
-                <div class="bg-gray-700 p-3 rounded-full">
-                  <i class="fas fa-box text-cyan-400"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Danh sách phiếu nhập -->
-          <div class="overflow-x-auto rounded-lg border border-gray-700">
-            <table class="min-w-full divide-y divide-gray-700">
-              <thead class="bg-gray-750">
-                <tr>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                  >
-                    Mã phiếu
-                  </th>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                  >
-                    Ngày nhập
-                  </th>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                  >
-                    Sản phẩm
-                  </th>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                  >
-                    Loại
-                  </th>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                  >
-                    Số lượng
-                  </th>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                  >
-                    Giá nhập
-                  </th>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                  >
-                    Thành tiền
-                  </th>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                  >
-                    Trạng thái
-                  </th>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                  >
-                    Thao tác
-                  </th>
-                </tr>
-              </thead>
-              <tbody
-                id="importTableBody"
-                class="bg-gray-800 divide-y divide-gray-700"
-              >
-                <!-- Dữ liệu phiếu nhập sẽ được thêm vào đây -->
-              </tbody>
-            </table>
-          </div>
-          <div id="noImportMessage" class="text-center py-8 text-gray-400 hidden">
-            <i class="fas fa-inbox text-4xl mb-2"></i>
-            <p>Chưa có phiếu nhập nào. Hãy tạo phiếu nhập mới!</p>
-          </div>
-        </div>
-      </main>
+<body class="bg-gray-900 text-white min-h-screen">
+  <!-- HEADER -->
+  <header class="flex justify-between items-center px-6 py-4 bg-gray-800 shadow-md">
+    <div class="flex items-center space-x-4">
+      <button onclick="goBack()"
+        class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition flex items-center">
+        <i class="fas fa-arrow-left mr-2"></i> Quay lại
+      </button>
+      <h1 class="text-2xl font-bold text-cyan-400">Quản lý Nhập hàng</h1>
     </div>
+    <!-- Đã bỏ nút đăng xuất theo yêu cầu -->
+  </header>
 
-    <!-- Modal Tạo phiếu nhập -->
-    <div
-      id="importModal"
-      class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden"
-    >
-      <div
-        class="bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto"
-      >
-        <div
-          class="flex justify-between items-center p-6 border-b border-gray-700"
-        >
-          <h3 class="text-xl font-bold text-cyan-400" id="importModalTitle">
-            Tạo phiếu nhập hàng
-          </h3>
-          <button
-            onclick="closeImportModal()"
-            class="text-gray-400 hover:text-white"
-          >
-            <i class="fas fa-times text-xl"></i>
-          </button>
+  <div class="flex h-[calc(100vh-80px)]">
+    <!-- SIDEBAR -->
+    <aside class="w-80 bg-gray-800 p-6 space-y-4 overflow-y-auto">
+      <div class="pb-4 border-b border-gray-700">
+        <h3 class="text-lg font-semibold text-cyan-400 mb-2">Thông tin tài khoản</h3>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between">
+            <span class="text-gray-400">Tên đăng nhập:</span>
+            <span id="adminEmail">quanly1</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-400">Đăng nhập lúc:</span>
+            <span id="loginTime">10:30, 15/06/2023</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-400">Trạng thái:</span>
+            <span class="text-green-400">Đang hoạt động</span>
+          </div>
         </div>
-        <form id="importForm" class="p-6 space-y-4">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-300 mb-1"
-                >Ngày nhập</label
-              >
-              <input
-                type="date"
-                id="importDate"
-                class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                required
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-300 mb-1"
-                >Mã phiếu</label
-              >
-              <input
-                type="text"
-                id="importCode"
-                class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                value="PN-"
-                required
-              />
+      </div>
+
+      <nav class="space-y-2 pt-2">
+        <button onclick="window.location.href='quanlykhachhang.html'"
+          class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
+          <i class="fas fa-users mr-2"></i> Quản lý người dùng
+        </button>
+        <button onclick="window.location.href='quanlyloaisanpham.html'"
+          class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
+          <i class="fas fa-tags mr-2"></i> Loại sản phẩm
+        </button>
+        <button onclick="window.location.href='danhmucsanpham.html'"
+          class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
+          <i class="fas fa-boxes mr-2"></i> Danh mục sản phẩm
+        </button>
+        <button onclick="window.location.href='quanlyhangnhap.html'"
+          class="block w-full text-left px-4 py-2 rounded-lg bg-cyan-600 text-white transition">
+          <i class="fas fa-arrow-down mr-2"></i> Quản lý hàng nhập
+        </button>
+        <button onclick="window.location.href='quanlydondathang.html'"
+          class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
+          <i class="fas fa-receipt mr-2"></i> Quản lý đơn đặt hàng
+        </button>
+        <button onclick="window.location.href='giaban.html'"
+          class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
+          <i class="fas fa-tag mr-2"></i> Giá bán
+        </button>
+        <button onclick="window.location.href='hangtonkho.html'"
+          class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
+          <i class="fas fa-warehouse mr-2"></i> Tồn kho
+        </button>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 p-6 overflow-y-auto">
+      <div class="bg-gray-800 p-6 rounded-xl shadow-lg">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-xl font-bold text-cyan-400">
+            <i class="fas fa-arrow-down mr-2"></i> Quản lý Nhập hàng
+          </h2>
+          <div class="flex gap-2">
+            <button onclick="openImportModal()"
+              class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition flex items-center">
+              <i class="fas fa-plus mr-2"></i> Tạo phiếu nhập
+            </button>
+            <button onclick="openSearchImportModal()"
+              class="bg-purple-500 hover:bg-purple-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition flex items-center">
+              <i class="fas fa-search mr-2"></i> Tìm phiếu nhập
+            </button>
+          </div>
+        </div>
+
+        <!-- Thống kê nhanh -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <div class="bg-gray-750 rounded-lg p-4">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-gray-400 text-sm">Tổng phiếu nhập</p>
+                <p class="text-2xl font-bold text-white" id="totalImports">0</p>
+              </div>
+              <div class="bg-gray-700 p-3 rounded-full">
+                <i class="fas fa-clipboard-list text-cyan-400"></i>
+              </div>
             </div>
           </div>
+          <div class="bg-gray-750 rounded-lg p-4">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-gray-400 text-sm">Tổng giá trị nhập</p>
+                <p class="text-2xl font-bold text-white" id="totalImportValue">
+                  0₫
+                </p>
+              </div>
+              <div class="bg-gray-700 p-3 rounded-full">
+                <i class="fas fa-coins text-cyan-400"></i>
+              </div>
+            </div>
+          </div>
+          <div class="bg-gray-750 rounded-lg p-4">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-gray-400 text-sm">Phiếu chưa hoàn thành</p>
+                <p class="text-2xl font-bold text-white" id="pendingImports">
+                  0
+                </p>
+              </div>
+              <div class="bg-gray-700 p-3 rounded-full">
+                <i class="fas fa-clock text-cyan-400"></i>
+              </div>
+            </div>
+          </div>
+          <div class="bg-gray-750 rounded-lg p-4">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-gray-400 text-sm">Tổng sản phẩm nhập</p>
+                <p class="text-2xl font-bold text-white" id="totalProducts">
+                  0
+                </p>
+              </div>
+              <div class="bg-gray-700 p-3 rounded-full">
+                <i class="fas fa-box text-cyan-400"></i>
+              </div>
+            </div>
+          </div>
+        </div>
 
+        <!-- Danh sách phiếu nhập -->
+        <div class="overflow-x-auto rounded-lg border border-gray-700">
+          <table class="min-w-full divide-y divide-gray-700">
+            <thead class="bg-gray-750">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  Mã phiếu
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  Ngày nhập
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  Sản phẩm
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  Loại
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  Số lượng
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  Giá nhập
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  Thành tiền
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  Trạng thái
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  Thao tác
+                </th>
+              </tr>
+            </thead>
+            <tbody id="importTableBody" class="bg-gray-800 divide-y divide-gray-700">
+              <!-- Dữ liệu phiếu nhập sẽ được thêm vào đây -->
+            </tbody>
+          </table>
+        </div>
+        <div id="noImportMessage" class="text-center py-8 text-gray-400 hidden">
+          <i class="fas fa-inbox text-4xl mb-2"></i>
+          <p>Chưa có phiếu nhập nào. Hãy tạo phiếu nhập mới!</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Tạo phiếu nhập -->
+  <div id="importModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+    <div class="bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center p-6 border-b border-gray-700">
+        <h3 class="text-xl font-bold text-cyan-400" id="importModalTitle">
+          Tạo phiếu nhập hàng
+        </h3>
+        <button onclick="closeImportModal()" class="text-gray-400 hover:text-white">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+      <form id="importForm" class="p-6 space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-medium text-gray-300 mb-1"
-              >Sản phẩm</label
-            >
-            <select
-              id="importProduct"
+            <label class="block text-sm font-medium text-gray-300 mb-1">Ngày nhập</label>
+            <input type="date" id="importDate"
               class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-              required
-            >
-              <option value="">Chọn sản phẩm</option>
+              required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-1">Mã phiếu</label>
+            <input type="text" id="importCode"
+              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              value="PN-" required />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-1">Sản phẩm</label>
+          <select id="importProduct"
+            class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            required>
+            <option value="">Chọn sản phẩm</option>
+            <!-- Options sẽ được thêm bằng JavaScript -->
+          </select>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-1">Số lượng</label>
+            <input type="number" id="importQuantity"
+              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              min="1" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-1">Giá nhập (VNĐ)</label>
+            <input type="number" id="importPrice"
+              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              min="0" required />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-1">Nhà cung cấp</label>
+            <input type="text" id="importSupplier"
+              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-1">Lô hàng</label>
+            <input type="text" id="importBatch"
+              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              placeholder="VD: Lô 001" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-1">Ghi chú</label>
+          <textarea id="importNote" rows="2"
+            class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"></textarea>
+        </div>
+      </form>
+      <div class="flex justify-end space-x-3 p-6 border-t border-gray-700">
+        <button onclick="closeImportModal()" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition">
+          Hủy
+        </button>
+        <button onclick="saveImport()"
+          class="px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold rounded-lg transition"
+          id="saveImportBtn">
+          Lưu phiếu nhập
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Tìm kiếm phiếu nhập -->
+  <div id="searchImportModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+    <div class="bg-gray-800 rounded-xl shadow-2xl w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center p-6 border-b border-gray-700">
+        <h3 class="text-xl font-bold text-cyan-400">Tìm kiếm phiếu nhập</h3>
+        <button onclick="closeSearchImportModal()" class="text-gray-400 hover:text-white">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-1">Mã phiếu</label>
+            <input type="text" id="searchImportCode"
+              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              placeholder="Nhập mã phiếu..." />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-1">Sản phẩm</label>
+            <select id="searchProduct"
+              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
+              <option value="">Tất cả sản phẩm</option>
               <!-- Options sẽ được thêm bằng JavaScript -->
             </select>
           </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-300 mb-1"
-                >Số lượng</label
-              >
-              <input
-                type="number"
-                id="importQuantity"
-                class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                min="1"
-                required
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-300 mb-1"
-                >Giá nhập (VNĐ)</label
-              >
-              <input
-                type="number"
-                id="importPrice"
-                class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                min="0"
-                required
-              />
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-300 mb-1"
-                >Nhà cung cấp</label
-              >
-              <input
-                type="text"
-                id="importSupplier"
-                class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                required
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-300 mb-1"
-                >Lô hàng</label
-              >
-              <input
-                type="text"
-                id="importBatch"
-                class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                placeholder="VD: Lô 001"
-              />
-            </div>
-          </div>
-
           <div>
-            <label class="block text-sm font-medium text-gray-300 mb-1"
-              >Ghi chú</label
-            >
-            <textarea
-              id="importNote"
-              rows="2"
-              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-            ></textarea>
+            <label class="block text-sm font-medium text-gray-300 mb-1">Từ ngày</label>
+            <input type="date" id="searchFromDate"
+              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" />
           </div>
-        </form>
-        <div class="flex justify-end space-x-3 p-6 border-t border-gray-700">
-          <button
-            onclick="closeImportModal()"
-            class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition"
-          >
-            Hủy
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-1">Đến ngày</label>
+            <input type="date" id="searchToDate"
+              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+          </div>
+        </div>
+        <div class="flex justify-end">
+          <button onclick="searchImports()"
+            class="px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold rounded-lg transition">
+            <i class="fas fa-search mr-2"></i> Tìm kiếm
           </button>
-          <button
-            onclick="saveImport()"
-            class="px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold rounded-lg transition"
-            id="saveImportBtn"
-          >
-            Lưu phiếu nhập
-          </button>
+        </div>
+
+        <div class="border-t border-gray-700 pt-4">
+          <h4 class="text-lg font-medium text-gray-300 mb-4">
+            Kết quả tìm kiếm
+          </h4>
+          <div id="searchResults" class="space-y-3 max-h-96 overflow-y-auto">
+            <!-- Kết quả tìm kiếm sẽ được hiển thị ở đây -->
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- Modal Tìm kiếm phiếu nhập -->
-    <div
-      id="searchImportModal"
-      class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden"
-    >
-      <div
-        class="bg-gray-800 rounded-xl shadow-2xl w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto"
-      >
-        <div
-          class="flex justify-between items-center p-6 border-b border-gray-700"
-        >
-          <h3 class="text-xl font-bold text-cyan-400">Tìm kiếm phiếu nhập</h3>
-          <button
-            onclick="closeSearchImportModal()"
-            class="text-gray-400 hover:text-white"
-          >
-            <i class="fas fa-times text-xl"></i>
-          </button>
-        </div>
-        <div class="p-6 space-y-4">
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-300 mb-1"
-                >Mã phiếu</label
-              >
-              <input
-                type="text"
-                id="searchImportCode"
-                class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                placeholder="Nhập mã phiếu..."
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-300 mb-1"
-                >Sản phẩm</label
-              >
-              <select
-                id="searchProduct"
-                class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-              >
-                <option value="">Tất cả sản phẩm</option>
-                <!-- Options sẽ được thêm bằng JavaScript -->
-              </select>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-300 mb-1"
-                >Từ ngày</label
-              >
-              <input
-                type="date"
-                id="searchFromDate"
-                class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-300 mb-1"
-                >Đến ngày</label
-              >
-              <input
-                type="date"
-                id="searchToDate"
-                class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-              />
-            </div>
-          </div>
-          <div class="flex justify-end">
-            <button
-              onclick="searchImports()"
-              class="px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold rounded-lg transition"
-            >
-              <i class="fas fa-search mr-2"></i> Tìm kiếm
-            </button>
-          </div>
-
-          <div class="border-t border-gray-700 pt-4">
-            <h4 class="text-lg font-medium text-gray-300 mb-4">
-              Kết quả tìm kiếm
-            </h4>
-            <div id="searchResults" class="space-y-3 max-h-96 overflow-y-auto">
-              <!-- Kết quả tìm kiếm sẽ được hiển thị ở đây -->
-            </div>
-          </div>
-        </div>
-        <div class="flex justify-end space-x-3 p-6 border-t border-gray-700">
-          <button
-            onclick="closeSearchImportModal()"
-            class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition"
-          >
-            Đóng
-          </button>
-        </div>
+      <div class="flex justify-end space-x-3 p-6 border-t border-gray-700">
+        <button onclick="closeSearchImportModal()"
+          class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition">
+          Đóng
+        </button>
       </div>
     </div>
+  </div>
 
-    <script>
-      // Dữ liệu sản phẩm từ trang chủ
-      const products = [
+  <script>
+    // Dữ liệu sản phẩm từ trang chủ
+    const products = [
+      {
+        id: 1,
+        type: "Nhân ngọt",
+        code: "MCXS01",
+        name: "Trung Thu Mãng Cầu Xiêm Sen",
+        costPrice: 25000,
+        stock: 50,
+        unit: "Cái",
+        supplier: "Nhà cung cấp A",
+        description:
+          "Nhân chua thanh nhẹ, quyện vị béo dịu, mang hương sen tao nhã và độc đáo.",
+      },
+      {
+        id: 2,
+        type: "Nhân ngọt",
+        code: "SDC01",
+        name: "Trung Thu Sữa Dừa Cafe",
+        costPrice: 25000,
+        stock: 45,
+        unit: "Cái",
+        supplier: "Nhà cung cấp A",
+        description:
+          "Nhân sữa dừa hòa quyện cà phê, béo ngậy, thơm dịu và ngọt vừa phải.",
+      },
+      {
+        id: 3,
+        type: "Nhân ngọt",
+        code: "KBQH01",
+        name: "Trung Thu Khế Bưởi Quế Hoa",
+        costPrice: 25000,
+        stock: 30,
+        unit: "Cái",
+        supplier: "Nhà cung cấp B",
+        description:
+          "Nhân sữa béo nhẹ, ngọt dịu, hòa quyện hương thơm thanh mát và tinh tế.",
+      },
+      {
+        id: 4,
+        type: "Nhân ngọt",
+        code: "VHCS01",
+        name: "Trung Thu Vải Hồng Cánh Sen",
+        costPrice: 25000,
+        stock: 25,
+        unit: "Cái",
+        supplier: "Nhà cung cấp B",
+        description:
+          "Bánh ngọt thanh hòa quyện hạt sen bùi và hương hoa hồng tinh tế",
+      },
+      {
+        id: 5,
+        type: "Nhân mặn",
+        code: "BSTD01",
+        name: "Trung Thu Bò Sốt Tiêu Đen",
+        costPrice: 35000,
+        stock: 40,
+        unit: "Cái",
+        supplier: "Nhà cung cấp C",
+        description:
+          "Nhân sốt tiêu đen đậm đà cay nhẹ kết hợp mứt và hạt tạo hương vị khó quên.",
+      },
+      {
+        id: 6,
+        type: "Đặc biệt",
+        code: "NTT01",
+        name: "Trung Thu Nấm Truffle",
+        costPrice: 45000,
+        stock: 15,
+        unit: "Cái",
+        supplier: "Nhà cung cấp D",
+        description:
+          "Nhân nấm truffle cao cấp – đại diện cho tinh thần sáng tạo và tay nghề thủ công",
+      },
+      {
+        id: 7,
+        type: "Nhân mặn",
+        code: "TMHS01",
+        name: "Trung Thu Tomyum Hải Sản",
+        costPrice: 35000,
+        stock: 35,
+        unit: "Cái",
+        supplier: "Nhà cung cấp C",
+        description:
+          "Tomyum hải sản đem đến trải nghiệm Trung thu đầy thú vị và bổ dưỡng",
+      },
+      {
+        id: 8,
+        type: "Nhân ngọt",
+        code: "SVXD01",
+        name: "Trung Thu Sen Vàng Xoài Dẻo",
+        costPrice: 25000,
+        stock: 40,
+        unit: "Cái",
+        supplier: "Nhà cung cấp A",
+        description:
+          "Nhân ngọt thanh, dẻo mềm hòa quyện vị xoài chín và hương sen thuần khiết.",
+      },
+      {
+        id: 9,
+        type: "Nhân ngọt",
+        code: "GDCD01",
+        name: "Trung Thu Gạo Đỏ Cốm Dừa",
+        costPrice: 30000,
+        stock: 40,
+        unit: "Cái",
+        supplier: "Nhà cung cấp A",
+        description: "Thơm béo vị sữa, quyện cùng dừa nạo mềm mại, ngọt dịu.",
+      },
+      {
+        id: 10,
+        type: "Nhân ngọt",
+        code: "MT01",
+        name: "Trung Thu Mơ Tây",
+        costPrice: 30000,
+        stock: 40,
+        unit: "Cái",
+        supplier: "Nhà cung cấp B",
+        description:
+          "Nhân Mơ Tây chua ngọt hài hòa, mang vị thu nhẹ nhàng và lạ miệng.",
+      },
+      {
+        id: 11,
+        type: "Nhân ngọt",
+        code: "CAFE01",
+        name: "Trung Thu Cafe",
+        costPrice: 30000,
+        stock: 40,
+        unit: "Cái",
+        supplier: "Nhà cung cấp A",
+        description:
+          "Nhân Cà Phê đậm đà, thơm ngậy như một tách cà phê tinh tế giữa mùa thu.",
+      },
+      {
+        id: 12,
+        type: "Nhân ngọt",
+        code: "VQ01",
+        name: "Trung Thu Nam Việt Quất",
+        costPrice: 25000,
+        stock: 40,
+        unit: "Cái",
+        supplier: "Nhà cung cấp B",
+        description:
+          "Nhân Nam Việt Quốc chua ngọt thanh lịch, phảng phất vị Tây phương hiện đại.",
+      },
+    ];
+
+    // Dữ liệu mẫu cho phiếu nhập
+    let importOrders = JSON.parse(localStorage.getItem("importOrders")) || [];
+    let currentEditOrderId = null;
+
+    // Tạo dữ liệu mẫu nếu chưa có
+    if (importOrders.length === 0) {
+      // Tạo các phiếu nhập mẫu cho các sản phẩm
+      const sampleImports = [
         {
-          id: 1,
-          type: "Nhân ngọt",
-          code: "MCXS01",
-          name: "Trung Thu Mãng Cầu Xiêm Sen",
-          costPrice: 35000,
-          stock: 50,
-          unit: "Cái",
+          id: generateId(),
+          code: "PN-0001",
+          date: "2024-10-15",
+          productId: 1,
+          quantity: 100,
+          price: 25000,
           supplier: "Nhà cung cấp A",
-          description:
-            "Nhân chua thanh nhẹ, quyện vị béo dịu, mang hương sen tao nhã và độc đáo.",
+          batch: "Lô 001",
+          note: "Nhập lần đầu mùa Trung thu",
+          completed: true,
+          createdAt: "2024-10-15T08:00:00",
         },
         {
-          id: 2,
-          type: "Nhân ngọt",
-          code: "SDC01",
-          name: "Trung Thu Sữa Dừa Cafe",
-          costPrice: 25000,
-          stock: 45,
-          unit: "Cái",
+          id: generateId(),
+          code: "PN-0002",
+          date: "2024-10-18",
+          productId: 2,
+          quantity: 80,
+          price: 25000,
           supplier: "Nhà cung cấp A",
-          description:
-            "Nhân sữa dừa hòa quyện cà phê, béo ngậy, thơm dịu và ngọt vừa phải.",
+          batch: "Lô 002",
+          note: "Nhập bổ sung",
+          completed: true,
+          createdAt: "2024-10-18T10:30:00",
         },
         {
-          id: 3,
-          type: "Nhân ngọt",
-          code: "KBQH01",
-          name: "Trung Thu Khế Bưởi Quế Hoa",
-          costPrice: 25000,
-          stock: 30,
-          unit: "Cái",
-          supplier: "Nhà cung cấp B",
-          description:
-            "Nhân sữa béo nhẹ, ngọt dịu, hòa quyện hương thơm thanh mát và tinh tế.",
-        },
-        {
-          id: 4,
-          type: "Nhân ngọt",
-          code: "VHCS01",
-          name: "Trung Thu Vải Hồng Cánh Sen",
-          costPrice: 25000,
-          stock: 25,
-          unit: "Cái",
-          supplier: "Nhà cung cấp B",
-          description:
-            "Bánh ngọt thanh hòa quyện hạt sen bùi và hương hoa hồng tinh tế",
-        },
-        {
-          id: 5,
-          type: "Nhân mặn",
-          code: "BSTD01",
-          name: "Trung Thu Bò Sốt Tiêu Đen",
-          costPrice: 35000,
-          stock: 40,
-          unit: "Cái",
+          id: generateId(),
+          code: "PN-0003",
+          date: "2024-10-20",
+          productId: 5,
+          quantity: 60,
+          price: 35000,
           supplier: "Nhà cung cấp C",
-          description:
-            "Nhân sốt tiêu đen đậm đà cay nhẹ kết hợp mứt và hạt tạo hương vị khó quên.",
+          batch: "Lô 003",
+          note: "Nhân mặn cao cấp",
+          completed: false,
+          createdAt: "2024-10-20T14:15:00",
         },
         {
-          id: 6,
-          type: "Đặc biệt",
-          code: "NTT01",
-          name: "Trung Thu Nấm Truffle",
-          costPrice: 45000,
-          stock: 15,
-          unit: "Cái",
+          id: generateId(),
+          code: "PN-0004",
+          date: "2024-10-22",
+          productId: 6,
+          quantity: 30,
+          price: 45000,
           supplier: "Nhà cung cấp D",
-          description:
-            "Nhân nấm truffle cao cấp – đại diện cho tinh thần sáng tạo và tay nghề thủ công",
+          batch: "Lô 004",
+          note: "Sản phẩm đặc biệt",
+          completed: true,
+          createdAt: "2024-10-22T09:45:00",
         },
         {
-          id: 7,
-          type: "Nhân mặn",
-          code: "TMHS01",
-          name: "Trung Thu Tomyum Hải Sản",
-          costPrice: 35000,
-          stock: 35,
-          unit: "Cái",
-          supplier: "Nhà cung cấp C",
-          description:
-            "Tomyum hải sản đem đến trải nghiệm Trung thu đầy thú vị và bổ dưỡng",
-        },
-        {
-          id: 8,
-          type: "Nhân ngọt",
-          code: "SVXD01",
-          name: "Trung Thu Sen Vàng Xoài Dẻo",
-          costPrice: 25000,
-          stock: 40,
-          unit: "Cái",
-          supplier: "Nhà cung cấp A",
-          description:
-            "Nhân ngọt thanh, dẻo mềm hòa quyện vị xoài chín và hương sen thuần khiết.",
-        },
-        {
-          id: 9,
-          type: "Nhân ngọt",
-          code: "GDCD01",
-          name: "Trung Thu Gạo Đỏ Cốm Dừa",
-          costPrice: 30000,
-          stock: 40,
-          unit: "Cái",
-          supplier: "Nhà cung cấp A",
-          description: "Thơm béo vị sữa, quyện cùng dừa nạo mềm mại, ngọt dịu.",
-        },
-        {
-          id: 10,
-          type: "Nhân ngọt",
-          code: "MT01",
-          name: "Trung Thu Mơ Tây",
-          costPrice: 30000,
-          stock: 40,
-          unit: "Cái",
+          id: generateId(),
+          code: "PN-0005",
+          date: "2024-10-25",
+          productId: 3,
+          quantity: 70,
+          price: 25000,
           supplier: "Nhà cung cấp B",
-          description:
-            "Nhân Mơ Tây chua ngọt hài hòa, mang vị thu nhẹ nhàng và lạ miệng.",
-        },
-        {
-          id: 11,
-          type: "Nhân ngọt",
-          code: "CAFE01",
-          name: "Trung Thu Cafe",
-          costPrice: 30000,
-          stock: 40,
-          unit: "Cái",
-          supplier: "Nhà cung cấp A",
-          description:
-            "Nhân Cà Phê đậm đà, thơm ngậy như một tách cà phê tinh tế giữa mùa thu.",
-        },
-        {
-          id: 12,
-          type: "Nhân ngọt",
-          code: "VQ01",
-          name: "Trung Thu Nam Việt Quất",
-          costPrice: 25000,
-          stock: 40,
-          unit: "Cái",
-          supplier: "Nhà cung cấp B",
-          description:
-            "Nhân Nam Việt Quốc chua ngọt thanh lịch, phảng phất vị Tây phương hiện đại.",
+          batch: "Lô 005",
+          note: "Nhập cuối mùa",
+          completed: false,
+          createdAt: "2024-10-25T16:20:00",
         },
       ];
 
-      // Dữ liệu mẫu cho phiếu nhập
-      let importOrders = JSON.parse(localStorage.getItem("importOrders")) || [];
-      let currentEditOrderId = null;
+      importOrders = sampleImports;
+      localStorage.setItem("importOrders", JSON.stringify(importOrders));
+    }
 
-      // Tạo dữ liệu mẫu nếu chưa có
+    // Hiển thị danh sách phiếu nhập
+    function renderImportList() {
+      const importTableBody = document.getElementById("importTableBody");
+      const noImportMessage = document.getElementById("noImportMessage");
+
       if (importOrders.length === 0) {
-        // Tạo các phiếu nhập mẫu cho các sản phẩm
-        const sampleImports = [
-          {
-            id: generateId(),
-            code: "PN-0001",
-            date: "2024-10-15",
-            productId: 1,
-            quantity: 100,
-            price: 25000,
-            supplier: "Nhà cung cấp A",
-            batch: "Lô 001",
-            note: "Nhập lần đầu mùa Trung thu",
-            completed: true,
-            createdAt: "2024-10-15T08:00:00",
-          },
-          {
-            id: generateId(),
-            code: "PN-0002",
-            date: "2024-10-18",
-            productId: 2,
-            quantity: 80,
-            price: 32000,
-            supplier: "Nhà cung cấp A",
-            batch: "Lô 002",
-            note: "Nhập bổ sung",
-            completed: true,
-            createdAt: "2024-10-18T10:30:00",
-          },
-          {
-            id: generateId(),
-            code: "PN-0003",
-            date: "2024-10-20",
-            productId: 5,
-            quantity: 60,
-            price: 42000,
-            supplier: "Nhà cung cấp C",
-            batch: "Lô 003",
-            note: "Nhân mặn cao cấp",
-            completed: false,
-            createdAt: "2024-10-20T14:15:00",
-          },
-          {
-            id: generateId(),
-            code: "PN-0004",
-            date: "2024-10-22",
-            productId: 6,
-            quantity: 30,
-            price: 68000,
-            supplier: "Nhà cung cấp D",
-            batch: "Lô 004",
-            note: "Sản phẩm đặc biệt",
-            completed: true,
-            createdAt: "2024-10-22T09:45:00",
-          },
-          {
-            id: generateId(),
-            code: "PN-0005",
-            date: "2024-10-25",
-            productId: 3,
-            quantity: 70,
-            price: 38000,
-            supplier: "Nhà cung cấp B",
-            batch: "Lô 005",
-            note: "Nhập cuối mùa",
-            completed: false,
-            createdAt: "2024-10-25T16:20:00",
-          },
-        ];
-
-        importOrders = sampleImports;
-        localStorage.setItem("importOrders", JSON.stringify(importOrders));
+        importTableBody.innerHTML = "";
+        noImportMessage.classList.remove("hidden");
+        return;
       }
 
-      // Hiển thị danh sách phiếu nhập
-      function renderImportList() {
-        const importTableBody = document.getElementById("importTableBody");
-        const noImportMessage = document.getElementById("noImportMessage");
+      noImportMessage.classList.add("hidden");
+      importTableBody.innerHTML = "";
 
-        if (importOrders.length === 0) {
-          importTableBody.innerHTML = "";
-          noImportMessage.classList.remove("hidden");
-          return;
-        }
+      // Sắp xếp theo ngày tạo mới nhất
+      const sortedImports = [...importOrders].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
 
-        noImportMessage.classList.add("hidden");
-        importTableBody.innerHTML = "";
+      sortedImports.forEach((order) => {
+        const product = products.find((p) => p.id === order.productId);
+        const row = document.createElement("tr");
+        row.className = order.completed ? "" : "bg-gray-750";
 
-        // Sắp xếp theo ngày tạo mới nhất
-        const sortedImports = [...importOrders].sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-        );
-
-        sortedImports.forEach((order) => {
-          const product = products.find((p) => p.id === order.productId);
-          const row = document.createElement("tr");
-          row.className = order.completed ? "" : "bg-gray-750";
-
-          row.innerHTML = `
+        row.innerHTML = `
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="text-sm font-mono text-gray-300">${order.code}</div>
             </td>
@@ -760,137 +627,122 @@
               <div class="text-sm text-gray-300">${formatDate(order.date)}</div>
             </td>
             <td class="px-6 py-4">
-              <div class="text-sm font-medium text-white">${
-                product ? product.name : "N/A"
-              }</div>
-              <div class="text-xs text-gray-400">${
-                product ? product.code : "N/A"
-              }</div>
+              <div class="text-sm font-medium text-white">${product ? product.name : "N/A"
+          }</div>
+              <div class="text-xs text-gray-400">${product ? product.code : "N/A"
+          }</div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-300">${
-                product ? product.type : "N/A"
-              }</div>
+              <div class="text-sm text-gray-300">${product ? product.type : "N/A"
+          }</div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="text-sm text-gray-300">${order.quantity}</div>
             </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+  <div class="text-sm text-gray-300">${formatCurrency(product ? product.costPrice : order.price)}</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+  <div class="text-sm font-semibold text-cyan-400">${formatCurrency((product ? product.costPrice : order.price) * order.quantity)}</div>
+</td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-300">${formatCurrency(
-                order.price
-              )}</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm font-semibold text-cyan-400">${formatCurrency(
-                order.price * order.quantity
-              )}</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                order.completed
-                  ? "bg-green-100 text-green-800"
-                  : "bg-yellow-100 text-yellow-800"
-              }">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${order.completed
+            ? "bg-green-100 text-green-800"
+            : "bg-yellow-100 text-yellow-800"
+          }">
                 ${order.completed ? "Đã hoàn thành" : "Chưa hoàn thành"}
               </span>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-              <button onclick="editImportOrder('${
-                order.id
-              }')" class="text-cyan-400 hover:text-cyan-300 mr-3">
+              <button onclick="editImportOrder('${order.id
+          }')" class="text-cyan-400 hover:text-cyan-300 mr-3">
                 <i class="fas fa-edit"></i> Sửa
               </button>
-              <button onclick="completeImportOrder('${
-                order.id
-              }')" class="text-green-400 hover:text-green-300 mr-3 ${
-            order.completed ? "hidden" : ""
+              <button onclick="completeImportOrder('${order.id
+          }')" class="text-green-400 hover:text-green-300 mr-3 ${order.completed ? "hidden" : ""
           }">
                 <i class="fas fa-check"></i> Hoàn thành
               </button>
-              <button onclick="viewImportDetails('${
-                order.id
-              }')" class="text-blue-400 hover:text-blue-300">
+              <button onclick="viewImportDetails('${order.id
+          }')" class="text-blue-400 hover:text-blue-300">
                 <i class="fas fa-eye"></i> Chi tiết
               </button>
             </td>
           `;
 
-          importTableBody.appendChild(row);
-        });
+        importTableBody.appendChild(row);
+      });
 
-        updateImportStats();
+      updateImportStats();
+    }
+
+    // Tìm kiếm phiếu nhập
+    function searchImports() {
+      const code = document.getElementById("searchImportCode").value;
+      const productId = document.getElementById("searchProduct").value;
+      const fromDate = document.getElementById("searchFromDate").value;
+      const toDate = document.getElementById("searchToDate").value;
+
+      let filteredImports = importOrders;
+
+      if (code) {
+        filteredImports = filteredImports.filter((order) =>
+          order.code.toLowerCase().includes(code.toLowerCase())
+        );
       }
 
-      // Tìm kiếm phiếu nhập
-      function searchImports() {
-        const code = document.getElementById("searchImportCode").value;
-        const productId = document.getElementById("searchProduct").value;
-        const fromDate = document.getElementById("searchFromDate").value;
-        const toDate = document.getElementById("searchToDate").value;
-
-        let filteredImports = importOrders;
-
-        if (code) {
-          filteredImports = filteredImports.filter((order) =>
-            order.code.toLowerCase().includes(code.toLowerCase())
-          );
-        }
-
-        if (productId) {
-          filteredImports = filteredImports.filter(
-            (order) => order.productId == productId
-          );
-        }
-
-        if (fromDate) {
-          filteredImports = filteredImports.filter(
-            (order) => order.date >= fromDate
-          );
-        }
-
-        if (toDate) {
-          filteredImports = filteredImports.filter(
-            (order) => order.date <= toDate
-          );
-        }
-
-        displaySearchResults(filteredImports);
+      if (productId) {
+        filteredImports = filteredImports.filter(
+          (order) => order.productId == productId
+        );
       }
 
-      // Hiển thị kết quả tìm kiếm
-      function displaySearchResults(results) {
-        const searchResults = document.getElementById("searchResults");
+      if (fromDate) {
+        filteredImports = filteredImports.filter(
+          (order) => order.date >= fromDate
+        );
+      }
 
-        if (results.length === 0) {
-          searchResults.innerHTML = `
+      if (toDate) {
+        filteredImports = filteredImports.filter(
+          (order) => order.date <= toDate
+        );
+      }
+
+      displaySearchResults(filteredImports);
+    }
+
+    // Hiển thị kết quả tìm kiếm
+    function displaySearchResults(results) {
+      const searchResults = document.getElementById("searchResults");
+
+      if (results.length === 0) {
+        searchResults.innerHTML = `
             <div class="text-center py-8 text-gray-400">
               <i class="fas fa-search text-3xl mb-2"></i>
               <p>Không tìm thấy phiếu nhập nào phù hợp.</p>
             </div>
           `;
-          return;
-        }
+        return;
+      }
 
-        searchResults.innerHTML = results
-          .map((order) => {
-            const product = products.find((p) => p.id === order.productId);
-            return `
+      searchResults.innerHTML = results
+        .map((order) => {
+          const product = products.find((p) => p.id === order.productId);
+          return `
             <div class="bg-gray-750 rounded-lg p-4">
               <div class="flex justify-between items-start">
                 <div>
                   <h4 class="font-medium text-white">${order.code}</h4>
-                  <p class="text-sm text-gray-400">${
-                    product ? product.name : "N/A"
-                  } • ${formatDate(order.date)}</p>
-                  <p class="text-xs text-gray-500">Lô: ${
-                    order.batch || "N/A"
-                  } • NCC: ${order.supplier}</p>
+                  <p class="text-sm text-gray-400">${product ? product.name : "N/A"
+            } • ${formatDate(order.date)}</p>
+                  <p class="text-xs text-gray-500">Lô: ${order.batch || "N/A"
+            } • NCC: ${order.supplier}</p>
                 </div>
-                <span class="px-2 py-1 text-xs rounded-full ${
-                  order.completed
-                    ? "bg-green-100 text-green-800"
-                    : "bg-yellow-100 text-yellow-800"
-                }">
+                <span class="px-2 py-1 text-xs rounded-full ${order.completed
+              ? "bg-green-100 text-green-800"
+              : "bg-yellow-100 text-yellow-800"
+            }">
                   ${order.completed ? "Đã hoàn thành" : "Chưa hoàn thành"}
                 </span>
               </div>
@@ -906,227 +758,205 @@
                 <div>
                   <p class="text-gray-400">Thành tiền</p>
                   <p class="text-cyan-400 font-medium">${formatCurrency(
-                    order.price * order.quantity
-                  )}</p>
+              order.price * order.quantity
+            )}</p>
                 </div>
               </div>
               <div class="mt-3 flex justify-end space-x-2">
-                <button onclick="editImportOrder('${
-                  order.id
-                }')" class="text-cyan-400 hover:text-cyan-300 text-sm">
+                <button onclick="editImportOrder('${order.id
+            }')" class="text-cyan-400 hover:text-cyan-300 text-sm">
                   <i class="fas fa-edit"></i> Sửa
                 </button>
-                <button onclick="completeImportOrder('${
-                  order.id
-                }')" class="text-green-400 hover:text-green-300 text-sm ${
-              order.completed ? "hidden" : ""
+                <button onclick="completeImportOrder('${order.id
+            }')" class="text-green-400 hover:text-green-300 text-sm ${order.completed ? "hidden" : ""
             }">
                   <i class="fas fa-check"></i> Hoàn thành
                 </button>
-                <button onclick="viewImportDetails('${
-                  order.id
-                }')" class="text-blue-400 hover:text-blue-300 text-sm">
+                <button onclick="viewImportDetails('${order.id
+            }')" class="text-blue-400 hover:text-blue-300 text-sm">
                   <i class="fas fa-eye"></i> Chi tiết
                 </button>
               </div>
             </div>
           `;
-          })
-          .join("");
-      }
+        })
+        .join("");
+    }
 
-      // Cập nhật thống kê nhập hàng
-      function updateImportStats() {
-        const totalImports = importOrders.length;
-        const totalImportValue = importOrders.reduce(
-          (sum, order) => sum + order.price * order.quantity,
-          0
-        );
-        const pendingImports = importOrders.filter(
-          (order) => !order.completed
-        ).length;
-        const totalProducts = importOrders.reduce(
-          (sum, order) => sum + order.quantity,
-          0
-        );
+    // Cập nhật thống kê nhập hàng
+    function updateImportStats() {
+      const totalImports = importOrders.length;
+      const totalImportValue = importOrders.reduce(
+        (sum, order) => sum + order.price * order.quantity,
+        0
+      );
+      const pendingImports = importOrders.filter(
+        (order) => !order.completed
+      ).length;
+      const totalProducts = importOrders.reduce(
+        (sum, order) => sum + order.quantity,
+        0
+      );
 
-        document.getElementById("totalImports").textContent = totalImports;
-        document.getElementById("totalImportValue").textContent =
-          formatCurrency(totalImportValue);
-        document.getElementById("pendingImports").textContent = pendingImports;
-        document.getElementById("totalProducts").textContent = totalProducts;
-      }
+      document.getElementById("totalImports").textContent = totalImports;
+      document.getElementById("totalImportValue").textContent =
+        formatCurrency(totalImportValue);
+      document.getElementById("pendingImports").textContent = pendingImports;
+      document.getElementById("totalProducts").textContent = totalProducts;
+    }
 
-      // Mở modal tạo phiếu nhập
-      function openImportModal() {
-        currentEditOrderId = null;
-        document.getElementById("importModalTitle").textContent =
-          "Tạo phiếu nhập hàng";
-        document.getElementById("saveImportBtn").textContent = "Lưu phiếu nhập";
+    // Mở modal tạo phiếu nhập
+    function openImportModal() {
+      currentEditOrderId = null;
+      document.getElementById("importModalTitle").textContent =
+        "Tạo phiếu nhập hàng";
+      document.getElementById("saveImportBtn").textContent = "Lưu phiếu nhập";
 
-        // Cập nhật danh sách sản phẩm
-        const productSelect = document.getElementById("importProduct");
-        productSelect.innerHTML = '<option value="">Chọn sản phẩm</option>';
-        products.forEach((product) => {
-          const option = document.createElement("option");
-          option.value = product.id;
-          option.textContent = `${product.name} (${product.code})`;
-          productSelect.appendChild(option);
-        });
+      // Cập nhật danh sách sản phẩm
+      const productSelect = document.getElementById("importProduct");
+      productSelect.innerHTML = '<option value="">Chọn sản phẩm</option>';
+      products.forEach((product) => {
+        const option = document.createElement("option");
+        option.value = product.id;
+        option.textContent = `${product.name} (${product.code})`;
+        productSelect.appendChild(option);
+      });
 
-        // Đặt ngày mặc định là hôm nay
-        document.getElementById("importDate").value = new Date()
-          .toISOString()
-          .split("T")[0];
+      // Đặt ngày mặc định là hôm nay
+      document.getElementById("importDate").value = new Date()
+        .toISOString()
+        .split("T")[0];
 
-        // Tạo mã phiếu tự động
-        const nextId =
-          importOrders.length > 0
-            ? Math.max(
-                ...importOrders.map((o) => parseInt(o.code.split("-")[1]))
-              ) + 1
-            : 1;
-        document.getElementById("importCode").value = `PN-${nextId
-          .toString()
-          .padStart(4, "0")}`;
+      // Tạo mã phiếu tự động
+      const nextId =
+        importOrders.length > 0
+          ? Math.max(
+            ...importOrders.map((o) => parseInt(o.code.split("-")[1]))
+          ) + 1
+          : 1;
+      document.getElementById("importCode").value = `PN-${nextId
+        .toString()
+        .padStart(4, "0")}`;
 
-        // Reset các trường khác
-        document.getElementById("importQuantity").value = "";
-        document.getElementById("importPrice").value = "";
-        document.getElementById("importSupplier").value = "";
-        document.getElementById("importBatch").value = "";
-        document.getElementById("importNote").value = "";
+      // Reset các trường khác
+      document.getElementById("importQuantity").value = "";
+      document.getElementById("importPrice").value = "";
+      document.getElementById("importSupplier").value = "";
+      document.getElementById("importBatch").value = "";
+      document.getElementById("importNote").value = "";
 
-        // Đặt giá nhập mặc định từ giá vốn của sản phẩm
-        document
-          .getElementById("importProduct")
-          .addEventListener("change", function () {
-            const selectedProduct = products.find((p) => p.id == this.value);
-            if (selectedProduct) {
-              document.getElementById("importPrice").value =
-                selectedProduct.costPrice;
-              document.getElementById("importSupplier").value =
-                selectedProduct.supplier;
-            }
-          });
-
-        document.getElementById("importModal").classList.remove("hidden");
-      }
-
-      // Mở modal chỉnh sửa phiếu nhập
-      function editImportOrder(orderId) {
-        const order = importOrders.find((o) => o.id === orderId);
-        if (!order) {
-          alert("Không tìm thấy phiếu nhập!");
-          return;
-        }
-
-        currentEditOrderId = orderId;
-        document.getElementById("importModalTitle").textContent =
-          "Chỉnh sửa phiếu nhập";
-        document.getElementById("saveImportBtn").textContent =
-          "Cập nhật phiếu nhập";
-
-        // Cập nhật danh sách sản phẩm
-        const productSelect = document.getElementById("importProduct");
-        productSelect.innerHTML = '<option value="">Chọn sản phẩm</option>';
-        products.forEach((product) => {
-          const option = document.createElement("option");
-          option.value = product.id;
-          option.textContent = `${product.name} (${product.code})`;
-          if (product.id === order.productId) {
-            option.selected = true;
+      // Đặt giá nhập mặc định từ giá vốn của sản phẩm
+      document
+        .getElementById("importProduct")
+        .addEventListener("change", function () {
+          const selectedProduct = products.find((p) => p.id == this.value);
+          if (selectedProduct) {
+            document.getElementById("importPrice").value =
+              selectedProduct.costPrice;
+            document.getElementById("importSupplier").value =
+              selectedProduct.supplier;
           }
-          productSelect.appendChild(option);
         });
 
-        // Điền thông tin hiện tại vào form
-        document.getElementById("importDate").value = order.date;
-        document.getElementById("importCode").value = order.code;
-        document.getElementById("importQuantity").value = order.quantity;
-        document.getElementById("importPrice").value = order.price;
-        document.getElementById("importSupplier").value = order.supplier;
-        document.getElementById("importBatch").value = order.batch || "";
-        document.getElementById("importNote").value = order.note || "";
+      document.getElementById("importModal").classList.remove("hidden");
+    }
 
-        document.getElementById("importModal").classList.remove("hidden");
+    // Mở modal chỉnh sửa phiếu nhập
+    function editImportOrder(orderId) {
+      const product = products.find(p => p.id === order.productId);
+      document.getElementById("importPrice").value = product ? product.costPrice : order.price;
+      if (!order) {
+        alert("Không tìm thấy phiếu nhập!");
+        return;
       }
 
-      // Đóng modal tạo phiếu nhập
-      function closeImportModal() {
-        document.getElementById("importModal").classList.add("hidden");
-        currentEditOrderId = null;
-      }
+      currentEditOrderId = orderId;
+      document.getElementById("importModalTitle").textContent =
+        "Chỉnh sửa phiếu nhập";
+      document.getElementById("saveImportBtn").textContent =
+        "Cập nhật phiếu nhập";
 
-      // Mở modal tìm kiếm phiếu nhập
-      function openSearchImportModal() {
-        // Cập nhật danh sách sản phẩm cho tìm kiếm
-        const searchProductSelect = document.getElementById("searchProduct");
-        searchProductSelect.innerHTML =
-          '<option value="">Tất cả sản phẩm</option>';
-        products.forEach((product) => {
-          const option = document.createElement("option");
-          option.value = product.id;
-          option.textContent = `${product.name} (${product.code})`;
-          searchProductSelect.appendChild(option);
-        });
-
-        document.getElementById("searchImportModal").classList.remove("hidden");
-      }
-
-      // Đóng modal tìm kiếm phiếu nhập
-      function closeSearchImportModal() {
-        document.getElementById("searchImportModal").classList.add("hidden");
-      }
-
-      // Lưu phiếu nhập (tạo mới hoặc cập nhật)
-      function saveImport() {
-        const code = document.getElementById("importCode").value;
-        const date = document.getElementById("importDate").value;
-        const productId = parseInt(
-          document.getElementById("importProduct").value
-        );
-        const quantity = parseInt(
-          document.getElementById("importQuantity").value
-        );
-        const price = parseFloat(document.getElementById("importPrice").value);
-        const supplier = document.getElementById("importSupplier").value;
-        const batch = document.getElementById("importBatch").value;
-        const note = document.getElementById("importNote").value;
-
-        if (!code || !date || !productId || !quantity || !price || !supplier) {
-          alert("Vui lòng điền đầy đủ thông tin bắt buộc!");
-          return;
+      // Cập nhật danh sách sản phẩm
+      const productSelect = document.getElementById("importProduct");
+      productSelect.innerHTML = '<option value="">Chọn sản phẩm</option>';
+      products.forEach((product) => {
+        const option = document.createElement("option");
+        option.value = product.id;
+        option.textContent = `${product.name} (${product.code})`;
+        if (product.id === order.productId) {
+          option.selected = true;
         }
+        productSelect.appendChild(option);
+      });
 
-        if (currentEditOrderId) {
-          // Cập nhật phiếu nhập hiện có
-          const orderIndex = importOrders.findIndex(
-            (o) => o.id === currentEditOrderId
-          );
-          if (orderIndex !== -1) {
-            importOrders[orderIndex] = {
-              ...importOrders[orderIndex],
-              code,
-              date,
-              productId,
-              quantity,
-              price,
-              supplier,
-              batch,
-              note,
-              updatedAt: new Date().toISOString(),
-            };
+      // Điền thông tin hiện tại vào form
+      document.getElementById("importDate").value = order.date;
+      document.getElementById("importCode").value = order.code;
+      document.getElementById("importQuantity").value = order.quantity;
+      document.getElementById("importPrice").value = order.price;
+      document.getElementById("importSupplier").value = order.supplier;
+      document.getElementById("importBatch").value = order.batch || "";
+      document.getElementById("importNote").value = order.note || "";
 
-            localStorage.setItem("importOrders", JSON.stringify(importOrders));
-            renderImportList();
-            closeImportModal();
-            alert("Cập nhật phiếu nhập thành công!");
-          }
-        } else {
-          // Tạo phiếu nhập mới
-          const newImport = {
-            id: generateId(),
+      document.getElementById("importModal").classList.remove("hidden");
+    }
+
+    // Đóng modal tạo phiếu nhập
+    function closeImportModal() {
+      document.getElementById("importModal").classList.add("hidden");
+      currentEditOrderId = null;
+    }
+
+    // Mở modal tìm kiếm phiếu nhập
+    function openSearchImportModal() {
+      // Cập nhật danh sách sản phẩm cho tìm kiếm
+      const searchProductSelect = document.getElementById("searchProduct");
+      searchProductSelect.innerHTML =
+        '<option value="">Tất cả sản phẩm</option>';
+      products.forEach((product) => {
+        const option = document.createElement("option");
+        option.value = product.id;
+        option.textContent = `${product.name} (${product.code})`;
+        searchProductSelect.appendChild(option);
+      });
+
+      document.getElementById("searchImportModal").classList.remove("hidden");
+    }
+
+    // Đóng modal tìm kiếm phiếu nhập
+    function closeSearchImportModal() {
+      document.getElementById("searchImportModal").classList.add("hidden");
+    }
+
+    // Lưu phiếu nhập (tạo mới hoặc cập nhật)
+    function saveImport() {
+      const code = document.getElementById("importCode").value;
+      const date = document.getElementById("importDate").value;
+      const productId = parseInt(
+        document.getElementById("importProduct").value
+      );
+      const quantity = parseInt(
+        document.getElementById("importQuantity").value
+      );
+      const product = products.find(p => p.id === productId);
+      const price = product ? product.costPrice : parseFloat(document.getElementById("importPrice").value);
+      const supplier = document.getElementById("importSupplier").value;
+      const batch = document.getElementById("importBatch").value;
+      const note = document.getElementById("importNote").value;
+
+      if (!code || !date || !productId || !quantity || !price || !supplier) {
+        alert("Vui lòng điền đầy đủ thông tin bắt buộc!");
+        return;
+      }
+
+      if (currentEditOrderId) {
+        // Cập nhật phiếu nhập hiện có
+        const orderIndex = importOrders.findIndex(
+          (o) => o.id === currentEditOrderId
+        );
+        if (orderIndex !== -1) {
+          importOrders[orderIndex] = {
+            ...importOrders[orderIndex],
             code,
             date,
             productId,
@@ -1135,50 +965,70 @@
             supplier,
             batch,
             note,
-            completed: false,
-            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
           };
 
-          importOrders.push(newImport);
           localStorage.setItem("importOrders", JSON.stringify(importOrders));
-
           renderImportList();
           closeImportModal();
-          alert("Tạo phiếu nhập thành công!");
+          alert("Cập nhật phiếu nhập thành công!");
         }
+      } else {
+        // Tạo phiếu nhập mới
+        const newImport = {
+          id: generateId(),
+          code,
+          date,
+          productId,
+          quantity,
+          price,
+          supplier,
+          batch,
+          note,
+          completed: false,
+          createdAt: new Date().toISOString(),
+        };
+
+        importOrders.push(newImport);
+        localStorage.setItem("importOrders", JSON.stringify(importOrders));
+
+        renderImportList();
+        closeImportModal();
+        alert("Tạo phiếu nhập thành công!");
       }
+    }
 
-      // Hoàn thành phiếu nhập
-      function completeImportOrder(orderId) {
-        if (confirm("Bạn có chắc chắn muốn hoàn thành phiếu nhập này?")) {
-          const orderIndex = importOrders.findIndex((o) => o.id === orderId);
-          if (orderIndex !== -1) {
-            importOrders[orderIndex].completed = true;
-            importOrders[orderIndex].completedAt = new Date().toISOString();
+    // Hoàn thành phiếu nhập
+    function completeImportOrder(orderId) {
+      if (confirm("Bạn có chắc chắn muốn hoàn thành phiếu nhập này?")) {
+        const orderIndex = importOrders.findIndex((o) => o.id === orderId);
+        if (orderIndex !== -1) {
+          importOrders[orderIndex].completed = true;
+          importOrders[orderIndex].completedAt = new Date().toISOString();
 
-            // Cập nhật tồn kho sản phẩm
-            const productIndex = products.findIndex(
-              (p) => p.id === importOrders[orderIndex].productId
-            );
-            if (productIndex !== -1) {
-              products[productIndex].stock += importOrders[orderIndex].quantity;
-            }
-
-            localStorage.setItem("importOrders", JSON.stringify(importOrders));
-            renderImportList();
-            alert("Hoàn thành phiếu nhập thành công!");
+          // Cập nhật tồn kho sản phẩm
+          const productIndex = products.findIndex(
+            (p) => p.id === importOrders[orderIndex].productId
+          );
+          if (productIndex !== -1) {
+            products[productIndex].stock += importOrders[orderIndex].quantity;
           }
+
+          localStorage.setItem("importOrders", JSON.stringify(importOrders));
+          renderImportList();
+          alert("Hoàn thành phiếu nhập thành công!");
         }
       }
+    }
 
-      // Xem chi tiết phiếu nhập
-      function viewImportDetails(orderId) {
-        const order = importOrders.find((o) => o.id === orderId);
-        if (!order) return;
+    // Xem chi tiết phiếu nhập
+    function viewImportDetails(orderId) {
+      const order = importOrders.find((o) => o.id === orderId);
+      if (!order) return;
 
-        const product = products.find((p) => p.id === order.productId);
+      const product = products.find((p) => p.id === order.productId);
 
-        const details = `
+      const details = `
 Mã phiếu: ${order.code}
 Ngày nhập: ${formatDate(order.date)}
 Sản phẩm: ${product ? product.name : "N/A"} (${product ? product.code : "N/A"})
@@ -1191,48 +1041,47 @@ Lô hàng: ${order.batch || "N/A"}
 Ghi chú: ${order.note || "Không có"}
 Trạng thái: ${order.completed ? "Đã hoàn thành" : "Chưa hoàn thành"}
 Ngày tạo: ${formatDateTime(order.createdAt)}
-${
-  order.updatedAt ? `Cập nhật lần cuối: ${formatDateTime(order.updatedAt)}` : ""
-}
-${
-  order.completedAt
-    ? `Ngày hoàn thành: ${formatDateTime(order.completedAt)}`
-    : ""
-}
+${order.updatedAt ? `Cập nhật lần cuối: ${formatDateTime(order.updatedAt)}` : ""
+        }
+${order.completedAt
+          ? `Ngày hoàn thành: ${formatDateTime(order.completedAt)}`
+          : ""
+        }
         `;
 
-        alert(details);
-      }
+      alert(details);
+    }
 
-      // Hàm tiện ích
-      function formatCurrency(amount) {
-        return new Intl.NumberFormat("vi-VN", {
-          style: "currency",
-          currency: "VND",
-        }).format(amount);
-      }
+    // Hàm tiện ích
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      }).format(amount);
+    }
 
-      function formatDate(dateString) {
-        return new Date(dateString).toLocaleDateString("vi-VN");
-      }
+    function formatDate(dateString) {
+      return new Date(dateString).toLocaleDateString("vi-VN");
+    }
 
-      function formatDateTime(dateTimeString) {
-        return new Date(dateTimeString).toLocaleString("vi-VN");
-      }
+    function formatDateTime(dateTimeString) {
+      return new Date(dateTimeString).toLocaleString("vi-VN");
+    }
 
-      function generateId() {
-        return Date.now().toString(36) + Math.random().toString(36).substr(2);
-      }
+    function generateId() {
+      return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
 
-      // Quay lại trang admin
-      function goBack() {
-        window.location.href = "daodienad.html";
-      }
+    // Quay lại trang admin
+    function goBack() {
+      window.location.href = "daodienad.html";
+    }
 
-      // Khởi tạo
-      document.addEventListener("DOMContentLoaded", function () {
-        renderImportList();
-      });
-    </script>
-  </body>
+    // Khởi tạo
+    document.addEventListener("DOMContentLoaded", function () {
+      renderImportList();
+    });
+  </script>
+</body>
+
 </html>
