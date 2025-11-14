@@ -111,15 +111,15 @@
         <div class="space-y-4">
           <!-- Ảnh chính -->
           <div class="w-full max-w-[450px] mx-auto overflow-hidden rounded-xl shadow">
-            <img id="mainImage" src="/img/senvangxoaideo.jpg" alt="Bánh Trung Thu Sen Vàng Xoài Dẻo"
+            <img id="mainImage" src="../img/senvangxoaideo.jpg" alt="Bánh Trung Thu Sen Vàng Xoài Dẻo"
               class="w-full h-auto object-contain transition duration-300 ease-in-out" />
           </div>
 
           <!-- Thumbnail chọn ảnh -->
           <div class="flex ml-3 space-x-2" id="thumbnailContainer">
-            <img src="/img/senvangxoaideo.jpg" alt="#" onclick="changeImage(this)"
+            <img src="../img/senvangxoaideo.jpg" alt="#" onclick="changeImage(this)"
               class="thumbnail w-16 h-16 object-cover rounded cursor-pointer border-2 border-[#8B0000]" />
-            <img src="/img/senvangxoaideo2.jpg" alt="#" onclick="changeImage(this)"
+            <img src="../img/senvangxoaideo2.jpg" alt="#" onclick="changeImage(this)"
               class="thumbnail w-16 h-16 object-cover rounded cursor-pointer border-2 border-transparent hover:border-[#8B0000]" />
           </div>
         </div>
@@ -128,12 +128,18 @@
         <div>
           <h1 class="text-3xl font-bold text-[#8B0000] mb-4 ">Bánh Trung Thu Sen Vàng Xoài Dẻo</h1>
           <hr class="mb-3 w-[117px]">
-          <p class="text-3xl font-semibold text-[#8B0000] mb-4">55.000 ₫</p>
+          <p class="mb-6 text-gray-700 leading-relaxed max-w-md text-justify">
+            Bánh Trung Thu Sen Vàng Xoài Dẻo là sự kết hợp hoàn hảo giữa vị ngọt thanh của xoài dẻo và hương sen
+            dịu nhẹ, tạo nên một trải nghiệm ẩm thực độc đáo. Vỏ bánh mềm mịn, nhân bánh đậm đà với hạt sen bùi bùi,
+            mang đến hương vị truyền thống nhưng không kém phần mới lạ. Sản phẩm được chế biến từ những nguyên liệu
+            tươi ngon, đảm bảo an toàn vệ sinh thực phẩm, phù hợp để thưởng thức trong dịp Tết Trung Thu cùng gia đình
+            và bạn bè.
+          <p class="text-3xl font-semibold text-[#8B0000] mb-4">50.000 ₫</p>
           <!-- <label for="quantity" class="mt-10 block mb-2 text-3xl">Chọn số lượng:</label> -->
           <input type="number" id="quantity" min="1" value="1"
             class="w-32 px-3 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#8B0000] mb-4" />
 
-          <button onclick="addToCart('Bánh Trung Thu Sen Vàng Xoài Dẻo',55000)"
+          <button onclick="addToCart('Bánh Trung Thu Sen Vàng Xoài Dẻo',50000)"
             class="bg-[#8B0000] text-white px-6 py-3 rounded font-semibold hover:bg-red-900 transition">
             THÊM VÀO GIỎ HÀNG
           </button>

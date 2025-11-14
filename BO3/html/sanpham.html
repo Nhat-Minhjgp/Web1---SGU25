@@ -39,6 +39,33 @@
     .dropdown-content a:hover {
       background-color: #f8f5ec;
     }
+
+    .category-section {
+      margin-bottom: 3rem;
+      scroll-margin-top: 100px;
+    }
+
+    .category-title {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 2rem;
+    }
+
+    .category-title::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, #8B0000, #FFD7C2);
+      border-radius: 2px;
+    }
+
+    .category-btn.active {
+      background-color: #8B0000;
+      color: white;
+    }
   </style>
 </head>
 
@@ -104,207 +131,263 @@
   <div class="w-full h-[300px] overflow-hidden">
     <img src="../img/banner2.png" alt="Banner MASH" class="w-full h-full object-cover" />
   </div>
-  <section class=" py-14 max-w-7xl mx-auto px-6 mb-10">
+  
+  <section class="py-14 max-w-7xl mx-auto px-6 mb-10">
 
-    <div class="flex justify-center py-5 mb-6">
-      <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..."
-        class="w-full max-w-md px-4 py-2 border border-[#8B0000] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B0000]"
-        onkeyup="filterProducts()" />
+    <div class="flex flex-col md:flex-row justify-between items-center py-5 mb-6 gap-4">
+      <!-- Thanh tìm kiếm (dài hơn 1.5 lần) -->
+      <div class="w-full md:w-auto">
+        <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..."
+          class="w-full max-w-2xl px-4 py-2 border border-[#8B0000] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B0000]"
+          onkeyup="filterProducts()" />
+      </div>
+      
+      <!-- Các nút danh mục -->
+      <div class="flex flex-wrap justify-center gap-2">
+        <button onclick="showAllProducts()" 
+          class="category-btn px-4 py-2 border border-[#8B0000] text-[#8B0000] rounded-full hover:bg-[#8B0000] hover:text-white transition active">
+          Hiển thị tất cả
+        </button>
+        <button onclick="scrollToCategory('nhan-ngot')" 
+          class="category-btn px-4 py-2 border border-[#8B0000] text-[#8B0000] rounded-full hover:bg-[#8B0000] hover:text-white transition">
+          Nhân Ngọt
+        </button>
+        <button onclick="scrollToCategory('nhan-man')" 
+          class="category-btn px-4 py-2 border border-[#8B0000] text-[#8B0000] rounded-full hover:bg-[#8B0000] hover:text-white transition">
+          Nhân Mặn
+        </button>
+        <button onclick="scrollToCategory('nhan-dac-biet')" 
+          class="category-btn px-4 py-2 border border-[#8B0000] text-[#8B0000] rounded-full hover:bg-[#8B0000] hover:text-white transition">
+          Nhân Đặc Biệt
+        </button>
+      </div>
     </div>
 
-    <!-- <h1 class=" mt-10 text-6xl font-bold text-center text-[#8B0000] mb-10">Danh Mục Sản Phẩm</h1> -->
+    <!-- DANH MỤC NHÂN NGỌT -->
+    <div id="nhan-ngot" class="category-section">
+      <h2 class="category-title text-3xl font-bold text-[#8B0000] mb-8">NHÂN NGỌT</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6" id="nhan-ngot-grid">
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+        <!-- Mãng cầu xiêm sen -->
+        <div class="sp nh-ngot bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+          <div class="flex justify-between items-center text-sm mb-3">
+            <p class="text-[#8B0000] font-semibold">Nhân Ngọt</p>
+            <span class="text-[#8B0000] font-semibold">50.000đ</span>
+          </div>
+          <img src="../img/mangcauxiemsen.jpg" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover"
+            alt="Bánh Trung Thu Mãng Cầu Xiêm Sen">
+          <h4 class="font-semibold mb-2">Trung Thu Mãng Cầu Xiêm Sen</h4>
+          <p class="text-sm text-gray-600 mb-3">Nhân chua thanh nhẹ, quyện vị béo dịu, mang hương sen tao nhã và độc đáo.</p>
+          <a href="./mangcauxiemsen.html"> 
+            <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">
+              Xem chi tiết
+            </button>
+          </a>
+        </div>
 
-  <!-- Mãng cầu xiêm sen -->
-  <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
-    <div class="flex justify-between items-center text-sm mb-3">
-      <p class="text-[#8B0000] font-semibold">Nhân Ngọt</p>
-      <span class="text-[#8B0000] font-semibold">55.000đ</span>
-    </div>
-    <img src="../img/mangcauxiemsen.jpg" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover"
-      alt="Bánh Trung Thu Mãng Cầu Xiêm Sen">
-    <h4 class="font-semibold mb-2">Trung Thu Mãng Cầu Xiêm Sen</h4>
-    <p class="text-sm text-gray-600 mb-3">Nhân chua thanh nhẹ, quyện vị béo dịu, mang hương sen tao nhã và độc đáo.</p>
-    <a href="./mangcauxiemsen.html"> 
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">
-        Xem chi tiết
-      </button>
-    </a>
-  </div>
+        <!-- sữa dừa cafe -->
+        <div class="sp nh-ngot bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+          <div class="flex justify-between items-center text-sm mb-3">
+            <p class="text-[#8B0000] font-semibold">Nhân Ngọt</p>
+            <span class="text-[#8B0000] font-semibold">50.000đ</span>
+          </div>
+          <img src="../img/suaduacafe.jpg" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover"
+            alt="Bánh Trung Thu Sữa Dừa Cafe">
+          <h4 class="font-semibold mb-2">Trung Thu Sữa Dừa Cafe</h4>
+          <p class="text-sm text-gray-600 mb-3">Nhân sữa dừa hòa quyện cà phê, béo ngậy, thơm dịu và ngọt vừa phải.</p>
+          <a href="./suaduacafe.html">
+            <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
+          </a>
+        </div>
 
-  <!-- sữa dừa cafe -->
-  <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
-    <div class="flex justify-between items-center text-sm mb-3">
-      <p class="text-[#8B0000] font-semibold">Nhân Ngọt</p>
-      <span class="text-[#8B0000] font-semibold">55.000đ</span>
-    </div>
-    <img src="../img/suaduacafe.jpg" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover"
-      alt="Bánh Trung Thu Sữa Dừa Cafe">
-    <h4 class="font-semibold mb-2">Trung Thu Sữa Dừa Cafe</h4>
-    <p class="text-sm text-gray-600 mb-3">Nhân sữa dừa hòa quyện cà phê, béo ngậy, thơm dịu và ngọt vừa phải.</p>
-    <a href="./suaduacafe.html">
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
-    </a>
-  </div>
+        <!-- Khế bưởi quế hoa -->
+        <div class="sp nh-ngot bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+          <div class="flex justify-between items-center text-sm mb-3">
+            <p class="text-[#8B0000] font-semibold">Nhân Ngọt</p>
+            <span class="text-[#8B0000] font-semibold">50.000đ</span>
+          </div>
+          <img src="../img/khebuoiquehoa.jpg" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover"
+            alt="Bánh Trung Thu Khế Bưởi Quế Hoa">
+          <h4 class="font-semibold mb-2">Trung Thu Khế Bưởi Quế Hoa</h4>
+          <p class="text-sm text-gray-600 mb-3">Nhân sữa béo nhẹ, ngọt dịu, hòa quyện hương thơm thanh mát và tinh tế.</p>
+          <a href="./khebuoiquehoa.html">
+            <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
+          </a>
+        </div>
 
-  <!-- Khế bưởi quế hoa -->
-  <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
-    <div class="flex justify-between items-center text-sm mb-3">
-      <p class="text-[#8B0000] font-semibold">Nhân Ngọt</p>
-      <span class="text-[#8B0000] font-semibold">55.000đ</span>
-    </div>
-    <img src="../img/khebuoiquehoa.jpg" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover"
-      alt="Bánh Trung Thu Khế Bưởi Quế Hoa">
-    <h4 class="font-semibold mb-2">Trung Thu Khế Bưởi Quế Hoa</h4>
-    <p class="text-sm text-gray-600 mb-3">Nhân sữa béo nhẹ, ngọt dịu, hòa quyện hương thơm thanh mát và tinh tế.</p>
-    <a href="./khebuoiquehoa.html">
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
-    </a>
-  </div>
+        <!-- Vải hồng cánh sen -->
+        <div class="sp nh-ngot bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+          <div class="flex justify-between items-center text-sm mb-3">
+            <p class="text-[#8B0000] font-semibold">Nhân Ngọt</p>
+            <span class="text-[#8B0000] font-semibold">50.000đ</span>
+          </div>
+          <img src="../img/vaihongcanhsen.jpg" class="rounded-lg mb-4 mx-auto h-48 w-full object-cover"
+            alt="Bánh Trung Thu Vải Hồng Cánh Sen">
+          <h4 class="font-semibold mb-2">Trung Thu Vải Hồng Cánh Sen</h4>
+          <p class="text-sm text-gray-600 mb-3">Bánh ngọt thanh hòa quyện hạt sen bùi và hương hoa hồng tinh tế</p>
+          <a href="./vaihongcanhsen.html">
+            <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
+          </a>
+        </div>
 
-  <!-- Vải hồng cánh sen -->
-  <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
-    <div class="flex justify-between items-center text-sm mb-3">
-      <p class="text-[#8B0000] font-semibold">Nhân Ngọt</p>
-      <span class="text-[#8B0000] font-semibold">55.000đ</span>
-    </div>
-    <img src="../img/vaihongcanhsen.jpg" class="rounded-lg mb-4 mx-auto h-48 w-full object-cover"
-      alt="Bánh Trung Thu Vải Hồng Cánh Sen">
-    <h4 class="font-semibold mb-2">Trung Thu Vải Hồng Cánh Sen</h4>
-    <p class="text-sm text-gray-600 mb-3">Bánh ngọt thanh hòa quyện hạt sen bùi và hương hoa hồng tinh tế</p>
-    <a href="./vaihongcanhsen.html">
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
-    </a>
-  </div>
+        <!-- Sen vàng xoài dẻo -->
+        <div class="sp nh-ngot bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+          <div class="flex justify-between items-center text-sm mb-3">
+            <p class="text-[#8B0000] font-semibold">Nhân Ngọt</p>
+            <span class="text-[#8B0000] font-semibold">50.000đ</span>
+          </div>
+          <img src="../img/senvangxoaideo.jpg" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover"
+            alt="Bánh Trung Thu Sen Vàng Xoài Dẻo">
+          <h4 class="font-semibold mb-2">Trung Thu Sen Vàng Xoài Dẻo</h4>
+          <p class="text-sm text-gray-600 mb-3">Nhân ngọt thanh, dẻo mềm hòa quyện vị xoài chín và hương sen thuần khiết.</p>
+          <a href="./senvangxoaideo.html">
+            <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
+          </a>
+        </div>
 
-  <!-- Bò sốt tiêu đen -->
-  <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
-    <div class="flex justify-between items-center text-sm mb-3">
-      <p class="text-[#8B0000] font-semibold">Nhân Mặn</p>
-      <span class="text-[#8B0000] font-semibold">55.000đ</span>
-    </div>
-    <img src="../img/boxottieuden.jpg" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover"
-      alt="Bánh Trung Thu Bò Sốt Tiêu Đen">
-    <h4 class="font-semibold mb-2">Trung Thu Bò Sốt Tiêu Đen</h4>
-    <p class="text-sm text-gray-600 mb-3">Nhân sốt tiêu đen đậm đà cay nhẹ kết hợp mứt và hạt tạo hương vị khó quên.</p>
-    <a href="./bosottieuden.html">
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
-    </a>
-  </div>
+        <!-- Gạo đỏ cốm dừa -->
+        <div class="sp nh-ngot bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+          <div class="flex justify-between items-center text-sm mb-3">
+            <p class="text-[#8B0000] font-semibold">Nhân Ngọt</p>
+            <span class="text-[#8B0000] font-semibold">60.000đ</span>
+          </div>
+          <img src="../img/gaodocomdua.jpg" class="rounded-lg mb-4 mx-auto h-48 w-full object-cover" alt="Bánh Trung Thu">
+          <h4 class="font-semibold mb-2">Trung Thu Gạo Đỏ Cốm Dừa</h4>
+          <p class="text-sm text-gray-600 mb-3">Thơm béo vị sữa, quyện cùng dừa nạo mềm mại, ngọt dịu.</p>
+          <a href="./gaodocomdua.html">
+            <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
+          </a>
+        </div>
 
-  <!-- Nấm truffle thượng hạng -->
-  <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
-    <div class="flex justify-between items-center text-sm mb-3">
-      <p class="text-[#8B0000] font-semibold">Nhân Đặc Biệt</p>
-      <span class="text-[#8B0000] font-semibold">55.000đ</span>
-    </div>
-    <img src="../img/namtruffle.jpg" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover object-top"
-      alt="Bánh Trung Thu Nấm Truffle Thượng Hạng">
-    <h4 class="font-semibold mb-2">Trung Thu Nấm Truffle</h4>
-    <p class="text-sm text-gray-600 mb-3">Nhân nấm truffle cao cấp – đại diện cho tinh thần sáng tạo và tay nghề thủ công</p>
-    <a href="./namtruffle.html">
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
-    </a>
-  </div>
+        <!-- Mơ Tây -->
+        <div class="sp nh-ngot bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+          <div class="flex justify-between items-center text-sm mb-3">
+            <p class="text-[#8B0000] font-semibold">Nhân Ngọt</p>
+            <span class="text-[#8B0000] font-semibold">60.000đ</span>
+          </div>
+          <img src="../img/motay.jpg" class="h-48 rounded-lg mb-4 mx-auto w-full object-cover"
+            alt="Bánh Trung Thu Mơ Tây">
+          <h4 class="font-semibold mb-2">Trung Thu Mơ Tây</h4>
+          <p class="text-sm text-gray-600 mb-3">Nhân Mơ Tây chua ngọt hài hòa, mang vị thu nhẹ nhàng và lạ miệng.</p>
+          <a href="./motay.html">
+            <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
+          </a>
+        </div>
 
-  <!-- Tomyum hải sản -->
-  <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
-    <div class="flex justify-between items-center text-sm mb-3">
-      <p class="text-[#8B0000] font-semibold">Nhân Mặn</p>
-      <span class="text-[#8B0000] font-semibold">55.000đ</span>
-    </div>
-    <img src="../img/tomyumhaisan.jpg" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover"
-      alt="Bánh Trung Thu Tomyum Hải Sản">
-    <h4 class="font-semibold mb-2">Trung Thu Tomyum Hải Sản</h4>
-    <p class="text-sm text-gray-600 mb-3">Tomyum hải sản đem đến trải nghiệm Trung thu đầy thú vị và bổ dưỡng</p>
-    <a href="./tomyumhaisan.html">
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
-    </a>
-  </div>
+        <!-- Cafe -->
+        <div class="sp nh-ngot bg-white border rounded-xl h-full shadow hover:shadow-lg transition p-4 text-center">
+          <div class="flex justify-between items-center text-sm mb-3">
+            <p class="text-[#8B0000] font-semibold">Nhân Ngọt</p>
+            <span class="text-[#8B0000] font-semibold">60.000đ</span>
+          </div>
+          <img src="../img/cafe.jpg" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu Cafe">
+          <h4 class="font-semibold mb-2">Trung Thu Cafe</h4>
+          <p class="text-sm text-gray-600 mb-3">Nhân Cà Phê đậm đà, thơm ngậy như một tách cà phê tinh tế giữa mùa thu.</p>
+          <a href="./cafe.html">
+            <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
+          </a>
+        </div>
 
-  <!-- Sen vàng xoài dẻo -->
-  <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
-    <div class="flex justify-between items-center text-sm mb-3">
-      <p class="text-[#8B0000] font-semibold">Nhân Ngọt</p>
-      <span class="text-[#8B0000] font-semibold">55.000đ</span>
-    </div>
-    <img src="../img/senvangxoaideo.jpg" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover"
-      alt="Bánh Trung Thu Sen Vàng Xoài Dẻo">
-    <h4 class="font-semibold mb-2">Trung Thu Sen Vàng Xoài Dẻo</h4>
-    <p class="text-sm text-gray-600 mb-3">Nhân ngọt thanh, dẻo mềm hòa quyện vị xoài chín và hương sen thuần khiết.</p>
-    <a href="./senvangxoaideo.html">
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
-    </a>
-  </div>
+        <!-- Nam Việt Quất -->
+        <div class="sp nh-ngot bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+          <div class="flex justify-between items-center text-sm mb-3">
+           <p class="text-[#8B0000] font-semibold">Nhân Ngọt</p>
+            <span class="text-[#8B0000] font-semibold">60.000đ</span>
+          </div>
+          <img src="../img/namvietquat.jpg" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover"
+            alt="Bánh Trung Thu Nam Việt Quất">
+          <h4 class="font-semibold mb-2">Trung Thu Nam Việt Quất</h4>
+          <p class="text-sm text-gray-600 mb-3">Nhân Nam Việt Quốc chua ngọt thanh lịch, phảng phất vị Tây phương hiện đại.</p>
+          <a href="./namvietquat.html">
+            <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
+          </a>
+        </div>
+      </div>
 
-  <!-- Gạo đỏ cốm dừa -->
-  <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
-    <div class="flex justify-between items-center text-sm mb-3">
-      <p class="text-[#8B0000] font-semibold">Nhân Ngọt</p>
-      <span class="text-[#8B0000] font-semibold">55.000đ</span>
-    </div>
-    <img src="../img/gaodocomdua.jpg" class="rounded-lg mb-4 mx-auto h-48 w-full object-cover" alt="Bánh Trung Thu">
-    <h4 class="font-semibold mb-2">Trung Thu Gạo Đỏ Cốm Dừa</h4>
-    <p class="text-sm text-gray-600 mb-3">Thơm béo vị sữa, quyện cùng dừa nạo mềm mại, ngọt dịu.</p>
-    <a href="./gaodocomdua.html">
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
-    </a>
-  </div>
+      <!-- Thông báo không tìm thấy sản phẩm cho nhân ngọt -->
+      <div id="noResultsNhanNgot" class="hidden text-center py-8">
+        <p class="text-gray-500 text-lg">Không tìm thấy sản phẩm phù hợp trong Nhân Ngọt</p>
+      </div>
 
-  <!-- Mơ Tây -->
-  <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
-    <div class="flex justify-between items-center text-sm mb-3">
-      <p class="text-[#8B0000] font-semibold">Nhân Ngọt</p>
-      <span class="text-[#8B0000] font-semibold">55.000đ</span>
-    </div>
-    <img src="../img/motay.jpg" class="h-48 rounded-lg mb-4 mx-auto w-full object-cover"
-      alt="Bánh Trung Thu Mơ Tây">
-    <h4 class="font-semibold mb-2">Trung Thu Mơ Tây</h4>
-    <p class="text-sm text-gray-600 mb-3">Nhân Mơ Tây chua ngọt hài hòa, mang vị thu nhẹ nhàng và lạ miệng.</p>
-    <a href="./motay.html">
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
-    </a>
-  </div>
-
-  <!-- Cafe -->
-  <div class="sp bg-white border rounded-xl h-full shadow hover:shadow-lg transition p-4 text-center">
-    <div class="flex justify-between items-center text-sm mb-3">
-      <p class="text-[#8B0000] font-semibold">Nhân Ngọt</p>
-      <span class="text-[#8B0000] font-semibold">55.000đ</span>
-    </div>
-    <img src="../img/cafe.jpg" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover" alt="Bánh Trung Thu Cafe">
-    <h4 class="font-semibold mb-2">Trung Thu Cafe</h4>
-    <p class="text-sm text-gray-600 mb-3">Nhân Cà Phê đậm đà, thơm ngậy như một tách cà phê tinh tế giữa mùa thu.</p>
-    <a href="./cafe.html">
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
-    </a>
-  </div>
-
-  <!-- Nam Việt Quất -->
-  <div class="sp bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
-    <div class="flex justify-between items-center text-sm mb-3">
-     <p class="text-[#8B0000] font-semibold">Nhân Ngọt</p>
-      <span class="text-[#8B0000] font-semibold">55.000đ</span>
-    </div>
-    <img src="../img/namvietquat.jpg" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover"
-      alt="Bánh Trung Thu Nam Việt Quất">
-    <h4 class="font-semibold mb-2">Trung Thu Nam Việt Quất</h4>
-    <p class="text-sm text-gray-600 mb-3">Nhân Nam Việt Quốc chua ngọt thanh lịch, phảng phất vị Tây phương hiện đại.</p>
-    <a href="./namvietquat.html">
-      <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
-    </a>
-  </div>
-</div>
-
-
-    <div class="flex justify-center mt-10 space-x-2">
-      <button onclick="changePage(1)"
-        class="px-4 py-2 border border-[#8B0000] bg-white text-[#8B0000] rounded hover:bg-red-900 hover:text-white">1</button>
-      <button onclick="changePage(2)"
-        class="px-4 py-2 bg-white border-[#8B0000] border text-[#8B0000] rounded hover:bg-[#880000] hover:text-white">2</button>
+      <!-- Phân trang cho nhân ngọt -->
+      <div class="nhan-ngot-pagination flex justify-center mt-10 space-x-2">
+        <button onclick="changeNhanNgotPage(1)"
+          class="px-4 py-2 border border-[#8B0000] bg-white text-[#8B0000] rounded hover:bg-red-900 hover:text-white">1</button>
+        <button onclick="changeNhanNgotPage(2)"
+          class="px-4 py-2 bg-white border-[#8B0000] border text-[#8B0000] rounded hover:bg-[#880000] hover:text-white">2</button>
+      </div>
     </div>
 
+    <!-- DANH MỤC NHÂN MẶN -->
+    <div id="nhan-man" class="category-section">
+      <h2 class="category-title text-3xl font-bold text-[#8B0000] mb-8">NHÂN MẶN</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+
+        <!-- Bò sốt tiêu đen -->
+        <div class="sp nh-man bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+          <div class="flex justify-between items-center text-sm mb-3">
+            <p class="text-[#8B0000] font-semibold">Nhân Mặn</p>
+            <span class="text-[#8B0000] font-semibold">70.000đ</span>
+          </div>
+          <img src="../img/boxottieuden.jpg" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover"
+            alt="Bánh Trung Thu Bò Sốt Tiêu Đen">
+          <h4 class="font-semibold mb-2">Trung Thu Bò Sốt Tiêu Đen</h4>
+          <p class="text-sm text-gray-600 mb-3">Nhân sốt tiêu đen đậm đà cay nhẹ kết hợp mứt và hạt tạo hương vị khó quên.</p>
+          <a href="./bosottieuden.html">
+            <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
+          </a>
+        </div>
+
+        <!-- Tomyum hải sản -->
+        <div class="sp nh-man bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+          <div class="flex justify-between items-center text-sm mb-3">
+            <p class="text-[#8B0000] font-semibold">Nhân Mặn</p>
+            <span class="text-[#8B0000] font-semibold">70.000đ</span>
+          </div>
+          <img src="../img/tomyumhaisan.jpg" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover"
+            alt="Bánh Trung Thu Tomyum Hải Sản">
+          <h4 class="font-semibold mb-2">Trung Thu Tomyum Hải Sản</h4>
+          <p class="text-sm text-gray-600 mb-3">Tomyum hải sản đem đến trải nghiệm Trung thu đầy thú vị và bổ dưỡng</p>
+          <a href="./tomyumhaisan.html">
+            <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Thông báo không tìm thấy sản phẩm cho nhân mặn -->
+      <div id="noResultsNhanMan" class="hidden text-center py-8">
+        <p class="text-gray-500 text-lg">Không tìm thấy sản phẩm phù hợp trong Nhân Mặn</p>
+      </div>
+    </div>
+
+    <!-- DANH MỤC NHÂN ĐẶC BIỆT -->
+    <div id="nhan-dac-biet" class="category-section">
+      <h2 class="category-title text-3xl font-bold text-[#8B0000] mb-8">NHÂN ĐẶC BIỆT</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+
+        <!-- Nấm truffle thượng hạng -->
+        <div class="sp nh-dac-biet bg-white border rounded-xl shadow hover:shadow-lg transition p-4 text-center">
+          <div class="flex justify-between items-center text-sm mb-3">
+            <p class="text-[#8B0000] font-semibold">Nhân Đặc Biệt</p>
+            <span class="text-[#8B0000] font-semibold">90.000đ</span>
+          </div>
+          <img src="../img/namtruffle.jpg" class="rounded-lg mb-4 mx-auto w-full h-48 object-cover object-top"
+            alt="Bánh Trung Thu Nấm Truffle Thượng Hạng">
+          <h4 class="font-semibold mb-2">Trung Thu Nấm Truffle</h4>
+          <p class="text-sm text-gray-600 mb-3">Nhân nấm truffle cao cấp – đại diện cho tinh thần sáng tạo và tay nghề thủ công</p>
+          <a href="./namtruffle.html">
+            <button class="bg-[#8B0000] text-white px-4 py-2 rounded-full text-sm hover:bg-red-900">Xem chi tiết</button>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Thông báo không tìm thấy sản phẩm cho nhân đặc biệt -->
+      <div id="noResultsNhanDacBiet" class="hidden text-center py-8">
+        <p class="text-gray-500 text-lg">Không tìm thấy sản phẩm phù hợp trong Nhân Đặc Biệt</p>
+      </div>
+    </div>
 
   </section>
 
@@ -371,9 +454,77 @@
 
   </a>
 
-
-  <!-- script nút lăn lên -->
   <script>
+    // Hàm scroll đến danh mục
+    function scrollToCategory(categoryId) {
+      const element = document.getElementById(categoryId);
+      if (element) {
+        // Cập nhật trạng thái active cho nút
+        document.querySelectorAll('.category-btn').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+        
+        // Scroll đến phần tử
+        element.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    }
+
+    // Hàm hiển thị tất cả sản phẩm
+    function showAllProducts() {
+      // Xóa dữ liệu đã nhập trong ô tìm kiếm
+      document.getElementById('searchInput').value = '';
+      
+      // Cập nhật trạng thái active cho nút
+      document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      
+      // Hiển thị tất cả sản phẩm
+      const allProducts = document.querySelectorAll('.sp');
+      allProducts.forEach(product => {
+        product.style.display = 'block';
+      });
+      
+      // Ẩn tất cả thông báo không tìm thấy sản phẩm
+      document.getElementById('noResultsNhanNgot').classList.add('hidden');
+      document.getElementById('noResultsNhanMan').classList.add('hidden');
+      document.getElementById('noResultsNhanDacBiet').classList.add('hidden');
+      
+      // Reset phân trang cho nhân ngọt
+      changeNhanNgotPage(1);
+      
+      // Scroll lên đầu trang để người dùng thấy tất cả sản phẩm
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Theo dõi scroll để cập nhật nút active
+    window.addEventListener('scroll', function() {
+      const sections = document.querySelectorAll('.category-section');
+      const navButtons = document.querySelectorAll('.category-btn');
+      
+      let currentSection = '';
+      
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        const sectionHeight = section.clientHeight;
+        if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+          currentSection = section.id;
+        }
+      });
+      
+      navButtons.forEach(button => {
+        button.classList.remove('active');
+        if (button.onclick && button.onclick.toString().includes(currentSection)) {
+          button.classList.add('active');
+        }
+      });
+    });
+
     const scrollBtn = document.getElementById('scrollToTopBtn');
 
     window.addEventListener('scroll', () => {
@@ -390,27 +541,6 @@
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-  </script>
-
-
-
-  <script>
-    const itemsPerPage = 8;
-    const items = document.querySelectorAll('.sp');
-    let currentPage = 1;
-
-    function changePage(page) {
-      currentPage = page;
-      const start = (page - 1) * itemsPerPage;
-      const end = start + itemsPerPage;
-
-      items.forEach((item, index) => {
-        item.style.display = (index >= start && index < end) ? 'block' : 'none';
-      });
-    }
-
-    // Khởi tạo trang đầu tiên
-    changePage(1);
   </script>
 
   <script>
@@ -444,9 +574,41 @@
         userProfile.classList.add("hidden");
         userProfile.classList.remove("flex");
       }
+
+      // Khởi tạo phân trang cho nhân ngọt
+      changeNhanNgotPage(1);
     });
   </script>
-  <script>
+  
+ <script>
+    // Phân trang cho nhân ngọt
+    function changeNhanNgotPage(page) {
+      const itemsPerPage = 8;
+      const nhannNgotItems = document.querySelectorAll('.nh-ngot');
+      const totalItems = nhannNgotItems.length;
+      
+      // Chỉ hiển thị phân trang nếu có nhiều hơn itemsPerPage sản phẩm
+      const paginationContainer = document.querySelector('.nhan-ngot-pagination');
+      if (paginationContainer) {
+        if (totalItems <= itemsPerPage) {
+          paginationContainer.style.display = 'none';
+        } else {
+          paginationContainer.style.display = 'flex';
+        }
+      }
+      
+      const start = (page - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+
+      nhannNgotItems.forEach((item, index) => {
+        if (index >= start && index < end) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
     function filterProducts() {
       // Lấy giá trị từ ô tìm kiếm và chuẩn hóa (bỏ dấu, chuyển thành chữ thường)
       const searchTerm = document.getElementById('searchInput').value
@@ -456,13 +618,17 @@
         .replace(/đ/g, 'd')
         .replace(/Đ/g, 'D');
 
-      // Lấy tất cả các sản phẩm
-      const products = document.querySelectorAll('.sp');
-      let visibleCount = 0;
+      // Lấy tất cả các sản phẩm theo từng danh mục
+      const nhanNgotItems = document.querySelectorAll('.nh-ngot');
+      const nhanManItems = document.querySelectorAll('.nh-man');
+      const nhanDacBietItems = document.querySelectorAll('.nh-dac-biet');
 
-      // Duyệt qua từng sản phẩm và kiểm tra
-      products.forEach(product => {
-        // Lấy thông tin sản phẩm để tìm kiếm
+      let foundNhanNgot = false;
+      let foundNhanMan = false;
+      let foundNhanDacBiet = false;
+
+      // Kiểm tra sản phẩm nhân ngọt
+      nhanNgotItems.forEach(product => {
         const productName = product.querySelector('h4').textContent
           .toLowerCase()
           .normalize('NFD')
@@ -477,49 +643,104 @@
           .replace(/đ/g, 'd')
           .replace(/Đ/g, 'D');
 
-        // Kiểm tra xem sản phẩm có khớp với từ khóa tìm kiếm không
-        const isVisible = productName.includes(searchTerm) ||
-          productDescription.includes(searchTerm);
+        const isVisible = productName.includes(searchTerm) || productDescription.includes(searchTerm);
 
-        // Hiển thị hoặc ẩn sản phẩm
         if (isVisible) {
           product.style.display = 'block';
-          visibleCount++;
+          foundNhanNgot = true;
         } else {
           product.style.display = 'none';
         }
       });
 
-      // Hiển thị thông báo nếu không tìm thấy sản phẩm nào
-      showNoResultsMessage(visibleCount === 0);
+      // Kiểm tra sản phẩm nhân mặn
+      nhanManItems.forEach(product => {
+        const productName = product.querySelector('h4').textContent
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/đ/g, 'd')
+          .replace(/Đ/g, 'D');
+
+        const productDescription = product.querySelector('p').textContent
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/đ/g, 'd')
+          .replace(/Đ/g, 'D');
+
+        const isVisible = productName.includes(searchTerm) || productDescription.includes(searchTerm);
+
+        if (isVisible) {
+          product.style.display = 'block';
+          foundNhanMan = true;
+        } else {
+          product.style.display = 'none';
+        }
+      });
+
+      // Kiểm tra sản phẩm nhân đặc biệt
+      nhanDacBietItems.forEach(product => {
+        const productName = product.querySelector('h4').textContent
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/đ/g, 'd')
+          .replace(/Đ/g, 'D');
+
+        const productDescription = product.querySelector('p').textContent
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/đ/g, 'd')
+          .replace(/Đ/g, 'D');
+
+        const isVisible = productName.includes(searchTerm) || productDescription.includes(searchTerm);
+
+        if (isVisible) {
+          product.style.display = 'block';
+          foundNhanDacBiet = true;
+        } else {
+          product.style.display = 'none';
+        }
+      });
+
+      // Hiển thị thông báo cho từng danh mục
+      showNoResultsMessage('noResultsNhanNgot', !foundNhanNgot && searchTerm.length > 0);
+      showNoResultsMessage('noResultsNhanMan', !foundNhanMan && searchTerm.length > 0);
+      showNoResultsMessage('noResultsNhanDacBiet', !foundNhanDacBiet && searchTerm.length > 0);
+      
+      // Cập nhật phân trang sau khi tìm kiếm
+      updatePaginationAfterSearch();
     }
 
-    function showNoResultsMessage(show) {
-      // Kiểm tra xem đã có thông báo chưa
-      let messageElement = document.getElementById('noResultsMessage');
+    function updatePaginationAfterSearch() {
+      const nhannNgotItems = document.querySelectorAll('.nh-ngot');
+      const visibleNhanNgotItems = Array.from(nhannNgotItems).filter(item => 
+        item.style.display !== 'none'
+      );
+      
+      const paginationContainer = document.querySelector('.nhan-ngot-pagination');
+      if (paginationContainer) {
+        if (visibleNhanNgotItems.length <= 8) {
+          paginationContainer.style.display = 'none';
+          // Hiển thị tất cả sản phẩm nhân ngọt nếu ít hơn 8
+          visibleNhanNgotItems.forEach(item => {
+            item.style.display = 'block';
+          });
+        } else {
+          paginationContainer.style.display = 'flex';
+          changeNhanNgotPage(1); // Reset về trang 1
+        }
+      }
+    }
 
+    function showNoResultsMessage(elementId, show) {
+      const element = document.getElementById(elementId);
       if (show) {
-        if (!messageElement) {
-          // Tạo thông báo nếu chưa có
-          messageElement = document.createElement('div');
-          messageElement.id = 'noResultsMessage';
-          messageElement.className = 'col-span-full text-center py-8';
-          messageElement.innerHTML = `
-        <p class="text-gray-500 text-lg mb-4">Không tìm thấy sản phẩm phù hợp</p>
-        <button onclick="clearSearch()" class="bg-[#8B0000] text-white px-6 py-2 rounded-full hover:bg-red-900 transition">
-          Hiển thị tất cả sản phẩm
-        </button>
-      `;
-
-          // Chèn thông báo vào grid
-          const grid = document.querySelector('.grid');
-          grid.appendChild(messageElement);
-        }
+        element.classList.remove('hidden');
       } else {
-        // Xóa thông báo nếu có
-        if (messageElement) {
-          messageElement.remove();
-        }
+        element.classList.add('hidden');
       }
     }
 
@@ -533,38 +754,19 @@
         product.style.display = 'block';
       });
 
-      // Ẩn thông báo
-      showNoResultsMessage(false);
-
-      // Reset về trang đầu tiên
-      changePage(1);
+      // Ẩn tất cả thông báo
+      showNoResultsMessage('noResultsNhanNgot', false);
+      showNoResultsMessage('noResultsNhanMan', false);
+      showNoResultsMessage('noResultsNhanDacBiet', false);
+      
+      // Reset phân trang cho nhân ngọt
+      changeNhanNgotPage(1);
     }
 
     // Thêm sự kiện cho ô tìm kiếm để tìm kiếm real-time
     document.getElementById('searchInput').addEventListener('input', filterProducts);
-
-    // Cải tiến hàm changePage để hoạt động tốt với tính năng tìm kiếm
-    const originalChangePage = window.changePage;
-    window.changePage = function (page) {
-      // Lấy tất cả sản phẩm đang hiển thị (không phải đang bị ẩn)
-      const visibleProducts = Array.from(document.querySelectorAll('.sp'))
-        .filter(product => product.style.display !== 'none');
-
-      if (visibleProducts.length === 0) {
-        // Nếu không có sản phẩm nào hiển thị (do tìm kiếm), hiển thị tất cả
-        const allProducts = document.querySelectorAll('.sp');
-        allProducts.forEach(product => {
-          product.style.display = 'block';
-        });
-      }
-
-      // Gọi hàm phân trang gốc
-      originalChangePage(page);
-    }
-  </script>
-
+</script>
 
 </body>
-
 
 </html>
