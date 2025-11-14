@@ -32,6 +32,29 @@
       opacity: 0.6;
       background-color: rgba(75, 85, 99, 0.3);
     }
+
+    .alert-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .alert-box {
+      background: #1f2937;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+      border: 1px solid #374151;
+    }
   </style>
 </head>
 
@@ -45,7 +68,6 @@
       </button>
       <h1 class="text-2xl font-bold text-cyan-400">Quản lý Nhập hàng</h1>
     </div>
-    <!-- Đã bỏ nút đăng xuất theo yêu cầu -->
   </header>
 
   <div class="flex h-[calc(100vh-80px)]">
@@ -70,31 +92,31 @@
       </div>
 
       <nav class="space-y-2 pt-2">
-        <button onclick="window.location.href='quanlykhachhang.html'"
+        <button onclick="navigateTo('quanlykhachhang.html')"
           class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
           <i class="fas fa-users mr-2"></i> Quản lý người dùng
         </button>
-        <button onclick="window.location.href='quanlyloaisanpham.html'"
+        <button onclick="navigateTo('quanlyloaisanpham.html')"
           class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
           <i class="fas fa-tags mr-2"></i> Loại sản phẩm
         </button>
-        <button onclick="window.location.href='danhmucsanpham.html'"
+        <button onclick="navigateTo('danhmucsanpham.html')"
           class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
           <i class="fas fa-boxes mr-2"></i> Danh mục sản phẩm
         </button>
-        <button onclick="window.location.href='quanlyhangnhap.html'"
+        <button onclick="navigateTo('quanlyhangnhap.html')"
           class="block w-full text-left px-4 py-2 rounded-lg bg-cyan-600 text-white transition">
           <i class="fas fa-arrow-down mr-2"></i> Quản lý hàng nhập
         </button>
-        <button onclick="window.location.href='quanlydondathang.html'"
+        <button onclick="navigateTo('quanlydondathang.html')"
           class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
           <i class="fas fa-receipt mr-2"></i> Quản lý đơn đặt hàng
         </button>
-        <button onclick="window.location.href='giaban.html'"
+        <button onclick="navigateTo('giaban.html')"
           class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
           <i class="fas fa-tag mr-2"></i> Giá bán
         </button>
-        <button onclick="window.location.href='hangtonkho.html'"
+        <button onclick="navigateTo('hangtonkho.html')"
           class="block w-full text-left px-4 py-2 rounded-lg hover:text-cyan-400 hover:bg-gray-700 transition">
           <i class="fas fa-warehouse mr-2"></i> Tồn kho
         </button>
@@ -137,9 +159,7 @@
             <div class="flex justify-between items-center">
               <div>
                 <p class="text-gray-400 text-sm">Tổng giá trị nhập</p>
-                <p class="text-2xl font-bold text-white" id="totalImportValue">
-                  0₫
-                </p>
+                <p class="text-2xl font-bold text-white" id="totalImportValue">0₫</p>
               </div>
               <div class="bg-gray-700 p-3 rounded-full">
                 <i class="fas fa-coins text-cyan-400"></i>
@@ -150,9 +170,7 @@
             <div class="flex justify-between items-center">
               <div>
                 <p class="text-gray-400 text-sm">Phiếu chưa hoàn thành</p>
-                <p class="text-2xl font-bold text-white" id="pendingImports">
-                  0
-                </p>
+                <p class="text-2xl font-bold text-white" id="pendingImports">0</p>
               </div>
               <div class="bg-gray-700 p-3 rounded-full">
                 <i class="fas fa-clock text-cyan-400"></i>
@@ -163,9 +181,7 @@
             <div class="flex justify-between items-center">
               <div>
                 <p class="text-gray-400 text-sm">Tổng sản phẩm nhập</p>
-                <p class="text-2xl font-bold text-white" id="totalProducts">
-                  0
-                </p>
+                <p class="text-2xl font-bold text-white" id="totalProducts">0</p>
               </div>
               <div class="bg-gray-700 p-3 rounded-full">
                 <i class="fas fa-box text-cyan-400"></i>
@@ -179,38 +195,18 @@
           <table class="min-w-full divide-y divide-gray-700">
             <thead class="bg-gray-750">
               <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                  Mã phiếu
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                  Ngày nhập
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                  Sản phẩm
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                  Loại
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                  Số lượng
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                  Giá nhập
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                  Thành tiền
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                  Trạng thái
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                  Thao tác
-                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Mã phiếu</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Ngày nhập</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Sản phẩm</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Loại</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Số lượng</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Giá nhập</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Thành tiền</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Trạng thái</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Thao tác</th>
               </tr>
             </thead>
-            <tbody id="importTableBody" class="bg-gray-800 divide-y divide-gray-700">
-              <!-- Dữ liệu phiếu nhập sẽ được thêm vào đây -->
-            </tbody>
+            <tbody id="importTableBody" class="bg-gray-800 divide-y divide-gray-700"></tbody>
           </table>
         </div>
         <div id="noImportMessage" class="text-center py-8 text-gray-400 hidden">
@@ -225,9 +221,7 @@
   <div id="importModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
     <div class="bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
       <div class="flex justify-between items-center p-6 border-b border-gray-700">
-        <h3 class="text-xl font-bold text-cyan-400" id="importModalTitle">
-          Tạo phiếu nhập hàng
-        </h3>
+        <h3 class="text-xl font-bold text-cyan-400" id="importModalTitle">Tạo phiếu nhập hàng</h3>
         <button onclick="closeImportModal()" class="text-gray-400 hover:text-white">
           <i class="fas fa-times text-xl"></i>
         </button>
@@ -254,7 +248,6 @@
             class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
             required>
             <option value="">Chọn sản phẩm</option>
-            <!-- Options sẽ được thêm bằng JavaScript -->
           </select>
         </div>
 
@@ -329,7 +322,6 @@
             <select id="searchProduct"
               class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
               <option value="">Tất cả sản phẩm</option>
-              <!-- Options sẽ được thêm bằng JavaScript -->
             </select>
           </div>
           <div>
@@ -351,12 +343,8 @@
         </div>
 
         <div class="border-t border-gray-700 pt-4">
-          <h4 class="text-lg font-medium text-gray-300 mb-4">
-            Kết quả tìm kiếm
-          </h4>
-          <div id="searchResults" class="space-y-3 max-h-96 overflow-y-auto">
-            <!-- Kết quả tìm kiếm sẽ được hiển thị ở đây -->
-          </div>
+          <h4 class="text-lg font-medium text-gray-300 mb-4">Kết quả tìm kiếm</h4>
+          <div id="searchResults" class="space-y-3 max-h-96 overflow-y-auto"></div>
         </div>
       </div>
       <div class="flex justify-end space-x-3 p-6 border-t border-gray-700">
@@ -369,695 +357,44 @@
   </div>
 
   <script>
-    // Dữ liệu sản phẩm từ trang chủ
+    // ========== DATA ==========
     const products = [
-      {
-        id: 1,
-        type: "Nhân ngọt",
-        code: "MCXS01",
-        name: "Trung Thu Mãng Cầu Xiêm Sen",
-        costPrice: 25000,
-        stock: 50,
-        unit: "Cái",
-        supplier: "Nhà cung cấp A",
-        description:
-          "Nhân chua thanh nhẹ, quyện vị béo dịu, mang hương sen tao nhã và độc đáo.",
-      },
-      {
-        id: 2,
-        type: "Nhân ngọt",
-        code: "SDC01",
-        name: "Trung Thu Sữa Dừa Cafe",
-        costPrice: 25000,
-        stock: 45,
-        unit: "Cái",
-        supplier: "Nhà cung cấp A",
-        description:
-          "Nhân sữa dừa hòa quyện cà phê, béo ngậy, thơm dịu và ngọt vừa phải.",
-      },
-      {
-        id: 3,
-        type: "Nhân ngọt",
-        code: "KBQH01",
-        name: "Trung Thu Khế Bưởi Quế Hoa",
-        costPrice: 25000,
-        stock: 30,
-        unit: "Cái",
-        supplier: "Nhà cung cấp B",
-        description:
-          "Nhân sữa béo nhẹ, ngọt dịu, hòa quyện hương thơm thanh mát và tinh tế.",
-      },
-      {
-        id: 4,
-        type: "Nhân ngọt",
-        code: "VHCS01",
-        name: "Trung Thu Vải Hồng Cánh Sen",
-        costPrice: 25000,
-        stock: 25,
-        unit: "Cái",
-        supplier: "Nhà cung cấp B",
-        description:
-          "Bánh ngọt thanh hòa quyện hạt sen bùi và hương hoa hồng tinh tế",
-      },
-      {
-        id: 5,
-        type: "Nhân mặn",
-        code: "BSTD01",
-        name: "Trung Thu Bò Sốt Tiêu Đen",
-        costPrice: 35000,
-        stock: 40,
-        unit: "Cái",
-        supplier: "Nhà cung cấp C",
-        description:
-          "Nhân sốt tiêu đen đậm đà cay nhẹ kết hợp mứt và hạt tạo hương vị khó quên.",
-      },
-      {
-        id: 6,
-        type: "Đặc biệt",
-        code: "NTT01",
-        name: "Trung Thu Nấm Truffle",
-        costPrice: 45000,
-        stock: 15,
-        unit: "Cái",
-        supplier: "Nhà cung cấp D",
-        description:
-          "Nhân nấm truffle cao cấp – đại diện cho tinh thần sáng tạo và tay nghề thủ công",
-      },
-      {
-        id: 7,
-        type: "Nhân mặn",
-        code: "TMHS01",
-        name: "Trung Thu Tomyum Hải Sản",
-        costPrice: 35000,
-        stock: 35,
-        unit: "Cái",
-        supplier: "Nhà cung cấp C",
-        description:
-          "Tomyum hải sản đem đến trải nghiệm Trung thu đầy thú vị và bổ dưỡng",
-      },
-      {
-        id: 8,
-        type: "Nhân ngọt",
-        code: "SVXD01",
-        name: "Trung Thu Sen Vàng Xoài Dẻo",
-        costPrice: 25000,
-        stock: 40,
-        unit: "Cái",
-        supplier: "Nhà cung cấp A",
-        description:
-          "Nhân ngọt thanh, dẻo mềm hòa quyện vị xoài chín và hương sen thuần khiết.",
-      },
-      {
-        id: 9,
-        type: "Nhân ngọt",
-        code: "GDCD01",
-        name: "Trung Thu Gạo Đỏ Cốm Dừa",
-        costPrice: 30000,
-        stock: 40,
-        unit: "Cái",
-        supplier: "Nhà cung cấp A",
-        description: "Thơm béo vị sữa, quyện cùng dừa nạo mềm mại, ngọt dịu.",
-      },
-      {
-        id: 10,
-        type: "Nhân ngọt",
-        code: "MT01",
-        name: "Trung Thu Mơ Tây",
-        costPrice: 30000,
-        stock: 40,
-        unit: "Cái",
-        supplier: "Nhà cung cấp B",
-        description:
-          "Nhân Mơ Tây chua ngọt hài hòa, mang vị thu nhẹ nhàng và lạ miệng.",
-      },
-      {
-        id: 11,
-        type: "Nhân ngọt",
-        code: "CAFE01",
-        name: "Trung Thu Cafe",
-        costPrice: 30000,
-        stock: 40,
-        unit: "Cái",
-        supplier: "Nhà cung cấp A",
-        description:
-          "Nhân Cà Phê đậm đà, thơm ngậy như một tách cà phê tinh tế giữa mùa thu.",
-      },
-      {
-        id: 12,
-        type: "Nhân ngọt",
-        code: "VQ01",
-        name: "Trung Thu Nam Việt Quất",
-        costPrice: 25000,
-        stock: 40,
-        unit: "Cái",
-        supplier: "Nhà cung cấp B",
-        description:
-          "Nhân Nam Việt Quốc chua ngọt thanh lịch, phảng phất vị Tây phương hiện đại.",
-      },
+      { id: 1, type: "Nhân ngọt", code: "MCXS01", name: "Trung Thu Mãng Cầu Xiêm Sen", costPrice: 25000, stock: 50, unit: "Cái", supplier: "Nhà cung cấp A", description: "Nhân chua thanh nhẹ, quyện vị béo dịu, mang hương sen tao nhã và độc đáo." },
+      { id: 2, type: "Nhân ngọt", code: "SDC01", name: "Trung Thu Sữa Dừa Cafe", costPrice: 25000, stock: 45, unit: "Cái", supplier: "Nhà cung cấp A", description: "Nhân sữa dừa hòa quyện cà phê, béo ngậy, thơm dịu và ngọt vừa phải." },
+      { id: 3, type: "Nhân ngọt", code: "KBQH01", name: "Trung Thu Khế Bưởi Quế Hoa", costPrice: 25000, stock: 30, unit: "Cái", supplier: "Nhà cung cấp B", description: "Nhân sữa béo nhẹ, ngọt dịu, hòa quyện hương thơm thanh mát và tinh tế." },
+      { id: 4, type: "Nhân ngọt", code: "VHCS01", name: "Trung Thu Vải Hồng Cánh Sen", costPrice: 25000, stock: 25, unit: "Cái", supplier: "Nhà cung cấp B", description: "Bánh ngọt thanh hòa quyện hạt sen bùi và hương hoa hồng tinh tế" },
+      { id: 5, type: "Nhân mặn", code: "BSTD01", name: "Trung Thu Bò Sốt Tiêu Đen", costPrice: 35000, stock: 40, unit: "Cái", supplier: "Nhà cung cấp C", description: "Nhân sốt tiêu đen đậm đà cay nhẹ kết hợp mứt và hạt tạo hương vị khó quên." },
+      { id: 6, type: "Đặc biệt", code: "NTT01", name: "Trung Thu Nấm Truffle", costPrice: 45000, stock: 15, unit: "Cái", supplier: "Nhà cung cấp D", description: "Nhân nấm truffle cao cấp – đại diện cho tinh thần sáng tạo và tay nghề thủ công" },
+      { id: 7, type: "Nhân mặn", code: "TMHS01", name: "Trung Thu Tomyum Hải Sản", costPrice: 35000, stock: 35, unit: "Cái", supplier: "Nhà cung cấp C", description: "Tomyum hải sản đem đến trải nghiệm Trung thu đầy thú vị và bổ dưỡng" },
+      { id: 8, type: "Nhân ngọt", code: "SVXD01", name: "Trung Thu Sen Vàng Xoài Dẻo", costPrice: 25000, stock: 40, unit: "Cái", supplier: "Nhà cung cấp A", description: "Nhân ngọt thanh, dẻo mềm hòa quyện vị xoài chín và hương sen thuần khiết." },
+      { id: 9, type: "Nhân ngọt", code: "GDCD01", name: "Trung Thu Gạo Đỏ Cốm Dừa", costPrice: 30000, stock: 40, unit: "Cái", supplier: "Nhà cung cấp A", description: "Thơm béo vị sữa, quyện cùng dừa nạo mềm mại, ngọt dịu." },
+      { id: 10, type: "Nhân ngọt", code: "MT01", name: "Trung Thu Mơ Tây", costPrice: 30000, stock: 40, unit: "Cái", supplier: "Nhà cung cấp B", description: "Nhân Mơ Tây chua ngọt hài hòa, mang vị thu nhẹ nhàng và lạ miệng." },
+      { id: 11, type: "Nhân ngọt", code: "CAFE01", name: "Trung Thu Cafe", costPrice: 30000, stock: 40, unit: "Cái", supplier: "Nhà cung cấp A", description: "Nhân Cà Phê đậm đà, thơm ngậy như một tách cà phê tinh tế giữa mùa thu." },
+      { id: 12, type: "Nhân ngọt", code: "VQ01", name: "Trung Thu Nam Việt Quất", costPrice: 25000, stock: 40, unit: "Cái", supplier: "Nhà cung cấp B", description: "Nhân Nam Việt Quốc chua ngọt thanh lịch, phảng phất vị Tây phương hiện đại." },
     ];
 
-    // Dữ liệu mẫu cho phiếu nhập
     let importOrders = JSON.parse(localStorage.getItem("importOrders")) || [];
     let currentEditOrderId = null;
 
-    // Tạo dữ liệu mẫu nếu chưa có
-    if (importOrders.length === 0) {
-      // Tạo các phiếu nhập mẫu cho các sản phẩm
-      const sampleImports = [
-        {
-          id: generateId(),
-          code: "PN-0001",
-          date: "2024-10-15",
-          productId: 1,
-          quantity: 100,
-          price: 25000,
-          supplier: "Nhà cung cấp A",
-          batch: "Lô 001",
-          note: "Nhập lần đầu mùa Trung thu",
-          completed: true,
-          createdAt: "2024-10-15T08:00:00",
-        },
-        {
-          id: generateId(),
-          code: "PN-0002",
-          date: "2024-10-18",
-          productId: 2,
-          quantity: 80,
-          price: 25000,
-          supplier: "Nhà cung cấp A",
-          batch: "Lô 002",
-          note: "Nhập bổ sung",
-          completed: true,
-          createdAt: "2024-10-18T10:30:00",
-        },
-        {
-          id: generateId(),
-          code: "PN-0003",
-          date: "2024-10-20",
-          productId: 5,
-          quantity: 60,
-          price: 35000,
-          supplier: "Nhà cung cấp C",
-          batch: "Lô 003",
-          note: "Nhân mặn cao cấp",
-          completed: false,
-          createdAt: "2024-10-20T14:15:00",
-        },
-        {
-          id: generateId(),
-          code: "PN-0004",
-          date: "2024-10-22",
-          productId: 6,
-          quantity: 30,
-          price: 45000,
-          supplier: "Nhà cung cấp D",
-          batch: "Lô 004",
-          note: "Sản phẩm đặc biệt",
-          completed: true,
-          createdAt: "2024-10-22T09:45:00",
-        },
-        {
-          id: generateId(),
-          code: "PN-0005",
-          date: "2024-10-25",
-          productId: 3,
-          quantity: 70,
-          price: 25000,
-          supplier: "Nhà cung cấp B",
-          batch: "Lô 005",
-          note: "Nhập cuối mùa",
-          completed: false,
-          createdAt: "2024-10-25T16:20:00",
-        },
-      ];
-
-      importOrders = sampleImports;
-      localStorage.setItem("importOrders", JSON.stringify(importOrders));
-    }
-
-    // Hiển thị danh sách phiếu nhập
-    function renderImportList() {
-      const importTableBody = document.getElementById("importTableBody");
-      const noImportMessage = document.getElementById("noImportMessage");
-
+    // ========== INITIALIZATION ==========
+    function initializeData() {
+      localStorage.removeItem("importOrders");
       if (importOrders.length === 0) {
-        importTableBody.innerHTML = "";
-        noImportMessage.classList.remove("hidden");
-        return;
-      }
-
-      noImportMessage.classList.add("hidden");
-      importTableBody.innerHTML = "";
-
-      // Sắp xếp theo ngày tạo mới nhất
-      const sortedImports = [...importOrders].sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-      );
-
-      sortedImports.forEach((order) => {
-        const product = products.find((p) => p.id === order.productId);
-        const row = document.createElement("tr");
-        row.className = order.completed ? "" : "bg-gray-750";
-
-        row.innerHTML = `
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm font-mono text-gray-300">${order.code}</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-300">${formatDate(order.date)}</div>
-            </td>
-            <td class="px-6 py-4">
-              <div class="text-sm font-medium text-white">${product ? product.name : "N/A"
-          }</div>
-              <div class="text-xs text-gray-400">${product ? product.code : "N/A"
-          }</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-300">${product ? product.type : "N/A"
-          }</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-300">${order.quantity}</div>
-            </td>
-          <td class="px-6 py-4 whitespace-nowrap">
-  <div class="text-sm text-gray-300">${formatCurrency(product ? product.costPrice : order.price)}</div>
-</td>
-<td class="px-6 py-4 whitespace-nowrap">
-  <div class="text-sm font-semibold text-cyan-400">${formatCurrency((product ? product.costPrice : order.price) * order.quantity)}</div>
-</td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${order.completed
-            ? "bg-green-100 text-green-800"
-            : "bg-yellow-100 text-yellow-800"
-          }">
-                ${order.completed ? "Đã hoàn thành" : "Chưa hoàn thành"}
-              </span>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-              <button onclick="editImportOrder('${order.id
-          }')" class="text-cyan-400 hover:text-cyan-300 mr-3">
-                <i class="fas fa-edit"></i> Sửa
-              </button>
-              <button onclick="completeImportOrder('${order.id
-          }')" class="text-green-400 hover:text-green-300 mr-3 ${order.completed ? "hidden" : ""
-          }">
-                <i class="fas fa-check"></i> Hoàn thành
-              </button>
-              <button onclick="viewImportDetails('${order.id
-          }')" class="text-blue-400 hover:text-blue-300">
-                <i class="fas fa-eye"></i> Chi tiết
-              </button>
-            </td>
-          `;
-
-        importTableBody.appendChild(row);
-      });
-
-      updateImportStats();
-    }
-
-    // Tìm kiếm phiếu nhập
-    function searchImports() {
-      const code = document.getElementById("searchImportCode").value;
-      const productId = document.getElementById("searchProduct").value;
-      const fromDate = document.getElementById("searchFromDate").value;
-      const toDate = document.getElementById("searchToDate").value;
-
-      let filteredImports = importOrders;
-
-      if (code) {
-        filteredImports = filteredImports.filter((order) =>
-          order.code.toLowerCase().includes(code.toLowerCase())
-        );
-      }
-
-      if (productId) {
-        filteredImports = filteredImports.filter(
-          (order) => order.productId == productId
-        );
-      }
-
-      if (fromDate) {
-        filteredImports = filteredImports.filter(
-          (order) => order.date >= fromDate
-        );
-      }
-
-      if (toDate) {
-        filteredImports = filteredImports.filter(
-          (order) => order.date <= toDate
-        );
-      }
-
-      displaySearchResults(filteredImports);
-    }
-
-    // Hiển thị kết quả tìm kiếm
-    function displaySearchResults(results) {
-      const searchResults = document.getElementById("searchResults");
-
-      if (results.length === 0) {
-        searchResults.innerHTML = `
-            <div class="text-center py-8 text-gray-400">
-              <i class="fas fa-search text-3xl mb-2"></i>
-              <p>Không tìm thấy phiếu nhập nào phù hợp.</p>
-            </div>
-          `;
-        return;
-      }
-
-      searchResults.innerHTML = results
-        .map((order) => {
-          const product = products.find((p) => p.id === order.productId);
-          return `
-            <div class="bg-gray-750 rounded-lg p-4">
-              <div class="flex justify-between items-start">
-                <div>
-                  <h4 class="font-medium text-white">${order.code}</h4>
-                  <p class="text-sm text-gray-400">${product ? product.name : "N/A"
-            } • ${formatDate(order.date)}</p>
-                  <p class="text-xs text-gray-500">Lô: ${order.batch || "N/A"
-            } • NCC: ${order.supplier}</p>
-                </div>
-                <span class="px-2 py-1 text-xs rounded-full ${order.completed
-              ? "bg-green-100 text-green-800"
-              : "bg-yellow-100 text-yellow-800"
-            }">
-                  ${order.completed ? "Đã hoàn thành" : "Chưa hoàn thành"}
-                </span>
-              </div>
-              <div class="grid grid-cols-3 gap-4 mt-3 text-sm">
-                <div>
-                  <p class="text-gray-400">Số lượng</p>
-                  <p class="text-white">${order.quantity}</p>
-                </div>
-                <div>
-                  <p class="text-gray-400">Giá nhập</p>
-                  <p class="text-white">${formatCurrency(order.price)}</p>
-                </div>
-                <div>
-                  <p class="text-gray-400">Thành tiền</p>
-                  <p class="text-cyan-400 font-medium">${formatCurrency(
-              order.price * order.quantity
-            )}</p>
-                </div>
-              </div>
-              <div class="mt-3 flex justify-end space-x-2">
-                <button onclick="editImportOrder('${order.id
-            }')" class="text-cyan-400 hover:text-cyan-300 text-sm">
-                  <i class="fas fa-edit"></i> Sửa
-                </button>
-                <button onclick="completeImportOrder('${order.id
-            }')" class="text-green-400 hover:text-green-300 text-sm ${order.completed ? "hidden" : ""
-            }">
-                  <i class="fas fa-check"></i> Hoàn thành
-                </button>
-                <button onclick="viewImportDetails('${order.id
-            }')" class="text-blue-400 hover:text-blue-300 text-sm">
-                  <i class="fas fa-eye"></i> Chi tiết
-                </button>
-              </div>
-            </div>
-          `;
-        })
-        .join("");
-    }
-
-    // Cập nhật thống kê nhập hàng
-    function updateImportStats() {
-      const totalImports = importOrders.length;
-      const totalImportValue = importOrders.reduce(
-        (sum, order) => sum + order.price * order.quantity,
-        0
-      );
-      const pendingImports = importOrders.filter(
-        (order) => !order.completed
-      ).length;
-      const totalProducts = importOrders.reduce(
-        (sum, order) => sum + order.quantity,
-        0
-      );
-
-      document.getElementById("totalImports").textContent = totalImports;
-      document.getElementById("totalImportValue").textContent =
-        formatCurrency(totalImportValue);
-      document.getElementById("pendingImports").textContent = pendingImports;
-      document.getElementById("totalProducts").textContent = totalProducts;
-    }
-
-    // Mở modal tạo phiếu nhập
-    function openImportModal() {
-      currentEditOrderId = null;
-      document.getElementById("importModalTitle").textContent =
-        "Tạo phiếu nhập hàng";
-      document.getElementById("saveImportBtn").textContent = "Lưu phiếu nhập";
-
-      // Cập nhật danh sách sản phẩm
-      const productSelect = document.getElementById("importProduct");
-      productSelect.innerHTML = '<option value="">Chọn sản phẩm</option>';
-      products.forEach((product) => {
-        const option = document.createElement("option");
-        option.value = product.id;
-        option.textContent = `${product.name} (${product.code})`;
-        productSelect.appendChild(option);
-      });
-
-      // Đặt ngày mặc định là hôm nay
-      document.getElementById("importDate").value = new Date()
-        .toISOString()
-        .split("T")[0];
-
-      // Tạo mã phiếu tự động
-      const nextId =
-        importOrders.length > 0
-          ? Math.max(
-            ...importOrders.map((o) => parseInt(o.code.split("-")[1]))
-          ) + 1
-          : 1;
-      document.getElementById("importCode").value = `PN-${nextId
-        .toString()
-        .padStart(4, "0")}`;
-
-      // Reset các trường khác
-      document.getElementById("importQuantity").value = "";
-      document.getElementById("importPrice").value = "";
-      document.getElementById("importSupplier").value = "";
-      document.getElementById("importBatch").value = "";
-      document.getElementById("importNote").value = "";
-
-      // Đặt giá nhập mặc định từ giá vốn của sản phẩm
-      document
-        .getElementById("importProduct")
-        .addEventListener("change", function () {
-          const selectedProduct = products.find((p) => p.id == this.value);
-          if (selectedProduct) {
-            document.getElementById("importPrice").value =
-              selectedProduct.costPrice;
-            document.getElementById("importSupplier").value =
-              selectedProduct.supplier;
-          }
-        });
-
-      document.getElementById("importModal").classList.remove("hidden");
-    }
-
-    // Mở modal chỉnh sửa phiếu nhập
-    function editImportOrder(orderId) {
-      const product = products.find(p => p.id === order.productId);
-      document.getElementById("importPrice").value = product ? product.costPrice : order.price;
-      if (!order) {
-        alert("Không tìm thấy phiếu nhập!");
-        return;
-      }
-
-      currentEditOrderId = orderId;
-      document.getElementById("importModalTitle").textContent =
-        "Chỉnh sửa phiếu nhập";
-      document.getElementById("saveImportBtn").textContent =
-        "Cập nhật phiếu nhập";
-
-      // Cập nhật danh sách sản phẩm
-      const productSelect = document.getElementById("importProduct");
-      productSelect.innerHTML = '<option value="">Chọn sản phẩm</option>';
-      products.forEach((product) => {
-        const option = document.createElement("option");
-        option.value = product.id;
-        option.textContent = `${product.name} (${product.code})`;
-        if (product.id === order.productId) {
-          option.selected = true;
-        }
-        productSelect.appendChild(option);
-      });
-
-      // Điền thông tin hiện tại vào form
-      document.getElementById("importDate").value = order.date;
-      document.getElementById("importCode").value = order.code;
-      document.getElementById("importQuantity").value = order.quantity;
-      document.getElementById("importPrice").value = order.price;
-      document.getElementById("importSupplier").value = order.supplier;
-      document.getElementById("importBatch").value = order.batch || "";
-      document.getElementById("importNote").value = order.note || "";
-
-      document.getElementById("importModal").classList.remove("hidden");
-    }
-
-    // Đóng modal tạo phiếu nhập
-    function closeImportModal() {
-      document.getElementById("importModal").classList.add("hidden");
-      currentEditOrderId = null;
-    }
-
-    // Mở modal tìm kiếm phiếu nhập
-    function openSearchImportModal() {
-      // Cập nhật danh sách sản phẩm cho tìm kiếm
-      const searchProductSelect = document.getElementById("searchProduct");
-      searchProductSelect.innerHTML =
-        '<option value="">Tất cả sản phẩm</option>';
-      products.forEach((product) => {
-        const option = document.createElement("option");
-        option.value = product.id;
-        option.textContent = `${product.name} (${product.code})`;
-        searchProductSelect.appendChild(option);
-      });
-
-      document.getElementById("searchImportModal").classList.remove("hidden");
-    }
-
-    // Đóng modal tìm kiếm phiếu nhập
-    function closeSearchImportModal() {
-      document.getElementById("searchImportModal").classList.add("hidden");
-    }
-
-    // Lưu phiếu nhập (tạo mới hoặc cập nhật)
-    function saveImport() {
-      const code = document.getElementById("importCode").value;
-      const date = document.getElementById("importDate").value;
-      const productId = parseInt(
-        document.getElementById("importProduct").value
-      );
-      const quantity = parseInt(
-        document.getElementById("importQuantity").value
-      );
-      const product = products.find(p => p.id === productId);
-      const price = product ? product.costPrice : parseFloat(document.getElementById("importPrice").value);
-      const supplier = document.getElementById("importSupplier").value;
-      const batch = document.getElementById("importBatch").value;
-      const note = document.getElementById("importNote").value;
-
-      if (!code || !date || !productId || !quantity || !price || !supplier) {
-        alert("Vui lòng điền đầy đủ thông tin bắt buộc!");
-        return;
-      }
-
-      if (currentEditOrderId) {
-        // Cập nhật phiếu nhập hiện có
-        const orderIndex = importOrders.findIndex(
-          (o) => o.id === currentEditOrderId
-        );
-        if (orderIndex !== -1) {
-          importOrders[orderIndex] = {
-            ...importOrders[orderIndex],
-            code,
-            date,
-            productId,
-            quantity,
-            price,
-            supplier,
-            batch,
-            note,
-            updatedAt: new Date().toISOString(),
-          };
-
-          localStorage.setItem("importOrders", JSON.stringify(importOrders));
-          renderImportList();
-          closeImportModal();
-          alert("Cập nhật phiếu nhập thành công!");
-        }
-      } else {
-        // Tạo phiếu nhập mới
-        const newImport = {
-          id: generateId(),
-          code,
-          date,
-          productId,
-          quantity,
-          price,
-          supplier,
-          batch,
-          note,
-          completed: false,
-          createdAt: new Date().toISOString(),
-        };
-
-        importOrders.push(newImport);
+        const sampleImports = [
+          { id: generateId(), code: "PN-0001", date: "2024-10-15", productId: 1, quantity: 100, price: 25000, supplier: "Nhà cung cấp A", batch: "Lô 001", note: "Nhập lần đầu mùa Trung thu", completed: true, createdAt: "2024-10-15T08:00:00" },
+          { id: generateId(), code: "PN-0002", date: "2024-10-18", productId: 2, quantity: 80, price: 25000, supplier: "Nhà cung cấp A", batch: "Lô 002", note: "Nhập bổ sung", completed: true, createdAt: "2024-10-18T10:30:00" },
+          { id: generateId(), code: "PN-0003", date: "2024-10-20", productId: 5, quantity: 60, price: 35000, supplier: "Nhà cung cấp C", batch: "Lô 003", note: "Nhân mặn cao cấp", completed: false, createdAt: "2024-10-20T14:15:00" },
+          { id: generateId(), code: "PN-0004", date: "2024-10-22", productId: 6, quantity: 30, price: 45000, supplier: "Nhà cung cấp D", batch: "Lô 004", note: "Sản phẩm đặc biệt", completed: true, createdAt: "2024-10-22T09:45:00" },
+          { id: generateId(), code: "PN-0005", date: "2024-10-25", productId: 3, quantity: 70, price: 25000, supplier: "Nhà cung cấp B", batch: "Lô 005", note: "Nhập cuối mùa", completed: false, createdAt: "2024-10-25T16:20:00" },
+        ];
+        importOrders = sampleImports;
         localStorage.setItem("importOrders", JSON.stringify(importOrders));
-
-        renderImportList();
-        closeImportModal();
-        alert("Tạo phiếu nhập thành công!");
       }
     }
 
-    // Hoàn thành phiếu nhập
-    function completeImportOrder(orderId) {
-      if (confirm("Bạn có chắc chắn muốn hoàn thành phiếu nhập này?")) {
-        const orderIndex = importOrders.findIndex((o) => o.id === orderId);
-        if (orderIndex !== -1) {
-          importOrders[orderIndex].completed = true;
-          importOrders[orderIndex].completedAt = new Date().toISOString();
-
-          // Cập nhật tồn kho sản phẩm
-          const productIndex = products.findIndex(
-            (p) => p.id === importOrders[orderIndex].productId
-          );
-          if (productIndex !== -1) {
-            products[productIndex].stock += importOrders[orderIndex].quantity;
-          }
-
-          localStorage.setItem("importOrders", JSON.stringify(importOrders));
-          renderImportList();
-          alert("Hoàn thành phiếu nhập thành công!");
-        }
-      }
-    }
-
-    // Xem chi tiết phiếu nhập
-    function viewImportDetails(orderId) {
-      const order = importOrders.find((o) => o.id === orderId);
-      if (!order) return;
-
-      const product = products.find((p) => p.id === order.productId);
-
-      const details = `
-Mã phiếu: ${order.code}
-Ngày nhập: ${formatDate(order.date)}
-Sản phẩm: ${product ? product.name : "N/A"} (${product ? product.code : "N/A"})
-Loại: ${product ? product.type : "N/A"}
-Số lượng: ${order.quantity}
-Giá nhập: ${formatCurrency(order.price)}
-Thành tiền: ${formatCurrency(order.price * order.quantity)}
-Nhà cung cấp: ${order.supplier}
-Lô hàng: ${order.batch || "N/A"}
-Ghi chú: ${order.note || "Không có"}
-Trạng thái: ${order.completed ? "Đã hoàn thành" : "Chưa hoàn thành"}
-Ngày tạo: ${formatDateTime(order.createdAt)}
-${order.updatedAt ? `Cập nhật lần cuối: ${formatDateTime(order.updatedAt)}` : ""
-        }
-${order.completedAt
-          ? `Ngày hoàn thành: ${formatDateTime(order.completedAt)}`
-          : ""
-        }
-        `;
-
-      alert(details);
-    }
-
-    // Hàm tiện ích
+    // ========== UTILITY FUNCTIONS ==========
     function formatCurrency(amount) {
-      return new Intl.NumberFormat("vi-VN", {
-        style: "currency",
-        currency: "VND",
-      }).format(amount);
+      return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(amount);
     }
 
     function formatDate(dateString) {
@@ -1072,14 +409,402 @@ ${order.completedAt
       return Date.now().toString(36) + Math.random().toString(36).substr(2);
     }
 
-    // Quay lại trang admin
-    function goBack() {
-      window.location.href = "daodienad.html";
+    function showAlert(message, type = 'info') {
+      const alertBox = document.createElement('div');
+      alertBox.className = 'alert-overlay';
+      alertBox.innerHTML = `
+        <div class="alert-box">
+          <div class="text-center">
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'} text-${type === 'success' ? 'green' : type === 'error' ? 'red' : 'cyan'}-400 text-4xl mb-4"></i>
+            <h3 class="text-xl font-semibold text-white mb-2">Thông báo</h3>
+            <p class="text-gray-300 mb-6">${message}</p>
+            <button onclick="this.closest('.alert-overlay').remove()" class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-6 py-2 rounded-lg transition">
+              Đóng
+            </button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(alertBox);
     }
 
-    // Khởi tạo
+    function showConfirm(message, onConfirm) {
+      const confirmBox = document.createElement('div');
+      confirmBox.className = 'alert-overlay';
+      confirmBox.innerHTML = `
+        <div class="alert-box">
+          <div class="text-center">
+            <i class="fas fa-question-circle text-yellow-400 text-4xl mb-4"></i>
+            <h3 class="text-xl font-semibold text-white mb-2">Xác nhận</h3>
+            <p class="text-gray-300 mb-6">${message}</p>
+            <div class="flex justify-center space-x-3">
+              <button onclick="this.closest('.alert-overlay').remove()" class="bg-gray-600 hover:bg-gray-500 text-white font-semibold px-6 py-2 rounded-lg transition">
+                Hủy
+              </button>
+              <button onclick="this.closest('.alert-overlay').remove(); ${onConfirm}" class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-6 py-2 rounded-lg transition">
+                Xác nhận
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(confirmBox);
+    }
+
+    // ========== NAVIGATION ==========
+    function navigateTo(url) {
+      window.location.href = url;
+    }
+
+    function goBack() {
+      navigateTo('daodienad.html');
+    }
+
+    // ========== IMPORT ORDER MANAGEMENT ==========
+    function renderImportList() {
+      const importTableBody = document.getElementById("importTableBody");
+      const noImportMessage = document.getElementById("noImportMessage");
+
+      if (importOrders.length === 0) {
+        importTableBody.innerHTML = "";
+        noImportMessage.classList.remove("hidden");
+        return;
+      }
+
+      noImportMessage.classList.add("hidden");
+      importTableBody.innerHTML = "";
+
+      const sortedImports = [...importOrders].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+      sortedImports.forEach((order) => {
+        const product = products.find((p) => p.id === order.productId);
+        const costPrice = product ? product.costPrice : order.price;
+        
+        const row = document.createElement("tr");
+        row.className = order.completed ? "" : "bg-gray-750";
+        row.innerHTML = `
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm font-mono text-gray-300">${order.code}</div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm text-gray-300">${formatDate(order.date)}</div>
+          </td>
+          <td class="px-6 py-4">
+            <div class="text-sm font-medium text-white">${product ? product.name : "N/A"}</div>
+            <div class="text-xs text-gray-400">${product ? product.code : "N/A"}</div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm text-gray-300">${product ? product.type : "N/A"}</div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm text-gray-300">${order.quantity}</div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm text-gray-300">${formatCurrency(costPrice)}</div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm font-semibold text-cyan-400">${formatCurrency(costPrice * order.quantity)}</div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${order.completed ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}">
+              ${order.completed ? "Đã hoàn thành" : "Chưa hoàn thành"}
+            </span>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+            <button onclick="editImportOrder('${order.id}')" class="text-cyan-400 hover:text-cyan-300 mr-3">
+              <i class="fas fa-edit"></i> Sửa
+            </button>
+            <button onclick="completeImportOrder('${order.id}')" class="text-green-400 hover:text-green-300 mr-3 ${order.completed ? "hidden" : ""}">
+              <i class="fas fa-check"></i> Hoàn thành
+            </button>
+            <button onclick="viewImportDetails('${order.id}')" class="text-blue-400 hover:text-blue-300">
+              <i class="fas fa-eye"></i> Chi tiết
+            </button>
+          </td>
+        `;
+        importTableBody.appendChild(row);
+      });
+
+      updateImportStats();
+    }
+
+    function updateImportStats() {
+      const totalImports = importOrders.length;
+      const totalImportValue = importOrders.reduce((sum, order) => {
+        const product = products.find(p => p.id === order.productId);
+        const costPrice = product ? product.costPrice : order.price;
+        return sum + costPrice * order.quantity;
+      }, 0);
+      const pendingImports = importOrders.filter(order => !order.completed).length;
+      const totalProducts = importOrders.reduce((sum, order) => sum + order.quantity, 0);
+
+      document.getElementById("totalImports").textContent = totalImports;
+      document.getElementById("totalImportValue").textContent = formatCurrency(totalImportValue);
+      document.getElementById("pendingImports").textContent = pendingImports;
+      document.getElementById("totalProducts").textContent = totalProducts;
+    }
+
+    // ========== MODAL MANAGEMENT ==========
+    function openImportModal() {
+      currentEditOrderId = null;
+      document.getElementById("importModalTitle").textContent = "Tạo phiếu nhập hàng";
+      document.getElementById("saveImportBtn").textContent = "Lưu phiếu nhập";
+
+      const productSelect = document.getElementById("importProduct");
+      productSelect.innerHTML = '<option value="">Chọn sản phẩm</option>';
+      products.forEach((product) => {
+        const option = document.createElement("option");
+        option.value = product.id;
+        option.textContent = `${product.name} (${product.code})`;
+        productSelect.appendChild(option);
+      });
+
+      document.getElementById("importDate").value = new Date().toISOString().split("T")[0];
+      
+      const nextId = importOrders.length > 0 ? Math.max(...importOrders.map(o => parseInt(o.code.split("-")[1]))) + 1 : 1;
+      document.getElementById("importCode").value = `PN-${nextId.toString().padStart(4, "0")}`;
+
+      document.getElementById("importQuantity").value = "";
+      document.getElementById("importPrice").value = "";
+      document.getElementById("importSupplier").value = "";
+      document.getElementById("importBatch").value = "";
+      document.getElementById("importNote").value = "";
+
+      document.getElementById("importModal").classList.remove("hidden");
+    }
+
+    function editImportOrder(orderId) {
+      const order = importOrders.find((o) => o.id === orderId);
+      if (!order) {
+        showAlert("Không tìm thấy phiếu nhập!", "error");
+        return;
+      }
+
+      currentEditOrderId = orderId;
+      document.getElementById("importModalTitle").textContent = "Chỉnh sửa phiếu nhập";
+      document.getElementById("saveImportBtn").textContent = "Cập nhật phiếu nhập";
+
+      const productSelect = document.getElementById("importProduct");
+      productSelect.innerHTML = '<option value="">Chọn sản phẩm</option>';
+      products.forEach((product) => {
+        const option = document.createElement("option");
+        option.value = product.id;
+        option.textContent = `${product.name} (${product.code})`;
+        if (product.id === order.productId) option.selected = true;
+        productSelect.appendChild(option);
+      });
+
+      const product = products.find(p => p.id === order.productId);
+      document.getElementById("importDate").value = order.date;
+      document.getElementById("importCode").value = order.code;
+      document.getElementById("importQuantity").value = order.quantity;
+      document.getElementById("importPrice").value = product ? product.costPrice : order.price;
+      document.getElementById("importSupplier").value = order.supplier;
+      document.getElementById("importBatch").value = order.batch || "";
+      document.getElementById("importNote").value = order.note || "";
+
+      document.getElementById("importModal").classList.remove("hidden");
+    }
+
+    function closeImportModal() {
+      document.getElementById("importModal").classList.add("hidden");
+      currentEditOrderId = null;
+    }
+
+    function saveImport() {
+      const code = document.getElementById("importCode").value;
+      const date = document.getElementById("importDate").value;
+      const productId = parseInt(document.getElementById("importProduct").value);
+      const quantity = parseInt(document.getElementById("importQuantity").value);
+      const price = parseFloat(document.getElementById("importPrice").value);
+      const supplier = document.getElementById("importSupplier").value;
+      const batch = document.getElementById("importBatch").value;
+      const note = document.getElementById("importNote").value;
+
+      if (!code || !date || !productId || !quantity || !price || !supplier) {
+        showAlert("Vui lòng điền đầy đủ thông tin bắt buộc!", "error");
+        return;
+      }
+
+      const product = products.find(p => p.id === productId);
+      const costPrice = product ? product.costPrice : price;
+
+      if (currentEditOrderId) {
+        const orderIndex = importOrders.findIndex(o => o.id === currentEditOrderId);
+        if (orderIndex !== -1) {
+          importOrders[orderIndex] = {
+            ...importOrders[orderIndex],
+            code, date, productId, quantity, price: costPrice, supplier, batch, note,
+            updatedAt: new Date().toISOString(),
+          };
+          localStorage.setItem("importOrders", JSON.stringify(importOrders));
+          renderImportList();
+          closeImportModal();
+          showAlert("Cập nhật phiếu nhập thành công!", "success");
+        }
+      } else {
+        const newImport = {
+          id: generateId(), code, date, productId, quantity, price: costPrice, supplier, batch, note,
+          completed: false, createdAt: new Date().toISOString(),
+        };
+        importOrders.push(newImport);
+        localStorage.setItem("importOrders", JSON.stringify(importOrders));
+        renderImportList();
+        closeImportModal();
+        showAlert("Tạo phiếu nhập thành công!", "success");
+      }
+    }
+
+    function completeImportOrder(orderId) {
+      showConfirm("Bạn có chắc chắn muốn hoàn thành phiếu nhập này?", () => {
+        const orderIndex = importOrders.findIndex(o => o.id === orderId);
+        if (orderIndex !== -1) {
+          importOrders[orderIndex].completed = true;
+          importOrders[orderIndex].completedAt = new Date().toISOString();
+
+          const productIndex = products.findIndex(p => p.id === importOrders[orderIndex].productId);
+          if (productIndex !== -1) {
+            products[productIndex].stock += importOrders[orderIndex].quantity;
+          }
+
+          localStorage.setItem("importOrders", JSON.stringify(importOrders));
+          renderImportList();
+          showAlert("Hoàn thành phiếu nhập thành công!", "success");
+        }
+      });
+    }
+
+    function viewImportDetails(orderId) {
+      const order = importOrders.find(o => o.id === orderId);
+      if (!order) return;
+
+      const product = products.find(p => p.id === order.productId);
+      const costPrice = product ? product.costPrice : order.price;
+
+      const details = `
+Mã phiếu: ${order.code}
+Ngày nhập: ${formatDate(order.date)}
+Sản phẩm: ${product ? product.name : "N/A"} (${product ? product.code : "N/A"})
+Loại: ${product ? product.type : "N/A"}
+Số lượng: ${order.quantity}
+Giá nhập: ${formatCurrency(costPrice)}
+Thành tiền: ${formatCurrency(costPrice * order.quantity)}
+Nhà cung cấp: ${order.supplier}
+Lô hàng: ${order.batch || "N/A"}
+Ghi chú: ${order.note || "Không có"}
+Trạng thái: ${order.completed ? "Đã hoàn thành" : "Chưa hoàn thành"}
+Ngày tạo: ${formatDateTime(order.createdAt)}
+${order.updatedAt ? `Cập nhật lần cuối: ${formatDateTime(order.updatedAt)}` : ""}
+${order.completedAt ? `Ngày hoàn thành: ${formatDateTime(order.completedAt)}` : ""}
+      `;
+      
+      showAlert(`<pre class="text-left text-sm">${details}</pre>`, "info");
+    }
+
+    // ========== SEARCH FUNCTIONALITY ==========
+    function openSearchImportModal() {
+      const searchProductSelect = document.getElementById("searchProduct");
+      searchProductSelect.innerHTML = '<option value="">Tất cả sản phẩm</option>';
+      products.forEach(product => {
+        const option = document.createElement("option");
+        option.value = product.id;
+        option.textContent = `${product.name} (${product.code})`;
+        searchProductSelect.appendChild(option);
+      });
+      document.getElementById("searchImportModal").classList.remove("hidden");
+    }
+
+    function closeSearchImportModal() {
+      document.getElementById("searchImportModal").classList.add("hidden");
+    }
+
+    function searchImports() {
+      const code = document.getElementById("searchImportCode").value;
+      const productId = document.getElementById("searchProduct").value;
+      const fromDate = document.getElementById("searchFromDate").value;
+      const toDate = document.getElementById("searchToDate").value;
+
+      let filteredImports = importOrders;
+
+      if (code) filteredImports = filteredImports.filter(order => order.code.toLowerCase().includes(code.toLowerCase()));
+      if (productId) filteredImports = filteredImports.filter(order => order.productId == productId);
+      if (fromDate) filteredImports = filteredImports.filter(order => order.date >= fromDate);
+      if (toDate) filteredImports = filteredImports.filter(order => order.date <= toDate);
+
+      displaySearchResults(filteredImports);
+    }
+
+    function displaySearchResults(results) {
+      const searchResults = document.getElementById("searchResults");
+
+      if (results.length === 0) {
+        searchResults.innerHTML = `
+          <div class="text-center py-8 text-gray-400">
+            <i class="fas fa-search text-3xl mb-2"></i>
+            <p>Không tìm thấy phiếu nhập nào phù hợp.</p>
+          </div>
+        `;
+        return;
+      }
+
+      searchResults.innerHTML = results.map(order => {
+        const product = products.find(p => p.id === order.productId);
+        const costPrice = product ? product.costPrice : order.price;
+        
+        return `
+          <div class="bg-gray-750 rounded-lg p-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <h4 class="font-medium text-white">${order.code}</h4>
+                <p class="text-sm text-gray-400">${product ? product.name : "N/A"} • ${formatDate(order.date)}</p>
+                <p class="text-xs text-gray-500">Lô: ${order.batch || "N/A"} • NCC: ${order.supplier}</p>
+              </div>
+              <span class="px-2 py-1 text-xs rounded-full ${order.completed ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}">
+                ${order.completed ? "Đã hoàn thành" : "Chưa hoàn thành"}
+              </span>
+            </div>
+            <div class="grid grid-cols-3 gap-4 mt-3 text-sm">
+              <div>
+                <p class="text-gray-400">Số lượng</p>
+                <p class="text-white">${order.quantity}</p>
+              </div>
+              <div>
+                <p class="text-gray-400">Giá nhập</p>
+                <p class="text-white">${formatCurrency(costPrice)}</p>
+              </div>
+              <div>
+                <p class="text-gray-400">Thành tiền</p>
+                <p class="text-cyan-400 font-medium">${formatCurrency(costPrice * order.quantity)}</p>
+              </div>
+            </div>
+            <div class="mt-3 flex justify-end space-x-2">
+              <button onclick="editImportOrder('${order.id}')" class="text-cyan-400 hover:text-cyan-300 text-sm">
+                <i class="fas fa-edit"></i> Sửa
+              </button>
+              <button onclick="completeImportOrder('${order.id}')" class="text-green-400 hover:text-green-300 text-sm ${order.completed ? "hidden" : ""}">
+                <i class="fas fa-check"></i> Hoàn thành
+              </button>
+              <button onclick="viewImportDetails('${order.id}')" class="text-blue-400 hover:text-blue-300 text-sm">
+                <i class="fas fa-eye"></i> Chi tiết
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // ========== EVENT LISTENERS ==========
     document.addEventListener("DOMContentLoaded", function () {
+      initializeData();
       renderImportList();
+
+      // Auto-fill product price and supplier when product is selected
+      document.getElementById("importProduct").addEventListener("change", function () {
+        const selectedProduct = products.find(p => p.id == this.value);
+        if (selectedProduct) {
+          document.getElementById("importPrice").value = selectedProduct.costPrice;
+          document.getElementById("importSupplier").value = selectedProduct.supplier;
+        }
+      });
     });
   </script>
 </body>
