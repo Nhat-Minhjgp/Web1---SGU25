@@ -51,7 +51,6 @@
           Quản lý Danh mục Sản phẩm
         </h1>
       </div>
-      <!-- Đã bỏ nút đăng xuất theo yêu cầu -->
     </header>
 
     <div class="flex h-[calc(100vh-80px)]">
@@ -406,14 +405,14 @@
               class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
             ></textarea>
           </div>
-          <div class="flex items-center">
+          <div class="flex items-center hidden" id="hiddenProductContainer">
             <input
               type="checkbox"
               id="productHidden"
-              class="w-4 h-4 text-cyan-600 bg-gray-700 border-gray-600 rounded focus:ring-cyan-500"
+              class="w-4 h-4 text-cyan-500 bg-gray-700 border-gray-600 rounded focus:ring-cyan-500 focus:ring-2"
             />
             <label for="productHidden" class="ml-2 text-sm text-gray-300"
-              >Ngừng bán sản phẩm</label
+              >Ngừng bán sản phẩm này</label
             >
           </div>
         </form>
@@ -856,7 +855,9 @@
         document.getElementById("modalTitle").textContent = "Thêm sản phẩm mới";
         document.getElementById("productForm").reset();
         document.getElementById("imagePreview").classList.add("hidden");
+        document.getElementById("hiddenProductContainer").classList.add("hidden"); // Ẩn checkbox khi thêm mới
         currentEditId = null;
+        updateCategoryOptions(); // Đảm bảo danh sách loại được cập nhật
         document.getElementById("productModal").classList.remove("hidden");
       }
 
@@ -919,19 +920,27 @@
         const profit = parseInt(document.getElementById("productProfit").value);
         const supplier = document.getElementById("productSupplier").value;
         const description = document.getElementById("productDescription").value;
-        const hidden = document.getElementById("productHidden").checked;
+        const hidden = currentEditId ? document.getElementById("productHidden").checked : false;
 
+        // Kiểm tra dữ liệu đầu vào
         if (
           !type ||
           !code ||
           !name ||
-          !price ||
-          !stock ||
+          isNaN(price) ||
+          isNaN(stock) ||
           !unit ||
-          !profit ||
+          isNaN(profit) ||
           !supplier
         ) {
           alert("Vui lòng điền đầy đủ thông tin bắt buộc!");
+          return;
+        }
+
+        // Kiểm tra mã sản phẩm trùng
+        const existingProduct = products.find(p => p.code === code && p.id !== currentEditId);
+        if (existingProduct) {
+          alert("Mã sản phẩm đã tồn tại! Vui lòng chọn mã khác.");
           return;
         }
 
@@ -952,14 +961,12 @@
               description,
               hidden,
             };
+            alert("Cập nhật sản phẩm thành công!");
           }
         } else {
           // Thêm sản phẩm mới
           const newProduct = {
-            id:
-              products.length > 0
-                ? Math.max(...products.map((p) => p.id)) + 1
-                : 1,
+            id: Date.now(), // Sử dụng timestamp để đảm bảo ID duy nhất
             type,
             code,
             name,
@@ -970,18 +977,14 @@
             supplier,
             image: "",
             description,
-            hidden,
+            hidden: false, // Mặc định là đang bán
           };
           products.push(newProduct);
+          alert("Thêm sản phẩm thành công!");
         }
 
         renderProductList();
         closeModal();
-        alert(
-          currentEditId
-            ? "Cập nhật sản phẩm thành công!"
-            : "Thêm sản phẩm thành công!"
-        );
       }
 
       // Sửa sản phẩm
@@ -999,7 +1002,7 @@
           document.getElementById("productSupplier").value =
             product.supplier || "";
           document.getElementById("productDescription").value =
-            product.description;
+            product.description || "";
           document.getElementById("productHidden").checked = product.hidden;
 
           if (product.image) {
@@ -1010,6 +1013,8 @@
           }
 
           currentEditId = id;
+          document.getElementById("hiddenProductContainer").classList.remove("hidden"); // Hiện checkbox khi sửa
+          updateCategoryOptions(); // Đảm bảo danh sách loại được cập nhật
           document.getElementById("productModal").classList.remove("hidden");
         }
       }
